@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.clevertec.enums.Section;
+import ru.clevertec.newsonline.enums.Section;
 
 import java.util.List;
 import java.util.UUID;
