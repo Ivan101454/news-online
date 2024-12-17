@@ -11,11 +11,8 @@ subprojects {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
-//    implementation 'org.mapstruct:mapstruct:1.6.2'
-//    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
-//    implementation project(':core')
+    implementation project(':core')
 }
 
 test {

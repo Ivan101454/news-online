@@ -4,8 +4,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'ru.clevertec'
-version = '1.0-SNAPSHOT'
 
 java {
     toolchain {
@@ -13,27 +11,40 @@ java {
     }
 }
 
-repositories {
-    mavenCentral()
+allprojects {
+    group = 'ru.clevertec'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+
+    }
+
 }
+
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.mapstruct:mapstruct:1.6.2'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 }
 
-dependencies {
-
-    implementation 'org.springframework.boot:spring-boot-starter'
-}
 
 test {
     useJUnitPlatform()
