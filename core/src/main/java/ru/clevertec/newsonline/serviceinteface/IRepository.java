@@ -1,7 +1,6 @@
 package ru.clevertec.newsonline.serviceinteface;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 //@NoRepositoryBean
-public interface INewsRepository<E> extends Repository<E, UUID> {
+public interface IRepository<E> extends Repository<E, UUID> {
 
     List<E> findAll(Pageable pageable);
 
