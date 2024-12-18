@@ -28,7 +28,7 @@ import java.util.UUID;
 @Table(name = "comment", schema = "news_online")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
     private UUID commentId;
     @Column(name = "date_of_comment")

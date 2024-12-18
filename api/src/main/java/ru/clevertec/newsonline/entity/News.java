@@ -36,14 +36,14 @@ import java.util.UUID;
 @Table(name = "news", schema = "news_online")
 public class News {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "news_id")
     private UUID newsId;
     @Column(name = "header_news")
     private String headerNews;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private Author authorNews;
+    private Author author;
     @Column(name = "date_of_news")
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime dateOfNews;

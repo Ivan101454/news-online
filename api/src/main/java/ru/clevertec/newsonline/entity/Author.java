@@ -29,7 +29,7 @@ import java.util.UUID;
 @Table(name = "author", schema = "news_online")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID author_id;
     @Column(name = "name_author")
     private String nameAuthor;
@@ -47,7 +47,7 @@ public class Author {
     private List<News> writeNews;
 
     public void addNews(News news) {
-        news.setAuthorNews(this);
+        news.setAuthor(this);
         writeNews.add(news);
     }
 

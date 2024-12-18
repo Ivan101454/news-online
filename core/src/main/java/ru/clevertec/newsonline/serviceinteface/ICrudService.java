@@ -8,7 +8,7 @@ public interface ICrudService<E> {
 
     Optional<E> findById(UUID id);
 
-    List<E> findAllNews(int pageNumber, int pageSize);
+    List<E> findAll();
 
     Optional<E> create(E e);
 

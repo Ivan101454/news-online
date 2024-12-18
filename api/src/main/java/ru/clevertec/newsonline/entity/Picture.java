@@ -29,7 +29,7 @@ import java.util.UUID;
 @Table(name = "picture", schema = "news_online")
 public class Picture {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "picture_id")
     private UUID picture_id;
     @Column(name = "name_of_picture")

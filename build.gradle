@@ -45,6 +45,10 @@ subprojects {
     }
 }
 
+tasks.register('cleanGeneratedMapstruckt', Delete) {
+    delete file('api/src/main/generated')
+}
+
 
 test {
     useJUnitPlatform()

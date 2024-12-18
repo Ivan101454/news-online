@@ -31,7 +31,7 @@ import java.util.UUID;
 @Table(name = "category", schema = "news_online")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id")
     private UUID categoryId;
     @Enumerated(value = EnumType.STRING)

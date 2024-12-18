@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +15,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Transactional
-@Service
-@RequiredArgsConstructor
 public abstract class CrudService<E> implements ICrudService<E> {
 
     private final IRepository<E> newsRepository;
+
+    public CrudService(IRepository<E> newsRepository) {
+        this.newsRepository = newsRepository;
+    }
 
     public Optional<E> findById(UUID id) {
         Optional<E> news = newsRepository.findById(id);
@@ -26,9 +29,9 @@ public abstract class CrudService<E> implements ICrudService<E> {
         return news;
     }
 
-    public List<E> findAllNews(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return newsRepository.findAll(pageable).stream().toList();
+    public List<E> findAll() {
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return newsRepository.findAll().stream().toList();
     }
 
     public Optional<E> create(E e) {
@@ -42,7 +45,7 @@ public abstract class CrudService<E> implements ICrudService<E> {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        E save =(E) newsRepository.save(update);
+        E save = newsRepository.save(update);
         return save;
     }
 

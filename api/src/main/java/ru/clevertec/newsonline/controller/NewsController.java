@@ -16,7 +16,6 @@ import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.service.CommentService;
-import ru.clevertec.newsonline.service.CrudService;
 import ru.clevertec.newsonline.service.NewsService;
 
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.UUID;
 public class NewsController {
 
         private final NewsService<News> newsService;
-        private final CommentService<Comment> commentService;
         private final NewsMapper INSTANCE;
 
         @GetMapping("/{newsId}")
@@ -40,13 +38,21 @@ public class NewsController {
         }
 
         @GetMapping("/allnews")
-        public ResponseEntity<List<NewsDto>> findAllNews(@RequestParam(defaultValue = "1") int pageNumber,
-                                                         @RequestParam(defaultValue = "10") int pageSize) {
+        public ResponseEntity<List<NewsDto>> findAll() {
 
-            List<NewsDto> allNews = newsService.findAllNews(pageNumber, pageSize)
+            List<NewsDto> allNews = newsService.findAll()
                     .stream().map(INSTANCE::newsToNewsDto).toList();
             return new ResponseEntity<>(allNews, HttpStatus.OK);
         }
+
+//        @GetMapping("/allnews")
+//        public ResponseEntity<List<NewsDto>> findAllNews(@RequestParam(defaultValue = "1") int pageNumber,
+//                                                         @RequestParam(defaultValue = "10") int pageSize) {
+//
+//            List<NewsDto> allNews = newsService.findAllNews(pageNumber, pageSize)
+//                    .stream().map(INSTANCE::newsToNewsDto).toList();
+//            return new ResponseEntity<>(allNews, HttpStatus.OK);
+//        }
 
         @PostMapping("/create")
         public Optional<News> create(@RequestBody NewsDto newsDto) {

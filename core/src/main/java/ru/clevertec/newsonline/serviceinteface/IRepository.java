@@ -1,16 +1,15 @@
 package ru.clevertec.newsonline.serviceinteface;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//@NoRepositoryBean
-public interface IRepository<E> extends Repository<E, UUID> {
+public interface IRepository<E> {
 
-    List<E> findAll(Pageable pageable);
+    List<E> findAll();
 
     Optional<E> findById(UUID id);
 
