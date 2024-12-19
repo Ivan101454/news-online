@@ -1,7 +1,5 @@
 package ru.clevertec.newsonline.dto;
 
-import ru.clevertec.newsonline.entity.News;
-
 import java.time.LocalDate;
 import java.util.List;
 

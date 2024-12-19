@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ICrudService<E> {
+public interface ICrudService<E, F> {
 
     Optional<E> findById(UUID id);
 

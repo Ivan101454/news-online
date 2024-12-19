@@ -1,17 +1,18 @@
 package ru.clevertec.newsonline.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
 import ru.clevertec.newsonline.serviceinteface.IRepository;
 
 @Transactional
-public class NewsService<E> extends CrudService<E>{
+public class NewsService<E, F> extends CrudService<E, F>{
 
     private final IRepository<E> newsRepository;
+    private final IFilterRepository<E> iFilterRepository;
 
-    public NewsService(IRepository<E> newsRepository) {
-        super(newsRepository);
+    public NewsService(IRepository<E> newsRepository, IFilterRepository<E> iFilterRepository) {
+        super(newsRepository, iFilterRepository);
         this.newsRepository = newsRepository;
+        this.iFilterRepository = iFilterRepository;
     }
 }

@@ -16,4 +16,6 @@ public interface IRepository<E> {
     E save(E e);
 
     void delete(E e);
+
+    List<E> findByPage(Pageable pageable);
 }

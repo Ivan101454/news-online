@@ -11,7 +11,9 @@ subprojects {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.6.3.Final'
     implementation project(':core')
 }
 
