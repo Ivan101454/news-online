@@ -15,4 +15,5 @@ public class NewsService<E, F> extends CrudService<E, F>{
         this.newsRepository = newsRepository;
         this.iFilterRepository = iFilterRepository;
     }
+
 }

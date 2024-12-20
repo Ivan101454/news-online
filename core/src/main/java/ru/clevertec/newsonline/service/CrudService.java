@@ -63,7 +63,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         });
     }
 
-    public List<E> findCommentByFilter(F f, int pageNumber, int pageSize) throws IllegalAccessException {
+    public List<E> findEntityByFilter(F f, int pageNumber, int pageSize) {
 
         Class<F> clazz = (Class<F>) f.getClass();
         Field[] declaredFields = clazz.getDeclaredFields();
@@ -71,7 +71,11 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         HashMap<String, String> fieldObjectHashMap = new HashMap<>();
         for(Field field: list) {
             field.setAccessible(true);
-            fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
+            try {
+                fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return iFilterRepositoryRepository.filterWord(fieldObjectHashMap, pageable);

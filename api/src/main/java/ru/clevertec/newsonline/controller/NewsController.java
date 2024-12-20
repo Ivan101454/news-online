@@ -3,6 +3,7 @@ package ru.clevertec.newsonline.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import ru.clevertec.newsonline.dto.CommentDto;
 import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
+import ru.clevertec.newsonline.filter.CommentFilter;
 import ru.clevertec.newsonline.filter.NewsFilter;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.service.CommentService;
@@ -26,9 +28,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/news")
+@Transactional
 public class NewsController {
 
     private final NewsService<News, NewsFilter> newsService;
+    private final CommentService<Comment, CommentFilter> commentService;
     private final NewsMapper INSTANCE;
 
     @GetMapping("/{newsId}")
@@ -89,6 +93,25 @@ public class NewsController {
                         .map(INSTANCE::commentToCommentDto).toList().stream().map(Optional::of).toList().getFirst()
                         .map(comment -> new ResponseEntity<>(comment, HttpStatus.OK))).get()
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/{newsId}/createcomment")
+    public ResponseEntity<NewsDto> createComment(@RequestBody CommentDto commentDto, @PathVariable UUID id) {
+        Optional<News> byId = newsService.findById(id);
+        return byId.map(news -> {
+            news.addComment(INSTANCE.commentDtoToComment(commentDto));
+            newsService.update(id, news);
+            return new ResponseEntity<>(INSTANCE.newsToNewsDto(news), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{newsId}/findcomment")
+    public ResponseEntity<List<CommentDto>> findCommentByWord(@RequestBody CommentFilter commentFilter,
+                                            @RequestParam(defaultValue = "1") int pageNumber,
+                                            @RequestParam(defaultValue = "10") int pageSize) {
+        List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, pageNumber, pageSize).stream()
+                .map(INSTANCE::commentToCommentDto).toList();
+        return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }
 
 }
