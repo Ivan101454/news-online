@@ -50,21 +50,6 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
             count++;
         }
 
-
-
-
-        Set<Map.Entry<String, String>> entries = filter.entrySet();
-
-        entries.forEach(field -> {
-            String nameAttribute = field.getKey();
-            String value = field.getValue();
-
-
-
-
-        });
-
-
         criteria.select(root).where(cb.and(predicates));
         return entityManager.createQuery(criteria)
                 .setFirstResult(pageNumber).setMaxResults(pageSize).getResultList();
