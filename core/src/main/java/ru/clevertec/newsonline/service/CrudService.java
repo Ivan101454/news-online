@@ -18,9 +18,9 @@ import java.util.UUID;
 public abstract class CrudService<E, F> implements ICrudService<E, F> {
 
     private final IRepository<E> iRepository;
-    private final IFilterRepository<E> iFilterRepositoryRepository;
+    private final IFilterRepository<E, F> iFilterRepositoryRepository;
 
-    public CrudService(IRepository<E> newsRepository, IFilterRepository<E> iFilterRepositoryRepository) {
+    public CrudService(IRepository<E> newsRepository, IFilterRepository<E, F> iFilterRepositoryRepository) {
         this.iRepository = newsRepository;
         this.iFilterRepositoryRepository = iFilterRepositoryRepository;
     }
@@ -78,6 +78,6 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
             }
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return iFilterRepositoryRepository.filterWord(fieldObjectHashMap, pageable);
+        return iFilterRepositoryRepository.filterWord(f, pageNumber, pageSize);
     }
 }

@@ -1,3 +1,4 @@
+
 rootProject.name = 'news-online'
 include 'api'
 include 'core'

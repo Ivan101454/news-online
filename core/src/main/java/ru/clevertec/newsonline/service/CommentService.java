@@ -16,9 +16,9 @@ import java.util.Objects;
 public class CommentService<E, F> extends CrudService<E, F> {
 
     private final IRepository<E> iRepository;
-    private final IFilterRepository<E> iFilterRepository;
+    private final IFilterRepository<E, F> iFilterRepository;
 
-    public CommentService(IRepository<E> iRepository, IFilterRepository<E> iFilterRepository) {
+    public CommentService(IRepository<E> iRepository, IFilterRepository<E, F> iFilterRepository) {
         super(iRepository, iFilterRepository);
         this.iRepository = iRepository;
         this.iFilterRepository = iFilterRepository;
