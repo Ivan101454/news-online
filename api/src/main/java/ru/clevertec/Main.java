@@ -23,9 +23,10 @@ public class Main {
 //        NewsDto newsDto = new NewsDto("header", null, null, true, null,
 //                "description", "body", null, null);
 
-        CommentDto commentDto = new CommentDto(null, "kot dog person", null, null);
+//        CommentDto commentDto = new CommentDto(null, "kot dog person", null, null);
+        CommentFilter kot = new CommentFilter("dog");
+//        controll.createComment(commentDto, UUID.fromString("03022119-2f56-4144-864b-15538e982af3"));
 
-        controll.createComment(commentDto, UUID.fromString("03022119-2f56-4144-864b-15538e982af3"));
-        controll.findCommentByWord(new CommentFilter("Kot"), 1, 10).getBody().forEach(System.out::println);
+        controll.findCommentByWord(kot, 1, 10).getBody().forEach(System.out::println);
     }
 }

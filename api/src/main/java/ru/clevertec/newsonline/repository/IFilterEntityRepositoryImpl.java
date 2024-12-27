@@ -10,9 +10,12 @@ import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.repository.core.support.RepositoryMetadataAccess;
+import org.springframework.stereotype.Repository;
+import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.util.MetaModelUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,17 +27,16 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
     @PersistenceContext
     private final EntityManager entityManager;
 
-    private final E e;
-
     @SneakyThrows
     @Override
-    public List<E> filterWord(F f, int pageNumber, int pageSize) {
+    public List<E> filterWord(F f, int pageNumber, int pageSize, Class<E> entityClass) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<E> criteria = (CriteriaQuery<E>) cb.createQuery(e.getClass());
-        Root<E> root = (Root<E>) criteria.from(e.getClass());
+        CriteriaQuery<E> criteria = (CriteriaQuery<E>) cb.createQuery(entityClass);
+        Root<E> root = (Root<E>) criteria.from(entityClass);
 
         Field[] declaredFields = f.getClass().getDeclaredFields();
+
         HashMap<String, String> filter = new HashMap<>();
         Predicate[] predicates = new Predicate[declaredFields.length];
         int count = 0;
@@ -43,14 +45,15 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
         for (Field field: declaredFields) {
             field.setAccessible(true);
             String name = field.getName();
-            String value = (String) field.get(e);
+            String value = (String) field.get(f);
 
-            SingularAttribute<?, String> metaModelAttribite = MetaModelUtil.createMetaModelAttribite(e.getClass(), name, value);
-            predicates[count] = cb.like(cb.lower(root.get(String.valueOf(metaModelAttribite))), "%" + value.toLowerCase() + "%");
+            SingularAttribute<E, String> metaModelAttribute = MetaModelUtil.createMetaModelAttribite(entityClass, name, value);
+            predicates[count] = cb.like(cb.lower(root.get(metaModelAttribute)), "%" + value.toLowerCase() + "%");
             count++;
         }
 
         criteria.select(root).where(cb.and(predicates));
+
         return entityManager.createQuery(criteria)
                 .setFirstResult(pageNumber).setMaxResults(pageSize).getResultList();
     }

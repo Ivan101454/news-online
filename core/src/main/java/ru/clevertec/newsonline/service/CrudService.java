@@ -63,21 +63,21 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         });
     }
 
-    public List<E> findEntityByFilter(F f, int pageNumber, int pageSize) {
+    public List<E> findEntityByFilter(F f, int pageNumber, int pageSize, Class<E> entityClazz) {
 
-        Class<F> clazz = (Class<F>) f.getClass();
-        Field[] declaredFields = clazz.getDeclaredFields();
+        Class<F> filterClazz = (Class<F>) f.getClass();
+        Field[] declaredFields = filterClazz.getDeclaredFields();
         List<Field> list = Arrays.stream(declaredFields).filter(Objects::nonNull).toList();
         HashMap<String, String> fieldObjectHashMap = new HashMap<>();
         for(Field field: list) {
             field.setAccessible(true);
             try {
                 fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
             }
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return iFilterRepositoryRepository.filterWord(f, pageNumber, pageSize);
+        return iFilterRepositoryRepository.filterWord(f, pageNumber, pageSize, entityClazz);
     }
 }

@@ -109,7 +109,8 @@ public class NewsController {
     public ResponseEntity<List<CommentDto>> findCommentByWord(@RequestBody CommentFilter commentFilter,
                                             @RequestParam(defaultValue = "1") int pageNumber,
                                             @RequestParam(defaultValue = "10") int pageSize) {
-        List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, pageNumber, pageSize).stream()
+
+        List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, pageNumber, pageSize, Comment.class).stream()
                 .map(INSTANCE::commentToCommentDto).toList();
         return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }
