@@ -14,5 +14,6 @@ spring:
         format_sql: true
         show_sql: true
         highlight_sql: true
-  liquibase:
-    enabled: false
+
+  profiles:
+    active: ddl, dml

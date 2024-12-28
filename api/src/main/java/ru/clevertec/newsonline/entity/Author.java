@@ -34,7 +34,7 @@ public class Author {
     private UUID author_id;
     @Column(name = "name_author")
     private String nameAuthor;
-    @Column(name = "lasname_author")
+    @Column(name = "last_name_author")
     private String lastName;
     @Column(name = "date_of_registration", nullable = false, updatable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

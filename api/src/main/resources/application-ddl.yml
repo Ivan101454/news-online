@@ -1,0 +1,4 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/ddl/db.changelog-1.0.sql

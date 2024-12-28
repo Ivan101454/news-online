@@ -1,0 +1,2 @@
+--liquidbase formatted sql
+--changeset table:1
