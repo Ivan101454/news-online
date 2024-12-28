@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -35,7 +36,8 @@ public class Author {
     private String nameAuthor;
     @Column(name = "lasname_author")
     private String lastName;
-    @Column(name = "date_of_registration")
+    @Column(name = "date_of_registration", nullable = false, updatable = false)
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDate dateOfRegistration;
     @Column(name = "phone_number")
     private String phoneNumber;

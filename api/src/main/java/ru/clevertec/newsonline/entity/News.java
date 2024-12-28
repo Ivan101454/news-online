@@ -44,7 +44,7 @@ public class News {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
-    @Column(name = "date_of_news")
+    @Column(name = "date_of_news", nullable = false, updatable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime dateOfNews;
     @Column(name = "is_published")
@@ -52,9 +52,9 @@ public class News {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
-    @Column(name = "short_description")
+    @Column(name = "short_description", length = 500)
     private String shortDescription;
-    @Column(name = "body_news")
+    @Column(name = "body_news", columnDefinition = "TEXT")
     private String bodyNews;
     @ManyToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)

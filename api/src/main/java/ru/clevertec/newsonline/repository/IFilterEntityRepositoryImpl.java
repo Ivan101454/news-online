@@ -37,7 +37,6 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
 
         Field[] declaredFields = f.getClass().getDeclaredFields();
 
-        HashMap<String, String> filter = new HashMap<>();
         Predicate[] predicates = new Predicate[declaredFields.length];
         int count = 0;
 
