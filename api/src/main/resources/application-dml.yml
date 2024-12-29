@@ -1,4 +1,13 @@
 spring:
+  config:
+    activate:
+      on-profile: dml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/dml/db.changelog-master.yml
+    change-log: classpath:db/changelog/dml/db.changelog-1.0.yml
+    default-schema: news_online

@@ -1,8 +1,14 @@
 --liquidbase formatted sql
+--changeset ivan101454:0.1
+create schema if not exists news_online;
+--changeset ivan101454:0.2
+DROP EXTENSION "uuid-ossp";
+--changeset ivan101454:0.3
+CREATE EXTENSION "uuid-ossp";
 --changeset ivan101454:1
 create table news_online.author (
-                                    author_id uuid not null,
-                                    date_of_registration date,
+                                    author_id uuid DEFAULT uuid_generate_v4(),
+                                    date_of_registration TIMESTAMP DEFAULT current_timestamp ,
                                     email varchar(255),
                                     last_name_author varchar(255),
                                     name_author varchar(255),
@@ -11,13 +17,13 @@ create table news_online.author (
 );
 --changeset ivan101454:2
 create table news_online.category (
-                                      category_id uuid not null,
+                                      category_id uuid DEFAULT uuid_generate_v4(),
                                       section varchar(255) check (section in ('PEOPLE','CAR','INCIDENT','EVENT','FOOD','TRAVEL')),
                                       primary key (category_id)
 );
 --changeset ivan101454:3
 create table news_online.comment (
-                                     comment_id uuid not null,
+                                     comment_id uuid DEFAULT uuid_generate_v4(),
                                      date_of_comment timestamp(6),
                                      text_comment varchar(255),
                                      author_id uuid,
@@ -26,7 +32,7 @@ create table news_online.comment (
 );
 --changeset ivan101454:4
 create table news_online.news (
-                                  news_id uuid not null,
+                                  news_id uuid DEFAULT uuid_generate_v4(),
                                   body_news varchar(255),
                                   date_of_news timestamp(6) default CURRENT_TIMESTAMP,
                                   header_news varchar(255),
@@ -38,19 +44,19 @@ create table news_online.news (
 );
 --changeset ivan101454:5
 create table news_online.news_picture (
-                                          news_id uuid not null,
+                                          news_id uuid DEFAULT uuid_generate_v4(),
                                           picture_id uuid not null
 );
 --changeset ivan101454:6
 create table news_online.picture (
-                                     picture_id uuid not null,
+                                     picture_id uuid DEFAULT uuid_generate_v4(),
                                      link_on_picture varchar(255),
                                      name_of_picture varchar(255),
                                      primary key (picture_id)
 );
 --changeset ivan101454:7
 create table news_online.user (
-                                  user_id uuid not null,
+                                  user_id uuid DEFAULT uuid_generate_v4(),
                                   login varchar(255),
                                   password varchar(255),
                                   username varchar(255),
