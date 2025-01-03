@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,7 +32,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
     private UUID commentId;
-    @Column(name = "date_of_comment")
+    @Column(name = "date_of_comment", updatable = false)
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private LocalDateTime dateOfComment;
     @Column(name = "text_comment")
     private String textComment;

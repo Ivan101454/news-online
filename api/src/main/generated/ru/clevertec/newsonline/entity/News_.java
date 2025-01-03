@@ -17,10 +17,10 @@ public abstract class News_ {
 	public static final String DATE_OF_NEWS = "dateOfNews";
 	public static final String AUTHOR = "author";
 	public static final String IS_PUBLISHED = "isPublished";
+	public static final String CONTENT_LINK = "contentLink";
 	public static final String HEADER_NEWS = "headerNews";
 	public static final String SHORT_DESCRIPTION = "shortDescription";
 	public static final String CATEGORY = "category";
-	public static final String BODY_NEWS = "bodyNews";
 	public static final String PICTURES = "pictures";
 
 	
@@ -50,6 +50,11 @@ public abstract class News_ {
 	public static volatile SingularAttribute<News, Boolean> isPublished;
 	
 	/**
+	 * @see ru.clevertec.newsonline.entity.News#contentLink
+	 **/
+	public static volatile SingularAttribute<News, String> contentLink;
+	
+	/**
 	 * @see ru.clevertec.newsonline.entity.News#headerNews
 	 **/
 	public static volatile SingularAttribute<News, String> headerNews;
@@ -63,11 +68,6 @@ public abstract class News_ {
 	 * @see ru.clevertec.newsonline.entity.News#category
 	 **/
 	public static volatile SingularAttribute<News, Category> category;
-	
-	/**
-	 * @see ru.clevertec.newsonline.entity.News#bodyNews
-	 **/
-	public static volatile SingularAttribute<News, String> bodyNews;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.News

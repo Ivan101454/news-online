@@ -1,14 +1,14 @@
 --liquidbase formatted sql
 --changeset ivan101454:0.1
 create schema if not exists news_online;
---changeset ivan101454:0.2
-DROP EXTENSION "uuid-ossp";
 --changeset ivan101454:0.3
+DROP EXTENSION "uuid-ossp";
+--changeset ivan101454:0.4
 CREATE EXTENSION "uuid-ossp";
 --changeset ivan101454:1
 create table news_online.author (
                                     author_id uuid DEFAULT uuid_generate_v4(),
-                                    date_of_registration TIMESTAMP DEFAULT current_timestamp ,
+                                    date_of_registration TIMESTAMP DEFAULT current_timestamp,
                                     email varchar(255),
                                     last_name_author varchar(255),
                                     name_author varchar(255),
@@ -24,7 +24,7 @@ create table news_online.category (
 --changeset ivan101454:3
 create table news_online.comment (
                                      comment_id uuid DEFAULT uuid_generate_v4(),
-                                     date_of_comment timestamp(6),
+                                     date_of_comment timestamp(6) DEFAULT current_timestamp,
                                      text_comment varchar(255),
                                      author_id uuid,
                                      news_id uuid,
@@ -33,7 +33,7 @@ create table news_online.comment (
 --changeset ivan101454:4
 create table news_online.news (
                                   news_id uuid DEFAULT uuid_generate_v4(),
-                                  body_news varchar(255),
+                                  content_link varchar(255),
                                   date_of_news timestamp(6) default CURRENT_TIMESTAMP,
                                   header_news varchar(255),
                                   is_published boolean,
