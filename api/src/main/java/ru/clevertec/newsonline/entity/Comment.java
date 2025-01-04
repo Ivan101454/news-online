@@ -38,7 +38,7 @@ public class Comment {
     @Column(name = "text_comment")
     private String textComment;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "user_id")
     private User authorComment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "news_id")
