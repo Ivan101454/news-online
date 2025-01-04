@@ -15,11 +15,7 @@ import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.util.MetaModelUtil;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RequiredArgsConstructor
 public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepository<E, F>, RepositoryMetadataAccess {
@@ -32,8 +28,8 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
     public List<E> filterWord(F f, int pageNumber, int pageSize, Class<E> entityClass) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<E> criteria = (CriteriaQuery<E>) cb.createQuery(entityClass);
-        Root<E> root = (Root<E>) criteria.from(entityClass);
+        CriteriaQuery<E> criteria = cb.createQuery(entityClass);
+        Root<E> root = criteria.from(entityClass);
 
         Field[] declaredFields = f.getClass().getDeclaredFields();
 

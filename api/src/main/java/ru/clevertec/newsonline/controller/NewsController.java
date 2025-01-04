@@ -115,4 +115,13 @@ public class NewsController {
         return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }
 
+    @GetMapping("/findnews")
+    public ResponseEntity<List<NewsDto>> findNewsByWord(@RequestBody NewsFilter newsFilter,
+                                                        @RequestParam(defaultValue = "1") int pageNumber,
+                                                        @RequestParam(defaultValue = "10") int pageSize) {
+        List<NewsDto> entityByFilter = newsService.findEntityByFilter(newsFilter, pageNumber, pageSize, News.class).stream()
+                .map(INSTANCE::newsToNewsDto).toList();
+        return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
+    }
+
 }

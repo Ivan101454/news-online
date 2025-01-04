@@ -139,23 +139,53 @@ where au.last_name_author = 'Ivanov';
 INSERT INTO news_online.comment(text_comment, user_id, news_id)
 SELECT 'Hello! It"s great to see you here! How"s your day going? 😊', us.user_id, ns.news_id
 FROM news_online.news AS ns
-JOIN news_online.user AS us ON username = 'Chollian'
+JOIN news_online.user AS us ON username = 'Vand'
 WHERE ns.content_link = 'static/text/news1.txt';
 --changeset ivan101454:24
 INSERT INTO news_online.comment(text_comment, user_id, news_id)
 SELECT 'ссылки ведут на новости какие-то неинтересные', us.user_id, ns.news_id
 FROM news_online.news AS ns
-JOIN news_online.user AS us ON username = 'Chollian'
-WHERE ns.content_link = 'static/text/news2.txt';
+JOIN news_online.user AS us ON username = 'Kkelot'
+WHERE ns.content_link = 'static/text/news1.txt';
 --changeset ivan101454:25
 INSERT INTO news_online.comment(text_comment, user_id, news_id)
-SELECT 'ссылки ведут на новости какие-то неинтересные', us.user_id, ns.news_id
+SELECT 'Здравствуйте! А на платформе iOS у всех проблемы с просмотром? На моем телефоне ни одно видео не работает😭 может быть есть этому решение?😥', us.user_id, ns.news_id
 FROM news_online.news AS ns
-JOIN news_online.user AS us ON username = 'Chollian'
-WHERE ns.content_link = 'static/text/news2.txt';
+JOIN news_online.user AS us ON username = 'Telmai'
+WHERE ns.content_link = 'static/text/news1.txt';
 --changeset ivan101454:26
 INSERT INTO news_online.comment(text_comment, user_id, news_id)
-SELECT 'ссылки ведут на новости какие-то неинтересные', us.user_id, ns.news_id
+SELECT 'попробуйте нажать на стрелку в правом верхнем углу, пока это единственное решение проблемы;(', us.user_id, ns.news_id
 FROM news_online.news AS ns
-JOIN news_online.user AS us ON username = 'Chollian'
-WHERE ns.content_link = 'static/text/news.txt';
+JOIN news_online.user AS us ON username = 'Saxtone'
+WHERE ns.content_link = 'static/text/news1.txt';
+--changeset ivan101454:27
+INSERT INTO news_online.comment(text_comment, user_id, news_id)
+SELECT 'Повторите попытку позже.', us.user_id, ns.news_id
+FROM news_online.news AS ns
+JOIN news_online.user AS us ON username = 'Cheld'
+WHERE ns.content_link = 'static/text/news1.txt';
+--changeset ivan101454:28
+INSERT INTO news_online.comment(text_comment, user_id, news_id)
+SELECT 'Когда можно будет смотреть? и что это за ограничения', us.user_id, ns.news_id
+FROM news_online.news AS ns
+JOIN news_online.user AS us ON username = 'Jacquest'
+WHERE ns.content_link = 'static/text/news1.txt';
+--changeset ivan101454:29
+INSERT INTO news_online.comment(text_comment, user_id, news_id)
+SELECT 'Спасибо за понимание', us.user_id, ns.news_id
+FROM news_online.news AS ns
+JOIN news_online.user AS us ON username = 'Unnyacha'
+WHERE ns.content_link = 'static/text/news1.txt';
+--changeset ivan101454:30
+INSERT INTO news_online.comment(text_comment, user_id, news_id)
+SELECT 'Ссылка на фильм в телеграмм', us.user_id, ns.news_id
+FROM news_online.news AS ns
+JOIN news_online.user AS us ON username = 'Minayas'
+WHERE ns.content_link = 'static/text/news1.txt';
+--changeset ivan101454:31
+INSERT INTO news_online.comment(text_comment, user_id, news_id)
+SELECT 'та же ошибка на сайте', us.user_id, ns.news_id
+FROM news_online.news AS ns
+JOIN news_online.user AS us ON username = 'Arist'
+WHERE ns.content_link = 'static/text/news1.txt';
