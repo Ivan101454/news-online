@@ -4,5 +4,5 @@ spring:
       on-profile: test
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/db.changelog-mastertest.yaml.yaml
+    change-log: classpath:db.changelog/db.changelog-master-test.yaml
     default-schema: news_test
