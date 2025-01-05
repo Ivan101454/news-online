@@ -33,12 +33,12 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
 
     public List<E> findAll() {
 //        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return iRepository.findAll().stream().toList();
+        return iRepository.findAll();
     }
 
     public List<E> findByPage(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return iRepository.findByPage(pageable).stream().toList();
+        return iRepository.findAll(pageable).getContent();
     }
 
     public Optional<E> create(E e) {
@@ -78,6 +78,6 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
             }
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return iFilterRepositoryRepository.filterWord(f, pageNumber, pageSize, entityClazz);
+        return iFilterRepositoryRepository.filterWord(f, entityClazz, pageNumber, pageSize);
     }
 }

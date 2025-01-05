@@ -15,6 +15,7 @@ import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.util.MetaModelUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,29 +26,28 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
 
     @SneakyThrows
     @Override
-    public List<E> filterWord(F f, int pageNumber, int pageSize, Class<E> entityClass) {
+    public List<E> filterWord(F f, Class<E> entityClass, int pageNumber, int pageSize) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteria = cb.createQuery(entityClass);
         Root<E> root = criteria.from(entityClass);
 
         Field[] declaredFields = f.getClass().getDeclaredFields();
-
-        Predicate[] predicates = new Predicate[declaredFields.length];
-        int count = 0;
-
+        ArrayList<Predicate> listOfPredicates = new ArrayList<>();
 
         for (Field field: declaredFields) {
             field.setAccessible(true);
             String name = field.getName();
             String value = (String) field.get(f);
 
-            SingularAttribute<E, String> metaModelAttribute = MetaModelUtil.createMetaModelAttribite(entityClass, name, value);
-            predicates[count] = cb.like(cb.lower(root.get(metaModelAttribute)), "%" + value.toLowerCase() + "%");
-            count++;
+            if (value != null) {
+                SingularAttribute<E, String> metaModelAttribute = MetaModelUtil.createMetaModelAttribute(entityClass, name);
+                listOfPredicates.add(cb.like(cb.lower(root.get(metaModelAttribute)), "%" + value.toLowerCase() + "%"));
+            }
         }
 
-        criteria.select(root).where(cb.and(predicates));
+        Predicate[] predicates = new Predicate[listOfPredicates.size()];
+        criteria.select(root).where(cb.and(listOfPredicates.toArray(predicates)));
 
         return entityManager.createQuery(criteria)
                 .setFirstResult(pageNumber).setMaxResults(pageSize).getResultList();

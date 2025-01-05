@@ -10,6 +10,8 @@ public interface ICrudService<E, F> {
 
     List<E> findAll();
 
+    List<E> findByPage(int pageNumber, int pageSize);
+
     Optional<E> create(E e);
 
     E update(UUID id, E e);

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface IFilterRepository<E, F> {
 
-    List<E> filterWord(F f, int pageNumber, int pageSize, Class<E> entityClazz);
+    List<E> filterWord(F f, Class<E> entityClazz, int pageNumber, int pageSize);
 }

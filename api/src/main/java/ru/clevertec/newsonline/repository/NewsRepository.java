@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, UUID>, IRepository<News>, IFilterEntityRepository<News, NewsFilter> {
-    @Override
-    default List<News> findByPage(Pageable pageable) {
-        return (List<News>) findAll(pageable);
-    }
+//    @Override
+//    default List<News> findByPage(Pageable pageable) {
+//        return findAll(pageable).getContent();
+//    }
 }

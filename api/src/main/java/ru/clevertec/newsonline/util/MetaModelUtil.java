@@ -11,9 +11,8 @@ public class MetaModelUtil {
 
     @SneakyThrows
     @SuppressWarnings("unchecked")
-    public static<T, V> SingularAttribute<T, V> createMetaModelAttribite(
-            Class<T> entityClazz, String attributeName, V value
-    ) {
+    public static <T, V> SingularAttribute<T, V> createMetaModelAttribute(
+            Class<T> entityClazz, String attributeName) {
         String nameMetaClass = entityClazz.getName() + "_";
         Class<?> metaClass = Class.forName(nameMetaClass);
 

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.0'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'jacoco'
 }
 
 
@@ -30,6 +31,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
@@ -50,7 +52,19 @@ tasks.register('cleanGeneratedMapstruckt', Delete) {
     delete file('api/src/main/generated')
 }
 
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }

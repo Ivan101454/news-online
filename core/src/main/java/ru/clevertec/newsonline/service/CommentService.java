@@ -17,6 +17,4 @@ public class CommentService<E, F> extends CrudService<E, F> {
         this.iFilterRepository = iFilterRepository;
     }
 
-
-
 }

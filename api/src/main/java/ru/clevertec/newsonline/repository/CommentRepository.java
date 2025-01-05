@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CommentRepository extends JpaRepository<Comment, UUID>, IRepository<Comment>, IFilterEntityRepository<Comment, CommentFilter> {
-    @Override
-    default List<Comment> findByPage(Pageable pageable) {
-        return (List<Comment>) findAll(pageable);
-    }
+//    @Override
+//    default List<Comment> findByPage(Pageable pageable) {
+//        return findAll(pageable).getContent();
+//    }
 
 }
