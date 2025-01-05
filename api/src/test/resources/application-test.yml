@@ -1,8 +1,13 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
   config:
     activate:
       on-profile: test
   liquibase:
     enabled: true
-    change-log: classpath:db.changelog/db.changelog-master-test.yaml
-    default-schema: news_test
+    change-log: db/changelog/db.changelog-master-test.yaml
+    default-schema: news_online

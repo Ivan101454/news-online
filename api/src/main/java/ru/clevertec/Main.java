@@ -3,17 +3,6 @@ package ru.clevertec;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.ResponseEntity;
-import ru.clevertec.newsonline.controller.NewsController;
-import ru.clevertec.newsonline.dto.AuthorDto;
-import ru.clevertec.newsonline.dto.CommentDto;
-import ru.clevertec.newsonline.dto.NewsDto;
-import ru.clevertec.newsonline.entity.Comment;
-import ru.clevertec.newsonline.filter.CommentFilter;
-import ru.clevertec.newsonline.service.CommentService;
-
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 public class Main {
