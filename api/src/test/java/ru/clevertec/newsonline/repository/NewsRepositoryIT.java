@@ -15,7 +15,9 @@ import ru.clevertec.newsonline.filter.NewsFilter;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -78,7 +80,7 @@ class NewsRepositoryIT {
         newsRepository.save(newNews);
         //then
         assertEquals(21, newsRepository.findAll().size());
-//        assertTrue(((CrudRepository<News, UUID>) newsRepository).findById(newNews.getNewsId()).isPresent());
+        assertTrue(((CrudRepository<News, UUID>) newsRepository).findById(newNews.getNewsId()).isPresent());
     }
 
     @Test

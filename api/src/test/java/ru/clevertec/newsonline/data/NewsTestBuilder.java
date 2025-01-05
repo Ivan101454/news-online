@@ -3,16 +3,11 @@ package ru.clevertec.newsonline.data;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
-import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
-import ru.clevertec.newsonline.entity.Picture;
 import ru.clevertec.newsonline.enums.Section;
 import ru.clevertec.newsonline.filter.NewsFilter;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Builder
