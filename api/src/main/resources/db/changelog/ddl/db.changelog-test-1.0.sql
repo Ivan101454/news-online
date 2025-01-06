@@ -1,7 +1,4 @@
 --liquidbase formatted sql
---changeset ivan101454:0.1
--- UPDATE databasechangelog
--- SET MD5SUM = NULL;
 --changeset ivan101454:0.2
 CREATE SCHEMA IF NOT EXISTS news_online;
 --changeset ivan101454:0.3
