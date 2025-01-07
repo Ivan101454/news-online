@@ -18,5 +18,5 @@ public interface ICrudService<E, F> {
 
     void delete(UUID id);
 
-    List<E> findEntityByFilter(F f, int pageNumber, int pageSize, Class<E> entityClazz);
+    List<E> findEntityByFilter(F f, Class<E> entityClazz, int pageNumber, int pageSize);
 }

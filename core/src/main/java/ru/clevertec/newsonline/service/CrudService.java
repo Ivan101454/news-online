@@ -32,7 +32,6 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
     }
 
     public List<E> findAll() {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return iRepository.findAll();
     }
 
@@ -52,8 +51,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        E save = iRepository.save(update);
-        return save;
+        return iRepository.save(update);
     }
 
     public void delete(UUID id) {
@@ -63,21 +61,21 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         });
     }
 
-    public List<E> findEntityByFilter(F f, int pageNumber, int pageSize, Class<E> entityClazz) {
+    public List<E> findEntityByFilter(F f, Class<E> entityClazz, int pageNumber, int pageSize) {
 
-        Class<F> filterClazz = (Class<F>) f.getClass();
-        Field[] declaredFields = filterClazz.getDeclaredFields();
-        List<Field> list = Arrays.stream(declaredFields).filter(Objects::nonNull).toList();
-        HashMap<String, String> fieldObjectHashMap = new HashMap<>();
-        for(Field field: list) {
-            field.setAccessible(true);
-            try {
-                fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//        Class<F> filterClazz = (Class<F>) f.getClass();
+//        Field[] declaredFields = filterClazz.getDeclaredFields();
+//        List<Field> list = Arrays.stream(declaredFields).filter(Objects::nonNull).toList();
+//        HashMap<String, String> fieldObjectHashMap = new HashMap<>();
+//        for(Field field: list) {
+//            field.setAccessible(true);
+//            try {
+//                fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
+//            } catch (IllegalAccessException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//        }
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return iFilterRepositoryRepository.filterWord(f, entityClazz, pageNumber, pageSize);
     }
 }

@@ -110,7 +110,7 @@ public class NewsController {
                                             @RequestParam(defaultValue = "1") int pageNumber,
                                             @RequestParam(defaultValue = "10") int pageSize) {
 
-        List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, pageNumber, pageSize, Comment.class).stream()
+        List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, Comment.class, pageNumber, pageSize).stream()
                 .map(INSTANCE::commentToCommentDto).toList();
         return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }
@@ -119,7 +119,7 @@ public class NewsController {
     public ResponseEntity<List<NewsDto>> findNewsByWord(@RequestBody NewsFilter newsFilter,
                                                         @RequestParam(defaultValue = "1") int pageNumber,
                                                         @RequestParam(defaultValue = "10") int pageSize) {
-        List<NewsDto> entityByFilter = newsService.findEntityByFilter(newsFilter, pageNumber, pageSize, News.class).stream()
+        List<NewsDto> entityByFilter = newsService.findEntityByFilter(newsFilter, News.class, pageNumber, pageSize).stream()
                 .map(INSTANCE::newsToNewsDto).toList();
         return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.mapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import ru.clevertec.newsonline.dto.CommentDto;
 import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.dto.PictureDto;
 import ru.clevertec.newsonline.dto.UserDto;
+import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
@@ -20,7 +22,7 @@ import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-29T23:49:44+0300",
+    date = "2025-01-08T00:05:13+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -33,23 +35,24 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         String headerNews = null;
+        AuthorDto author = null;
         LocalDateTime dateOfNews = null;
         CategoryDto category = null;
         String shortDescription = null;
-        String bodyNews = null;
+        String contentLink = null;
 
         headerNews = news.getHeaderNews();
+        author = authorToAuthorDto( news.getAuthor() );
         dateOfNews = news.getDateOfNews();
         category = categoryToCategoryDto( news.getCategory() );
         shortDescription = news.getShortDescription();
-        bodyNews = news.getBodyNews();
+        contentLink = news.getContentLink();
 
         List<PictureDto> pictures = null;
         List<CommentDto> comments = null;
-        AuthorDto authorNews = null;
         boolean isPublished = false;
 
-        NewsDto newsDto = new NewsDto( headerNews, authorNews, dateOfNews, isPublished, category, shortDescription, bodyNews, pictures, comments );
+        NewsDto newsDto = new NewsDto( headerNews, author, dateOfNews, isPublished, category, shortDescription, contentLink, pictures, comments );
 
         return newsDto;
     }
@@ -63,11 +66,12 @@ public class NewsMapperImpl implements NewsMapper {
         News.NewsBuilder news = News.builder();
 
         news.headerNews( newsDto.headerNews() );
+        news.author( authorDtoToAuthor( newsDto.author() ) );
         news.dateOfNews( newsDto.dateOfNews() );
         news.isPublished( newsDto.isPublished() );
         news.category( categoryDtoToCategory( newsDto.category() ) );
         news.shortDescription( newsDto.shortDescription() );
-        news.bodyNews( newsDto.bodyNews() );
+        news.contentLink( newsDto.contentLink() );
         news.pictures( pictureDtoListToPictureList( newsDto.pictures() ) );
         news.comments( commentDtoListToCommentList( newsDto.comments() ) );
 
@@ -124,6 +128,30 @@ public class NewsMapperImpl implements NewsMapper {
         return list1;
     }
 
+    protected AuthorDto authorToAuthorDto(Author author) {
+        if ( author == null ) {
+            return null;
+        }
+
+        String nameAuthor = null;
+        String lastName = null;
+        LocalDate dateOfRegistration = null;
+        String phoneNumber = null;
+        String email = null;
+        List<NewsDto> writeNews = null;
+
+        nameAuthor = author.getNameAuthor();
+        lastName = author.getLastName();
+        dateOfRegistration = author.getDateOfRegistration();
+        phoneNumber = author.getPhoneNumber();
+        email = author.getEmail();
+        writeNews = newsListToNewsDtoList( author.getWriteNews() );
+
+        AuthorDto authorDto = new AuthorDto( nameAuthor, lastName, dateOfRegistration, phoneNumber, email, writeNews );
+
+        return authorDto;
+    }
+
     protected CategoryDto categoryToCategoryDto(Category category) {
         if ( category == null ) {
             return null;
@@ -151,6 +179,23 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         return list1;
+    }
+
+    protected Author authorDtoToAuthor(AuthorDto authorDto) {
+        if ( authorDto == null ) {
+            return null;
+        }
+
+        Author.AuthorBuilder author = Author.builder();
+
+        author.nameAuthor( authorDto.nameAuthor() );
+        author.lastName( authorDto.lastName() );
+        author.dateOfRegistration( authorDto.dateOfRegistration() );
+        author.phoneNumber( authorDto.phoneNumber() );
+        author.email( authorDto.email() );
+        author.writeNews( newsDtoListToNewsList( authorDto.writeNews() ) );
+
+        return author.build();
     }
 
     protected Category categoryDtoToCategory(CategoryDto categoryDto) {

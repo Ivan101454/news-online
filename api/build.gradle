@@ -17,12 +17,27 @@ dependencies {
     implementation 'org.liquibase:liquibase-core'
 
     testImplementation 'org.testcontainers:postgresql'
-//    testImplementation 'org.testcontainers:testcontainers'
-//    testImplementation 'org.testcontainers:junit-jupiter'
 
 
     implementation project(':core')
 }
+
+jacocoTestReport {
+//    dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "ru/clevertec/newsonline/mapper/*",
+                    "ru/clevertec/newsonline/dto/*",
+                    "ru/clevertec/newsonline/filter/*",
+                    "ru/clevertec/newsonline/enums/*",
+                    "ru/clevertec/newsonline/config/*",
+                    "ru/clevertec/newsonline/entity/*"
+            ])
+        }))
+    }
+}
+
 
 test {
     useJUnitPlatform()
