@@ -16,3 +16,6 @@ spring:
         highlight_sql: true
   liquibase:
     enabled: false
+cache:
+  algorithm: LRU
+  max-size: 10
