@@ -64,12 +64,12 @@ public class NewsController {
         return newsService.create(INSTANCE.newsDtoToNews(newsDto));
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update/{newsId}")
     public void update(@PathVariable UUID id, @RequestBody NewsDto newsDto) {
         newsService.update(id, INSTANCE.newsDtoToNews(newsDto));
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{newsId}")
     public void delete(@PathVariable UUID id) {
         newsService.delete(id);
     }

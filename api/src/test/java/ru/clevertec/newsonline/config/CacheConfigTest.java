@@ -21,7 +21,7 @@ class CacheConfigTest {
 
     @Test
     void cacheLfu() {
-        Cache<UUID, News> cache = (Cache<UUID, News>) context.getBean("cacheLfu");
+        Cache<UUID, News> cache = (Cache<UUID, News> ) context.getBean("cacheLfu");
         assertNotNull(cache);
     }
 

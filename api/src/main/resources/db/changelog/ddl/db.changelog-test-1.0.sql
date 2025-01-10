@@ -67,6 +67,7 @@ create table news_online.user
     login    varchar(255),
     password varchar(255),
     username varchar(255),
+    role varchar(255),
     primary key (user_id),
     unique (username)
 );

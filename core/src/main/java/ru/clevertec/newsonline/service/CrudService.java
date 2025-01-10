@@ -26,9 +26,9 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
     }
 
     public Optional<E> findById(UUID id) {
-        Optional<E> news = iRepository.findById(id);
-        news.orElseThrow(() -> new NotFoundException("Новость не найдена по id"));
-        return news;
+        Optional<E> entity = iRepository.findById(id);
+        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+        return entity;
     }
 
     public List<E> findAll() {
@@ -47,7 +47,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
 
     public E update(UUID id, E update) {
         try {
-            iRepository.findById(id).orElseThrow(() -> new NotFoundException("Обновлямое не найдена по id"));
+            iRepository.findById(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -55,27 +55,13 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
     }
 
     public void delete(UUID id) {
-        Optional<E> news = iRepository.findById(id);
-        news.ifPresentOrElse(iRepository::delete, () -> {
-            throw new NotFoundException("Удаляемая новость не найдено по id");
+        Optional<E> entity = iRepository.findById(id);
+        entity.ifPresentOrElse(iRepository::delete, () -> {
+            throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
     }
 
     public List<E> findEntityByFilter(F f, Class<E> entityClazz, int pageNumber, int pageSize) {
-
-//        Class<F> filterClazz = (Class<F>) f.getClass();
-//        Field[] declaredFields = filterClazz.getDeclaredFields();
-//        List<Field> list = Arrays.stream(declaredFields).filter(Objects::nonNull).toList();
-//        HashMap<String, String> fieldObjectHashMap = new HashMap<>();
-//        for(Field field: list) {
-//            field.setAccessible(true);
-//            try {
-//                fieldObjectHashMap.put(field.getName(), String.valueOf(field.get(f)));
-//            } catch (IllegalAccessException ex) {
-//                throw new RuntimeException(ex);
-//            }
-//        }
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return iFilterRepositoryRepository.filterWord(f, entityClazz, pageNumber, pageSize);
     }
 }

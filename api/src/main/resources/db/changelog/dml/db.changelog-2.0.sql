@@ -14,16 +14,16 @@ VALUES ('25f4f0cc-95ca-4622-9640-3de7a82cded9', 'PEOPLE'),
        ('ff906a3c-3f94-4c0c-9370-56d37046c6d0', 'TECHNOLOGY'),
        ('5a8f24a5-dd1c-41c9-b749-6e638c736f1a', 'TRAVEL');
 --changeset ivan101454:3
-INSERT INTO news_online.user(user_id, login, password, username)
-VALUES ('0a77c64d-9dc9-452b-a9b9-7cc983d809c2', 'Bert@mail.ru', 'Leeniam124', 'Vand'),
-       ('cb5e4abc-5c6d-465a-9270-b9b976739abb', 'Maever@mail.ru', 'Negrovey456', 'Kkelot'),
-       ('5c2fc153-d21f-41ff-9ff0-b8c0aa905f85', 'Chollian@mail.ru', 'Xavisono345', 'Telmai'),
-       ('67b434fb-91c1-4ec6-8034-4ae988f0dc0c', 'Quinlan@mail.ru', 'Kabir', 'Saxtone'),
-       ('0e5e6dd2-79a6-4a74-8446-da8380bb1247', 'Iana@mail.ry', 'Lseanaed', 'Cheld'),
-       ('3db1fe6b-84f1-408b-87f7-581faa560fce', 'Lama@mail.ru', 'Myrali', 'Jacquest'),
-       ('045fa448-4c33-4d51-8598-2e333ca8524f', 'Alline@mail.ru', 'Ippaa', 'Unnyacha'),
-       ('fbb5fb8e-207e-4d83-b40c-fb1483909bc5', 'Wilforb@mail.ru', 'Xant', 'Minayas'),
-       ('073e5020-9a4d-4861-be78-2f5468c5673f', 'Palohan@mail.ru', 'Ondrague', 'Arist');
+INSERT INTO news_online.user(user_id, login, password, username, role)
+VALUES ('0a77c64d-9dc9-452b-a9b9-7cc983d809c2', 'Bert@mail.ru', 'Leeniam124', 'Vand', 'ADMIN'),
+       ('cb5e4abc-5c6d-465a-9270-b9b976739abb', 'Maever@mail.ru', 'Negrovey456', 'Kkelot', 'NONE'),
+       ('5c2fc153-d21f-41ff-9ff0-b8c0aa905f85', 'Chollian@mail.ru', 'Xavisono345', 'Telmai', 'SUBSCRIBER'),
+       ('67b434fb-91c1-4ec6-8034-4ae988f0dc0c', 'Quinlan@mail.ru', 'Kabir', 'Saxtone', 'JOURNALIST'),
+       ('0e5e6dd2-79a6-4a74-8446-da8380bb1247', 'Iana@mail.ry', 'Lseanaed', 'Cheld', 'NONE'),
+       ('3db1fe6b-84f1-408b-87f7-581faa560fce', 'Lama@mail.ru', 'Myrali', 'Jacquest', 'SUBSCRIBER'),
+       ('045fa448-4c33-4d51-8598-2e333ca8524f', 'Alline@mail.ru', 'Ippaa', 'Unnyacha', 'JOURNALIST'),
+       ('fbb5fb8e-207e-4d83-b40c-fb1483909bc5', 'Wilforb@mail.ru', 'Xant', 'Minayas', 'NONE'),
+       ('073e5020-9a4d-4861-be78-2f5468c5673f', 'Palohan@mail.ru', 'Ondrague', 'Arist', 'SUBSCRIBER');
 --changeset ivan101454:4
 INSERT INTO news_online.news(news_id, content_link, header_news, is_published, short_description, author_id, category_id)
 VALUES ('a03bd6ce-123d-4b73-8d24-6324971d0a67', 'static/text/news1.txt', 'Почему все хотят попасть на Щелкунчика', true, '«„Щелкунчик“ — это гениальное произведение». Закулисье самого ожидаемого балета года', '5cad6fef-b248-4035-839c-dc78ffad5623', '25f4f0cc-95ca-4622-9640-3de7a82cded9'),
