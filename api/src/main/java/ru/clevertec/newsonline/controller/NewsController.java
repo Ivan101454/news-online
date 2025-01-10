@@ -35,22 +35,15 @@ public class NewsController {
     private final CommentService<Comment, CommentFilter> commentService;
     private final NewsMapper INSTANCE;
 
-    @GetMapping("/{newsId}")
+    @GetMapping("find/{newsId}")
     public ResponseEntity<NewsDto> findNewsById(@PathVariable UUID id) {
         Optional<NewsDto> newsDto = newsService.findById(id).map(INSTANCE::newsToNewsDto);
         return newsDto.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK)).
                 orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-//        @GetMapping("/allnews")
-//        public ResponseEntity<List<NewsDto>> findAll() {
-//
-//            List<NewsDto> allNews = newsService.findAll()
-//                    .stream().map(INSTANCE::newsToNewsDto).toList();
-//            return new ResponseEntity<>(allNews, HttpStatus.OK);
-//        }
 
-    @GetMapping("/allnews")
+    @GetMapping("find/allnews")
     public ResponseEntity<List<NewsDto>> findAllNews(@RequestParam(defaultValue = "1") int pageNumber,
                                                      @RequestParam(defaultValue = "10") int pageSize) {
 
@@ -59,17 +52,17 @@ public class NewsController {
         return new ResponseEntity<>(allNews, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("edit/create")
     public Optional<News> create(@RequestBody NewsDto newsDto) {
         return newsService.create(INSTANCE.newsDtoToNews(newsDto));
     }
 
-    @PostMapping("/update/{newsId}")
+    @PostMapping("edit/update/{newsId}")
     public void update(@PathVariable UUID id, @RequestBody NewsDto newsDto) {
         newsService.update(id, INSTANCE.newsDtoToNews(newsDto));
     }
 
-    @PostMapping("/delete/{newsId}")
+    @PostMapping("edit/delete/{newsId}")
     public void delete(@PathVariable UUID id) {
         newsService.delete(id);
     }
@@ -95,7 +88,7 @@ public class NewsController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/{newsId}/createcomment")
+    @PostMapping("/{newsId}/comment/edit/createcomment")
     public ResponseEntity<NewsDto> createComment(@RequestBody CommentDto commentDto, @PathVariable UUID id) {
         Optional<News> byId = newsService.findById(id);
         return byId.map(news -> {
@@ -105,17 +98,27 @@ public class NewsController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/{newsId}/findcomment")
+    @PostMapping("/{newsId}/comment/edit/updatecomment")
+    public ResponseEntity<NewsDto> updateComment() {
+        return null;
+    }
+
+    @PostMapping("/{newsId}/comment/edit/deletecomment")
+    public ResponseEntity<NewsDto> deleteComment() {
+        return null;
+    }
+
+    @GetMapping("/{newsId}/comment/findcomment")
     public ResponseEntity<List<CommentDto>> findCommentByWord(@RequestBody CommentFilter commentFilter,
-                                            @RequestParam(defaultValue = "1") int pageNumber,
-                                            @RequestParam(defaultValue = "10") int pageSize) {
+                                                              @RequestParam(defaultValue = "1") int pageNumber,
+                                                              @RequestParam(defaultValue = "10") int pageSize) {
 
         List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, Comment.class, pageNumber, pageSize).stream()
                 .map(INSTANCE::commentToCommentDto).toList();
         return new ResponseEntity<>(entityByFilter, HttpStatus.OK);
     }
 
-    @GetMapping("/findnews")
+    @GetMapping("find/findnews")
     public ResponseEntity<List<NewsDto>> findNewsByWord(@RequestBody NewsFilter newsFilter,
                                                         @RequestParam(defaultValue = "1") int pageNumber,
                                                         @RequestParam(defaultValue = "10") int pageSize) {
