@@ -53,18 +53,24 @@ public class NewsController {
     }
 
     @PostMapping("edit/create")
-    public Optional<News> create(@RequestBody NewsDto newsDto) {
-        return newsService.create(INSTANCE.newsDtoToNews(newsDto));
+    public ResponseEntity<NewsDto> create(@RequestBody NewsDto newsDto) {
+        Optional<News> news = newsService.create(INSTANCE.newsDtoToNews(newsDto));
+        Optional<NewsDto> createDto = news.map(INSTANCE::newsToNewsDto);
+        return createDto.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("edit/update/{newsId}")
-    public void update(@PathVariable UUID id, @RequestBody NewsDto newsDto) {
-        newsService.update(id, INSTANCE.newsDtoToNews(newsDto));
+    public ResponseEntity<NewsDto> update(@PathVariable UUID newsId, @RequestBody NewsDto newsDto) {
+        News updateNews = newsService.update(newsId, INSTANCE.newsDtoToNews(newsDto));
+        Optional<NewsDto> updateDto = Optional.of(updateNews).map(INSTANCE::newsToNewsDto);
+        return updateDto.map(x -> new ResponseEntity<>(x, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("edit/delete/{newsId}")
-    public void delete(@PathVariable UUID id) {
-        newsService.delete(id);
+    public ResponseEntity<NewsDto> delete(@PathVariable UUID newsId) {
+        newsService.delete(newsId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{newsId}/comment")
