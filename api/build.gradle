@@ -17,8 +17,10 @@ dependencies {
     implementation 'org.liquibase:liquibase-core'
 
 
-    testImplementation 'org.wiremock:wiremock:3.10.0'
+
     testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.4.0'
+
 
 
     implementation project(':core')
