@@ -27,7 +27,7 @@ import java.util.UUID;
 @Transactional
 public class UserController {
 
-    UserService<User, UserFilter> userService;
+    private final UserService<User, UserFilter> userService;
     private final NewsMapper INSTANCE;
 
 
