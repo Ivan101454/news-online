@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
 import ru.clevertec.newsonline.serviceinteface.IRepository;
@@ -24,7 +25,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         this.iRepository = newsRepository;
         this.iFilterRepositoryRepository = iFilterRepositoryRepository;
     }
-
+    @Cacheable(value = "userCache", key = "#id")
     public Optional<E> findById(UUID id) {
         Optional<E> entity = iRepository.findById(id);
         entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
