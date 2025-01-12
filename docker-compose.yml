@@ -20,7 +20,7 @@ services:
     volumes:
       - redis_data:/data
 
-  news-online:
+  app:
     build:
       context: .
       dockerfile: Dockerfile

@@ -41,8 +41,9 @@ jacocoTestReport {
     }
 }
 
-
-
+tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
+    mainClass.set('ru.clevertec.Main')
+}
 
 test {
     useJUnitPlatform()
