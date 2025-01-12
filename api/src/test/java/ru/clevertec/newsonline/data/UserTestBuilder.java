@@ -15,10 +15,11 @@ import java.util.UUID;
 
 @Builder
 @Data
+@RequiredArgsConstructor
 public class UserTestBuilder {
 
     private final NewsMapper newsMapper;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     public User buildUser() {
         return User.builder().user_id(UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2"))

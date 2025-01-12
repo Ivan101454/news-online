@@ -3,6 +3,9 @@
 
 В терминале перейдите в директорию с файлами Dockerfile и docker-compose.yml и выполните команду:
 docker-compose up --build
+Создадутся контейнера Redis, Postgres и приложения
+
+
 
 
 

@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.clevertec.newsonline.entity.Comment;
@@ -33,6 +34,10 @@ public class ServiceClassConfig {
     public UserService createUserService(UserRepository userRepository) {
 
         return new UserService<User, UserFilter>(userRepository, userRepository, userRepository);
+    }
+    @Bean
+    public ObjectMapper createObjectMapper() {
+        return new ObjectMapper();
     }
 
 

@@ -1,18 +1,32 @@
 package ru.clevertec.newsonline.data;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.enums.Section;
 import ru.clevertec.newsonline.filter.NewsFilter;
+import ru.clevertec.newsonline.mapper.NewsMapper;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Builder
 @Data
+@Component
 public class NewsTestBuilder {
+
+    @Autowired
+    private final NewsMapper newsMapper;
+    @Autowired
+    private final ObjectMapper objectMapper;
 
     public News buildNews() {
         return News.builder().newsId(UUID.fromString("a03bd6ce-123d-4b73-8d24-6324971d0a67")).headerNews("Почему все хотят попасть на Щелкунчика")
@@ -34,6 +48,14 @@ public class NewsTestBuilder {
 
     public NewsFilter buildNewsFilter() {
         return new NewsFilter("щелкунчик", "гениал");
+    }
+
+    public NewsDto getNewsDto() {
+        return Optional.of(buildNews()).map(newsMapper::newsToNewsDto).orElseThrow();
+    }
+
+    public String getJsonFromNewsDto() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(getNewsDto());
     }
 
 }
