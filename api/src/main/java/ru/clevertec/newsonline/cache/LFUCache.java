@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class LFUCache<K, V> implements Cache<K, V> {
+
     private final int maxSize;
     private final Map<K, V> cache;
     private final Map<K, Integer> frequencies;

@@ -63,6 +63,11 @@ jacocoTestReport {
         html.required = true
     }
 }
+project(':api') {
+    bootJar {
+        mainClass = 'ru.clevertec.Main'
+    }
+}
 
 
 test {

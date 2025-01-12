@@ -17,5 +17,5 @@ spring:
   liquibase:
     enabled: false
 cache:
-  algorithm: LRU
+#  algorithm: LRU
   max-size: 10

@@ -1,6 +1,5 @@
 package ru.clevertec.newsonline.cache;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,9 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(properties = {
-        "cache.algorithm=LFU", "cache.max-size=5"
+//        "cache.algorithm=LRU",
+        "cache.max-size=5"
 })
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "LRU"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class LRUCacheIT {
 
