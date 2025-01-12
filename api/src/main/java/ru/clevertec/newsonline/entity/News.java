@@ -21,6 +21,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "news", schema = "news_online")
-public class News {
+public class News implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "news_id")

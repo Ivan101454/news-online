@@ -1,4 +1,4 @@
 package ru.clevertec.newsonline.filter;
 
-public record UserFilter() {
+public record UserFilter(String username) {
 }

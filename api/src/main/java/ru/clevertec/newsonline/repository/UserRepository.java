@@ -3,7 +3,9 @@ package ru.clevertec.newsonline.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
+import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.entity.User;
+import ru.clevertec.newsonline.filter.NewsFilter;
 import ru.clevertec.newsonline.filter.UserFilter;
 import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
 import ru.clevertec.newsonline.serviceinteface.IRepository;
@@ -13,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID>, IRepository<User>, IUserRepository<User>, IFilterRepository<User, UserFilter> {
+public interface UserRepository extends JpaRepository<User, UUID>, IRepository<User>, IUserRepository<User>, IFilterEntityRepository<User, UserFilter> {
 
     @Override
     Optional<User> findUserByUsername(String username);

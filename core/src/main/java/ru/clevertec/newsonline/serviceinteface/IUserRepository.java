@@ -8,8 +8,8 @@ import java.util.Optional;
 public interface IUserRepository<E> {
 
     Optional<E> findUserByUsername(String username);
-    String getUsername();
-    String getPassword();
-    GrantedAuthority getRole();
+    String getUsername(String username);
+    String getPassword(String username);
+    GrantedAuthority getRole(String username);
 
 }

@@ -9,9 +9,7 @@ import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
 import ru.clevertec.newsonline.serviceinteface.IRepository;
 import ru.clevertec.newsonline.serviceinteface.IUserRepository;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 public class UserService<E, F> extends CrudService implements UserDetailsService {
 
@@ -28,9 +26,9 @@ public class UserService<E, F> extends CrudService implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return iUserRepository.findUserByUsername(username).map(user -> new User(
-                iUserRepository.getUsername(),
-                iUserRepository.getPassword(),
-                Collections.singleton(iUserRepository.getRole())
+                iUserRepository.getUsername(username),
+                iUserRepository.getPassword(username),
+                Collections.singleton(iUserRepository.getRole(username))
         )).orElseThrow(() -> new NotFoundException("User не найден: " + username));
     }
 }

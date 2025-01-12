@@ -8,11 +8,7 @@ import ru.clevertec.newsonline.serviceinteface.ICrudService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +21,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
         this.iRepository = newsRepository;
         this.iFilterRepositoryRepository = iFilterRepositoryRepository;
     }
-    @Cacheable(value = "userCache", key = "#id")
+    @Cacheable(value = "byIdCache", key = "#p0")
     public Optional<E> findById(UUID id) {
         Optional<E> entity = iRepository.findById(id);
         entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
