@@ -22,6 +22,7 @@ public class WebSecurityConfig {
                         .requestMatchers("users/admin/update/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
                         .requestMatchers("news/find/**").permitAll()
                         .requestMatchers("news/*").permitAll()
+                        .requestMatchers("news/find/allnews").permitAll()
                         .requestMatchers("news/*/comment/*").permitAll()
                         .requestMatchers("news/*/comment/edit/*").hasAnyAuthority("ADMIN", "JOURNALIST", "SUBSCRIBER")
                         .anyRequest().authenticated()
