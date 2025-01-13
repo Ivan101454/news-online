@@ -1,7 +1,3 @@
-plugins {
-    id 'java'
-}
-
 group = 'ru.clevertec'
 version = '1.0-SNAPSHOT'
 
@@ -9,9 +5,44 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('testcontainers.version', '1.19.8')
+}
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'redis.clients:jedis'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.4.0'
+
+
+    implementation project(':core')
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "ru/clevertec/newsonline/mapper/*",
+                    "ru/clevertec/newsonline/dto/*",
+                    "ru/clevertec/newsonline/filter/*",
+                    "ru/clevertec/newsonline/enums/*",
+                    "ru/clevertec/newsonline/config/*",
+                    "ru/clevertec/newsonline/entity/*"
+            ])
+        }))
+    }
+}
+
+tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
+    mainClass.set('ru.clevertec.Main')
 }
 
 test {

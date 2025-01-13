@@ -1,17 +1,26 @@
 package ru.clevertec;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
+//        Cache<UUID, News> cache = (Cache<UUID, News>) context.getBean("cacheLru");
+//        if (cache != null) {
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        }
+//        NewsController controll = context.getBean(NewsController.class);
+//        NewsDto newsDto = new NewsDto("header", null, null, true, null,
+//                "description", "body", null, null);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+//        CommentDto commentDto = new CommentDto(null, "kot dog person", null, null);
+//        CommentFilter kot = new CommentFilter("dog");
+//        controll.createComment(commentDto, UUID.fromString("03022119-2f56-4144-864b-15538e982af3"));
+
+//        controll.findCommentByWord(kot, 1, 10).getBody().forEach(System.out::println);
     }
 }

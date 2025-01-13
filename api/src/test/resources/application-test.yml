@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:15.1-alpine:///test
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master-test.yaml
