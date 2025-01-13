@@ -11,7 +11,7 @@ import ru.clevertec.newsonline.serviceinteface.IUserRepository;
 
 import java.util.Collections;
 
-public class UserService<E, F> extends CrudService implements UserDetailsService {
+public class UserService<E, F> extends CrudService<E, F> implements UserDetailsService {
 
     private final IRepository<E> userRepository;
     private final IFilterRepository<E, F> iFilterRepository;

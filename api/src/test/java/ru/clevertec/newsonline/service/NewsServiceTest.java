@@ -113,10 +113,10 @@ public class NewsServiceTest {
         doReturn(updateNews)
                 .when(newsRepository).save(updateNews);
         //when
-        News updateActual = newsService.update(newsId, updateNews);
+        Optional<News> updateActual = newsService.update(newsId, updateNews);
 
         //then
-        assertEquals(updateNews.getHeaderNews(), updateActual.getHeaderNews());
+        assertEquals(updateNews.getHeaderNews(), updateActual.orElseThrow().getHeaderNews());
     }
 
     @Test

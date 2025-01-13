@@ -74,4 +74,8 @@ public class News implements Serializable {
         comments.add(comment);
     }
 
+    public void deleteComment(UUID commentId) {
+        comments.remove(commentId);
+    }
+
 }
