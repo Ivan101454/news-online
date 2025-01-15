@@ -14,9 +14,9 @@ public interface ICrudService<E, F> {
 
     Optional<E> create(E e);
 
-    E update(UUID id, E e);
+    Optional<E> update(UUID id, E e);
 
-    void delete(UUID id);
+    Optional<E> delete(UUID id);
 
     List<E> findEntityByFilter(F f, Class<E> entityClazz, int pageNumber, int pageSize);
 }

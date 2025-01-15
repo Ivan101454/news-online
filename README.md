@@ -56,6 +56,7 @@ WebSecurityConfig конфигурирует метода шифрования, 
 ### Подключен кеш провайдер Redis
 сконфигурирован в ru/clevertec/newsonline/config/RedisConfig. Применен для метода findById
 в абстрактном Crud классе в :core с помощью аннотации @Cacheable(value = "byIdCache", key = "#p0")
+###  Код контроллеров документирован @JavaDoc
 
 
 

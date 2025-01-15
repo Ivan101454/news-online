@@ -30,7 +30,11 @@ public class UserController {
     private final UserService<User, UserFilter> userService;
     private final NewsMapper INSTANCE;
 
-
+    /**
+     * Метод для нахождения пользователя по uuid
+     * @param userId uuid пользователя
+     * @return ResponseEntity с UserDto
+     */
     @GetMapping("/admin/{userId}")
     public ResponseEntity<UserDto> findUserById(@PathVariable UUID userId) {
         Optional<UserDto> userDto = userService.findById(userId).map(user -> INSTANCE.userToUserDto((User) user));
@@ -38,21 +42,43 @@ public class UserController {
                 orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * Метод для создания(регистрации) нового пользователя
+     * @param userDto объект, сформированный из формы в dto
+     * @return ResponseEntity со статусом CREATED в случае успешного созания,
+     * либо INTERNAL_SERVER_ERROR в случае ошибок
+     */
     @PostMapping("/registration")
-    public Optional<News> create(@RequestBody UserDto userDto) {
-        return userService.create(INSTANCE.userDtoToUser(userDto));
+    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto) {
+        Optional<User> user = userService.create(INSTANCE.userDtoToUser(userDto));
+        return user.map(user1 -> new ResponseEntity<>(userDto, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+    /**
+     * Метод для полей изменения сущности User
+     * @param userId uuid пользователя, которого будем изменять
+     * @param userDto объект, смапеный из формы в dto
+     * @return ResponseEntity со статусом CREATED в случае успешного создания,
+     *      * либо INTERNAL_SERVER_ERROR в случае ошибок
+     */
     @PostMapping("/admin/update/{userId}")
-    public void update(@PathVariable UUID userId, @RequestBody UserDto userDTo) {
-        userService.update(userId, INSTANCE.userDtoToUser(userDTo));
+    public ResponseEntity<UserDto> update(@PathVariable UUID userId, @RequestBody UserDto userDto) {
+        Optional<User> updateUser = userService.update(userId, INSTANCE.userDtoToUser(userDto));
+        return updateUser.map(user1 -> new ResponseEntity<>(userDto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+    /**
+     * Метод, который удаляет сущность по uuid
+     * @param userId uuid удаляемой сущности
+     * @return возвращает ResponseEntity со статусом OK  в случае успеха,
+     * и NOT_FOUND в случае если не найдена
+     */
     @PostMapping("/admin/delete/{userId}")
-    public void delete(@PathVariable UUID userId) {
-        userService.delete(userId);
+    public ResponseEntity<UserDto> delete(@PathVariable UUID userId) {
+        Optional<User> delete = userService.delete(userId);
+        return delete.map(deleteUser -> new ResponseEntity<>(INSTANCE.userToUserDto(deleteUser), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
-
 }
