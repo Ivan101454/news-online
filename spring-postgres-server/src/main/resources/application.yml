@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: configserver:http://localhost:8888
   datasource:
     url: jdbc:postgresql://localhost:5432/demo
     username: postgres
@@ -16,9 +14,16 @@ spring:
         format_sql: true
         show_sql: true
         highlight_sql: true
-  liquibase:
-    enabled: true
-cache:
-#  algorithm: LRU
-  max-size: 10
 
+server:
+  port: 8081
+#
+#  application:
+#    name: spring-cloud-config
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/your-repo/config-repo
+#          username: your-username
+#          password: your-password
