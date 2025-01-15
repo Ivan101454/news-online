@@ -1,0 +1,2 @@
+--liquidbase formatted sql
+--changeset ivan101454:1

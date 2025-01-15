@@ -2,4 +2,6 @@
 rootProject.name = 'news-online'
 include 'api'
 include 'core'
+include 'spring-postgres-server'
+include 'config-server'
 
