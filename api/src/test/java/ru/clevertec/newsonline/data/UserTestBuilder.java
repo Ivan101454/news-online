@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.clevertec.newsonline.dto.UserDto;
 import ru.clevertec.newsonline.entity.User;
 import ru.clevertec.newsonline.enums.Role;
@@ -19,7 +21,7 @@ import java.util.UUID;
 public class UserTestBuilder {
 
     private final NewsMapper newsMapper;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public User buildUser() {
         return User.builder().user_id(UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2"))

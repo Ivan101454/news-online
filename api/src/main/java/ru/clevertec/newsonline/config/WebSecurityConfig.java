@@ -17,20 +17,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/users/registration").permitAll()
-                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/users/admin/update/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
-                        .requestMatchers("/news/find/**").permitAll()
-                        .requestMatchers("/news/*").permitAll()
-                        .requestMatchers("/news/find/allnews").permitAll()
-                        .requestMatchers("/news/*/comment/*").permitAll()
-                        .requestMatchers("/news/*/comment/edit/*").hasAnyAuthority("ADMIN", "JOURNALIST", "SUBSCRIBER")
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/users/registration").permitAll()
+//                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
+//                        .requestMatchers("/users/admin/update/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
+////                        .requestMatchers("/news/find/**").permitAll()
+////                        .requestMatchers("/news/find/*").permitAll()
+////                        .requestMatchers("/news/find/allnews").permitAll()
+//                        .requestMatchers("/news/*/comment/*").permitAll()
+//                        .requestMatchers("/news/*/comment/edit/*").hasAnyAuthority("ADMIN", "JOURNALIST", "SUBSCRIBER")
+                        .anyRequest().permitAll()
                 )
 //                .httpBasic(Customizer.withDefaults())
                 .formLogin((form) -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/news")
+//                        .loginPage("/login")
+                        .defaultSuccessUrl("/news/find/allnews")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
@@ -44,8 +44,8 @@ public class WebSecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }
