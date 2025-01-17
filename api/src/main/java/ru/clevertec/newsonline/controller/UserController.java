@@ -36,7 +36,7 @@ public class UserController {
      * @return ResponseEntity с UserDto
      */
     @GetMapping("/admin/{userId}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable UUID userId) {
+    public ResponseEntity<UserDto> findUserById(@PathVariable("userId") UUID userId) {
         Optional<UserDto> userDto = userService.findById(userId).map(user -> INSTANCE.userToUserDto((User) user));
         return userDto.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK)).
                 orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -63,7 +63,7 @@ public class UserController {
      *      * либо INTERNAL_SERVER_ERROR в случае ошибок
      */
     @PostMapping("/admin/update/{userId}")
-    public ResponseEntity<UserDto> update(@PathVariable UUID userId, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> update(@PathVariable(value = "userId") UUID userId, @RequestBody UserDto userDto) {
         Optional<User> updateUser = userService.update(userId, INSTANCE.userDtoToUser(userDto));
         return updateUser.map(user1 -> new ResponseEntity<>(userDto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -76,7 +76,7 @@ public class UserController {
      * и NOT_FOUND в случае если не найдена
      */
     @PostMapping("/admin/delete/{userId}")
-    public ResponseEntity<UserDto> delete(@PathVariable UUID userId) {
+    public ResponseEntity<UserDto> delete(@PathVariable("userId") UUID userId) {
         Optional<User> delete = userService.delete(userId);
         return delete.map(deleteUser -> new ResponseEntity<>(INSTANCE.userToUserDto(deleteUser), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
