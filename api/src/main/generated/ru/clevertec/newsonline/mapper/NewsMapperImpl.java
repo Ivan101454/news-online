@@ -22,7 +22,7 @@ import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-16T23:15:04+0300",
+    date = "2025-01-17T13:22:17+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -152,6 +152,49 @@ public class NewsMapperImpl implements NewsMapper {
         return user.build();
     }
 
+    @Override
+    public AuthorDto authorToAuthorDto(Author author) {
+        if ( author == null ) {
+            return null;
+        }
+
+        String nameAuthor = null;
+        String lastName = null;
+        LocalDate dateOfRegistration = null;
+        String phoneNumber = null;
+        String email = null;
+
+        nameAuthor = author.getNameAuthor();
+        lastName = author.getLastName();
+        dateOfRegistration = author.getDateOfRegistration();
+        phoneNumber = author.getPhoneNumber();
+        email = author.getEmail();
+
+        List<NewsDto> writeNews = null;
+
+        AuthorDto authorDto = new AuthorDto( nameAuthor, lastName, dateOfRegistration, phoneNumber, email, writeNews );
+
+        return authorDto;
+    }
+
+    @Override
+    public Author authorDtoToAuthor(AuthorDto authorDto) {
+        if ( authorDto == null ) {
+            return null;
+        }
+
+        Author.AuthorBuilder author = Author.builder();
+
+        author.nameAuthor( authorDto.nameAuthor() );
+        author.lastName( authorDto.lastName() );
+        author.dateOfRegistration( authorDto.dateOfRegistration() );
+        author.phoneNumber( authorDto.phoneNumber() );
+        author.email( authorDto.email() );
+        author.writeNews( newsDtoListToNewsList( authorDto.writeNews() ) );
+
+        return author.build();
+    }
+
     protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
         if ( list == null ) {
             return null;
@@ -163,30 +206,6 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         return list1;
-    }
-
-    protected AuthorDto authorToAuthorDto(Author author) {
-        if ( author == null ) {
-            return null;
-        }
-
-        String nameAuthor = null;
-        String lastName = null;
-        LocalDate dateOfRegistration = null;
-        String phoneNumber = null;
-        String email = null;
-        List<NewsDto> writeNews = null;
-
-        nameAuthor = author.getNameAuthor();
-        lastName = author.getLastName();
-        dateOfRegistration = author.getDateOfRegistration();
-        phoneNumber = author.getPhoneNumber();
-        email = author.getEmail();
-        writeNews = newsListToNewsDtoList( author.getWriteNews() );
-
-        AuthorDto authorDto = new AuthorDto( nameAuthor, lastName, dateOfRegistration, phoneNumber, email, writeNews );
-
-        return authorDto;
     }
 
     protected CategoryDto categoryToCategoryDto(Category category) {
@@ -216,23 +235,6 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         return list1;
-    }
-
-    protected Author authorDtoToAuthor(AuthorDto authorDto) {
-        if ( authorDto == null ) {
-            return null;
-        }
-
-        Author.AuthorBuilder author = Author.builder();
-
-        author.nameAuthor( authorDto.nameAuthor() );
-        author.lastName( authorDto.lastName() );
-        author.dateOfRegistration( authorDto.dateOfRegistration() );
-        author.phoneNumber( authorDto.phoneNumber() );
-        author.email( authorDto.email() );
-        author.writeNews( newsDtoListToNewsList( authorDto.writeNews() ) );
-
-        return author.build();
     }
 
     protected Category categoryDtoToCategory(CategoryDto categoryDto) {

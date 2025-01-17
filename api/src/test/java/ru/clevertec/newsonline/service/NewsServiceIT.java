@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.clevertec.newsonline.data.NewsTestBuilder;
+import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.filter.NewsFilter;
+import ru.clevertec.newsonline.mapper.NewsMapper;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -49,10 +54,12 @@ public class NewsServiceIT {
     }
     @Autowired
     private NewsService<News, NewsFilter> newsService;
+    @Autowired
+    private NewsMapper INSTANCE;
 
     @Test
     public void testNewsServiceBeanCreated() {
-        assertNotNull(newsService, "NewsService бин не был создан");
+        assertNotNull(newsService, "NewsService бин был создан");
     }
     @Test
     void shouldReturnNewsById() {
@@ -66,6 +73,19 @@ public class NewsServiceIT {
 
         //then
         assertEquals(news.getHeaderNews(), byId.orElseThrow().getHeaderNews());
+    }
+    @Test
+    public void shouldConvertNewsToNewsDto() {
+        //given
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
+        News news = nb.buildNews();
+        UUID newsId = news.getNewsId();
 
+        //when
+        Optional<News> byId = newsService.findById(newsId);
+        Optional<NewsDto> newsDto = byId.map(INSTANCE::newsToNewsDto);
+
+        //then
+        assertEquals(news.getHeaderNews(), newsDto.orElseThrow().headerNews());
     }
 }

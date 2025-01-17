@@ -31,7 +31,7 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "picture_id")
-    private UUID picture_id;
+    private UUID pictureId;
     @Column(name = "name_of_picture")
     private String nameOfPicture;
     @Column(name = "link_on_picture")

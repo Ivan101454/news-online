@@ -1,32 +1,25 @@
-package ru.clevertec.newsonline.controller;
+package ru.clevertec.newsonline.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.clevertec.newsonline.data.NewsTestBuilder;
-import ru.clevertec.newsonline.dto.NewsDto;
-import ru.clevertec.newsonline.entity.News;
-
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import ru.clevertec.newsonline.data.UserTestBuilder;
+import ru.clevertec.newsonline.entity.User;
+import ru.clevertec.newsonline.service.UserService;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class NewsControllerIT {
+public class UserDetailServiceIT {
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:16-alpine"
@@ -50,29 +43,18 @@ public class NewsControllerIT {
     }
 
     @Autowired
-    private NewsController newsController;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private NewsTestBuilder nb;
+    private UserService userService;
 
-    @SneakyThrows
     @Test
-    public void shouldReturnDtoResponseById() {
+    void shouldFindUserByName() {
         //given
-        News news = nb.buildNews();
-        UUID newsId = news.getNewsId();
-        String jsonFromNewsDto = nb.getJsonFromNewsDto();
-
+        UserTestBuilder ub = UserTestBuilder.builder().build();
+        User user = ub.buildUser();
+        String username = user.getUsername();
         //when
-        ResponseEntity<NewsDto> newsById = newsController.findNewsById(newsId);
+        UserDetails userDetails = userService.loadUserByUsername(username);
 
         //then
-        assertEquals(HttpStatus.OK, newsById.getStatusCode());
-        assertEquals(jsonFromNewsDto, objectMapper.writeValueAsString(newsById.getBody()));
+        Assertions.assertEquals(user.getUsername(), userDetails.getUsername());
     }
-
-
-
-
 }

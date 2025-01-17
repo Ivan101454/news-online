@@ -8,7 +8,7 @@ spring:
     config:
       username: user
       # Ввести свой токен security
-      password: 0364c4d9-7331-46ae-b3b7-9729739a3b40
+      password: 83436ede-d241-4cd7-a18f-002da900e84d
       fail-fast: true
 server:
   port: 8080

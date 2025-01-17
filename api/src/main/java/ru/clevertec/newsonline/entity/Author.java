@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@ToString(exclude = {"writeNews"})
+@ToString(exclude = "writeNews")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +32,8 @@ import java.util.UUID;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID author_id;
+    @Column(name = "author_id")
+    private UUID authorId;
     @Column(name = "name_author")
     private String nameAuthor;
     @Column(name = "last_name_author")
