@@ -1,6 +1,5 @@
 package ru.clevertec.newsonline.mapper;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-17T15:57:52+0300",
+    date = "2025-01-17T16:37:09+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -159,7 +158,7 @@ public class NewsMapperImpl implements NewsMapper {
 
         String nameAuthor = null;
         String lastName = null;
-        LocalDate dateOfRegistration = null;
+        LocalDateTime dateOfRegistration = null;
         String phoneNumber = null;
         String email = null;
 
@@ -200,11 +199,8 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
-        List<NewsDto> newsList = null;
-
-        newsList = newsListToNewsDtoList( category.getNewsList() );
-
         Section section = null;
+        List<NewsDto> newsList = null;
 
         CategoryDto categoryDto = new CategoryDto( section, newsList );
 
@@ -259,19 +255,6 @@ public class NewsMapperImpl implements NewsMapper {
         List<News> list1 = new ArrayList<News>( list.size() );
         for ( NewsDto newsDto : list ) {
             list1.add( newsDtoToNews( newsDto ) );
-        }
-
-        return list1;
-    }
-
-    protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<NewsDto> list1 = new ArrayList<NewsDto>( list.size() );
-        for ( News news : list ) {
-            list1.add( newsToNewsDto( news ) );
         }
 
         return list1;

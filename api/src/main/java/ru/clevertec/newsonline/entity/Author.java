@@ -20,6 +20,7 @@ import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class Author implements Serializable {
     private String lastName;
     @Column(name = "date_of_registration", nullable = false, updatable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private LocalDate dateOfRegistration;
+    private LocalDateTime dateOfRegistration;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "email")

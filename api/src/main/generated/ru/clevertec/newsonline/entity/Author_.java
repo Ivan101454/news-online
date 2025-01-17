@@ -5,7 +5,7 @@ import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.ListAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @StaticMetamodel(Author.class)
@@ -44,7 +44,7 @@ public abstract class Author_ {
 	/**
 	 * @see ru.clevertec.newsonline.entity.Author#dateOfRegistration
 	 **/
-	public static volatile SingularAttribute<Author, LocalDate> dateOfRegistration;
+	public static volatile SingularAttribute<Author, LocalDateTime> dateOfRegistration;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Author#authorId

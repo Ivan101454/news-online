@@ -39,7 +39,7 @@ public interface NewsMapper {
     @Mappings({@Mapping(target = "authorId", ignore = true)})
     Author authorDtoToAuthor(AuthorDto authorDto);
 
-    @Mappings({@Mapping(target = "section", ignore = true)})
+    @Mappings({@Mapping(target = "section", ignore = true), @Mapping(target = "newsList", ignore = true)})
     CategoryDto categoryToCategoryDto(Category category);
     @Mappings({@Mapping(target = "categoryId", ignore = true)})
     Category categorDtoToCategory(CategoryDto categoryDto);

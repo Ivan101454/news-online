@@ -20,13 +20,7 @@ import java.util.UUID;
 
 @Builder
 @Data
-@Component
 public class NewsTestBuilder {
-
-    @Autowired
-    private final NewsMapper newsMapper;
-    @Autowired
-    private final ObjectMapper objectMapper;
 
     public News buildNews() {
         return News.builder().newsId(UUID.fromString("a03bd6ce-123d-4b73-8d24-6324971d0a67")).headerNews("Почему все хотят попасть на Щелкунчика")
@@ -50,12 +44,12 @@ public class NewsTestBuilder {
         return new NewsFilter("щелкунчик", "гениал");
     }
 
-    public NewsDto getNewsDto() {
+    public NewsDto getNewsDto(NewsMapper newsMapper) {
         return Optional.of(buildNews()).map(newsMapper::newsToNewsDto).orElseThrow();
     }
 
-    public String getJsonFromNewsDto() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(getNewsDto());
+    public String getJsonFromNewsDto(ObjectMapper objectMapper, NewsMapper newsMapper) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(getNewsDto(newsMapper));
     }
 
 }

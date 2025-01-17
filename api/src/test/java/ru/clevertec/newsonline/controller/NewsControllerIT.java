@@ -18,6 +18,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import ru.clevertec.newsonline.data.NewsTestBuilder;
 import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.entity.News;
+import ru.clevertec.newsonline.mapper.NewsMapper;
 
 import java.util.UUID;
 
@@ -54,15 +55,16 @@ public class NewsControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private NewsTestBuilder nb;
+    private NewsMapper newsMapper;
 
     @SneakyThrows
     @Test
     public void shouldReturnDtoResponseById() {
         //given
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
         News news = nb.buildNews();
         UUID newsId = news.getNewsId();
-        String jsonFromNewsDto = nb.getJsonFromNewsDto();
+        String jsonFromNewsDto = nb.getJsonFromNewsDto(objectMapper, newsMapper);
 
         //when
         ResponseEntity<NewsDto> newsById = newsController.findNewsById(newsId);
@@ -70,6 +72,19 @@ public class NewsControllerIT {
         //then
         assertEquals(HttpStatus.OK, newsById.getStatusCode());
         assertEquals(jsonFromNewsDto, objectMapper.writeValueAsString(newsById.getBody()));
+    }
+
+    @Test
+    public void shouldReturnListNews() {
+        //given
+
+
+        //when
+
+
+        //then
+
+
     }
 
 

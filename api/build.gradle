@@ -23,6 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-config:4.2.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
+
 
 
 
@@ -53,9 +55,9 @@ tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
     mainClass.set('ru.clevertec.Main')
 }
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs << "-parameters"
-}
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs << "-parameters"
+//}
 
 
 test {
