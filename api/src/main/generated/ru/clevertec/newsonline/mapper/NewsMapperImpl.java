@@ -22,7 +22,7 @@ import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-17T14:50:51+0300",
+    date = "2025-01-17T15:57:52+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -113,22 +113,6 @@ public class NewsMapperImpl implements NewsMapper {
     }
 
     @Override
-    public User userDtoToUser(UserDto userDto) {
-        if ( userDto == null ) {
-            return null;
-        }
-
-        User.UserBuilder user = User.builder();
-
-        user.username( userDto.username() );
-        user.login( userDto.login() );
-        user.password( userDto.password() );
-        user.comments( commentDtoListToCommentList( userDto.comments() ) );
-
-        return user.build();
-    }
-
-    @Override
     public UserDto userToUserDto(User user) {
         if ( user == null ) {
             return null;
@@ -149,6 +133,22 @@ public class NewsMapperImpl implements NewsMapper {
         UserDto userDto = new UserDto( username, login, password, comments, role );
 
         return userDto;
+    }
+
+    @Override
+    public User userDtoToUser(UserDto userDto) {
+        if ( userDto == null ) {
+            return null;
+        }
+
+        User.UserBuilder user = User.builder();
+
+        user.username( userDto.username() );
+        user.login( userDto.login() );
+        user.password( userDto.password() );
+        user.comments( commentDtoListToCommentList( userDto.comments() ) );
+
+        return user.build();
     }
 
     @Override
@@ -194,46 +194,35 @@ public class NewsMapperImpl implements NewsMapper {
         return author.build();
     }
 
-    protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<NewsDto> list1 = new ArrayList<NewsDto>( list.size() );
-        for ( News news : list ) {
-            list1.add( newsToNewsDto( news ) );
-        }
-
-        return list1;
-    }
-
-    protected CategoryDto categoryToCategoryDto(Category category) {
+    @Override
+    public CategoryDto categoryToCategoryDto(Category category) {
         if ( category == null ) {
             return null;
         }
 
-        Section section = null;
         List<NewsDto> newsList = null;
 
-        section = category.getSection();
         newsList = newsListToNewsDtoList( category.getNewsList() );
+
+        Section section = null;
 
         CategoryDto categoryDto = new CategoryDto( section, newsList );
 
         return categoryDto;
     }
 
-    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list) {
-        if ( list == null ) {
+    @Override
+    public Category categorDtoToCategory(CategoryDto categoryDto) {
+        if ( categoryDto == null ) {
             return null;
         }
 
-        List<Comment> list1 = new ArrayList<Comment>( list.size() );
-        for ( CommentDto commentDto : list ) {
-            list1.add( commentDtoToComment( commentDto ) );
-        }
+        Category.CategoryBuilder category = Category.builder();
 
-        return list1;
+        category.section( categoryDto.section() );
+        category.newsList( newsDtoListToNewsList( categoryDto.newsList() ) );
+
+        return category.build();
     }
 
     protected List<CommentDto> commentListToCommentDtoList(List<Comment> list) {
@@ -249,6 +238,19 @@ public class NewsMapperImpl implements NewsMapper {
         return list1;
     }
 
+    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<Comment> list1 = new ArrayList<Comment>( list.size() );
+        for ( CommentDto commentDto : list ) {
+            list1.add( commentDtoToComment( commentDto ) );
+        }
+
+        return list1;
+    }
+
     protected List<News> newsDtoListToNewsList(List<NewsDto> list) {
         if ( list == null ) {
             return null;
@@ -257,6 +259,19 @@ public class NewsMapperImpl implements NewsMapper {
         List<News> list1 = new ArrayList<News>( list.size() );
         for ( NewsDto newsDto : list ) {
             list1.add( newsDtoToNews( newsDto ) );
+        }
+
+        return list1;
+    }
+
+    protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<NewsDto> list1 = new ArrayList<NewsDto>( list.size() );
+        for ( News news : list ) {
+            list1.add( newsToNewsDto( news ) );
         }
 
         return list1;

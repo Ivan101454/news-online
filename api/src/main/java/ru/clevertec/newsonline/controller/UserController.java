@@ -24,6 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
+@Transactional
 public class UserController {
 
     private final UserService<User, UserFilter> userService;

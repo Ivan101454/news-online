@@ -29,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/news")
+@Transactional
 public class NewsController {
 
     private final NewsService<News, NewsFilter> newsService;
