@@ -61,6 +61,5 @@ public class UserServiceIT {
 
         //then
         assertEquals(userExpect.getUsername(), actualUser.get().getUsername());
-
     }
 }

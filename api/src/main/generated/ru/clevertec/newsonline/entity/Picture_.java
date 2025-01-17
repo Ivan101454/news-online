@@ -12,15 +12,20 @@ import java.util.UUID;
 public abstract class Picture_ {
 
 	public static final String NEWS = "news";
+	public static final String PICTURE_ID = "pictureId";
 	public static final String LINK_ON_PICTURE = "linkOnPicture";
 	public static final String NAME_OF_PICTURE = "nameOfPicture";
-	public static final String PICTURE_ID = "picture_id";
 
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Picture#news
 	 **/
 	public static volatile ListAttribute<Picture, News> news;
+	
+	/**
+	 * @see ru.clevertec.newsonline.entity.Picture#pictureId
+	 **/
+	public static volatile SingularAttribute<Picture, UUID> pictureId;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Picture#linkOnPicture
@@ -31,11 +36,6 @@ public abstract class Picture_ {
 	 * @see ru.clevertec.newsonline.entity.Picture#nameOfPicture
 	 **/
 	public static volatile SingularAttribute<Picture, String> nameOfPicture;
-	
-	/**
-	 * @see ru.clevertec.newsonline.entity.Picture#picture_id
-	 **/
-	public static volatile SingularAttribute<Picture, UUID> picture_id;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Picture

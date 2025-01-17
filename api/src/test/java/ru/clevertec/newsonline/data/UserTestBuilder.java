@@ -24,7 +24,7 @@ public class UserTestBuilder {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public User buildUser() {
-        return User.builder().user_id(UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2"))
+        return User.builder().userId(UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2"))
                 .login("Bert@mail.ru").password("Leeniam124").username("Vand").role(Role.ADMIN)
                 .build();
     }

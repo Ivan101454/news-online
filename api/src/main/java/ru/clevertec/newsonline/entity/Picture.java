@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "picture", schema = "news_online")
-public class Picture {
+public class Picture implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "picture_id")

@@ -17,7 +17,7 @@ public abstract class Author_ {
 	public static final String PHONE_NUMBER = "phoneNumber";
 	public static final String WRITE_NEWS = "writeNews";
 	public static final String DATE_OF_REGISTRATION = "dateOfRegistration";
-	public static final String AUTHOR_ID = "author_id";
+	public static final String AUTHOR_ID = "authorId";
 	public static final String EMAIL = "email";
 
 	
@@ -47,9 +47,9 @@ public abstract class Author_ {
 	public static volatile SingularAttribute<Author, LocalDate> dateOfRegistration;
 	
 	/**
-	 * @see ru.clevertec.newsonline.entity.Author#author_id
+	 * @see ru.clevertec.newsonline.entity.Author#authorId
 	 **/
-	public static volatile SingularAttribute<Author, UUID> author_id;
+	public static volatile SingularAttribute<Author, UUID> authorId;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Author

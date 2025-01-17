@@ -16,13 +16,13 @@ import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
-import ru.clevertec.newsonline.entity.Picture;
 import ru.clevertec.newsonline.entity.User;
+import ru.clevertec.newsonline.enums.Role;
 import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-17T13:22:17+0300",
+    date = "2025-01-17T14:50:51+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -69,11 +69,8 @@ public class NewsMapperImpl implements NewsMapper {
         news.author( authorDtoToAuthor( newsDto.author() ) );
         news.dateOfNews( newsDto.dateOfNews() );
         news.isPublished( newsDto.isPublished() );
-        news.category( categoryDtoToCategory( newsDto.category() ) );
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );
-        news.pictures( pictureDtoListToPictureList( newsDto.pictures() ) );
-        news.comments( commentDtoListToCommentList( newsDto.comments() ) );
 
         return news.build();
     }
@@ -116,6 +113,22 @@ public class NewsMapperImpl implements NewsMapper {
     }
 
     @Override
+    public User userDtoToUser(UserDto userDto) {
+        if ( userDto == null ) {
+            return null;
+        }
+
+        User.UserBuilder user = User.builder();
+
+        user.username( userDto.username() );
+        user.login( userDto.login() );
+        user.password( userDto.password() );
+        user.comments( commentDtoListToCommentList( userDto.comments() ) );
+
+        return user.build();
+    }
+
+    @Override
     public UserDto userToUserDto(User user) {
         if ( user == null ) {
             return null;
@@ -131,25 +144,11 @@ public class NewsMapperImpl implements NewsMapper {
         password = user.getPassword();
         comments = commentListToCommentDtoList( user.getComments() );
 
-        UserDto userDto = new UserDto( username, login, password, comments );
+        Role role = null;
+
+        UserDto userDto = new UserDto( username, login, password, comments, role );
 
         return userDto;
-    }
-
-    @Override
-    public User userDtoToUser(UserDto userDto) {
-        if ( userDto == null ) {
-            return null;
-        }
-
-        User.UserBuilder user = User.builder();
-
-        user.username( userDto.username() );
-        user.login( userDto.login() );
-        user.password( userDto.password() );
-        user.comments( commentDtoListToCommentList( userDto.comments() ) );
-
-        return user.build();
     }
 
     @Override
@@ -224,59 +223,6 @@ public class NewsMapperImpl implements NewsMapper {
         return categoryDto;
     }
 
-    protected List<News> newsDtoListToNewsList(List<NewsDto> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<News> list1 = new ArrayList<News>( list.size() );
-        for ( NewsDto newsDto : list ) {
-            list1.add( newsDtoToNews( newsDto ) );
-        }
-
-        return list1;
-    }
-
-    protected Category categoryDtoToCategory(CategoryDto categoryDto) {
-        if ( categoryDto == null ) {
-            return null;
-        }
-
-        Category.CategoryBuilder category = Category.builder();
-
-        category.section( categoryDto.section() );
-        category.newsList( newsDtoListToNewsList( categoryDto.newsList() ) );
-
-        return category.build();
-    }
-
-    protected Picture pictureDtoToPicture(PictureDto pictureDto) {
-        if ( pictureDto == null ) {
-            return null;
-        }
-
-        Picture.PictureBuilder picture = Picture.builder();
-
-        picture.nameOfPicture( pictureDto.nameOfPicture() );
-        picture.linkOnPicture( pictureDto.linkOnPicture() );
-        picture.news( newsDtoListToNewsList( pictureDto.news() ) );
-
-        return picture.build();
-    }
-
-    protected List<Picture> pictureDtoListToPictureList(List<PictureDto> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<Picture> list1 = new ArrayList<Picture>( list.size() );
-        for ( PictureDto pictureDto : list ) {
-            list1.add( pictureDtoToPicture( pictureDto ) );
-        }
-
-        return list1;
-    }
-
     protected List<Comment> commentDtoListToCommentList(List<CommentDto> list) {
         if ( list == null ) {
             return null;
@@ -298,6 +244,19 @@ public class NewsMapperImpl implements NewsMapper {
         List<CommentDto> list1 = new ArrayList<CommentDto>( list.size() );
         for ( Comment comment : list ) {
             list1.add( commentToCommentDto( comment ) );
+        }
+
+        return list1;
+    }
+
+    protected List<News> newsDtoListToNewsList(List<NewsDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<News> list1 = new ArrayList<News>( list.size() );
+        for ( NewsDto newsDto : list ) {
+            list1.add( newsDtoToNews( newsDto ) );
         }
 
         return list1;

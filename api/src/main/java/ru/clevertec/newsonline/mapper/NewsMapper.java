@@ -20,17 +20,21 @@ public interface NewsMapper {
 
     @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "isPublished", ignore = true)})
     NewsDto newsToNewsDto(News news);
+    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "newsId", ignore = true)})
     News newsDtoToNews(NewsDto newsDto);
 
     CommentDto commentToCommentDto(Comment comment);
+    @Mappings({@Mapping(target = "commentId", ignore = true)})
     Comment commentDtoToComment(CommentDto commentDto);
 
-    UserDto userToUserDto(User user);
+    @Mappings({@Mapping(target = "userId", ignore = true), @Mapping(target = "role", ignore = true)})
     User userDtoToUser(UserDto userDto);
+    @Mappings({@Mapping(target = "role", ignore = true)})
+    UserDto userToUserDto(User user);
 
     @Mappings({@Mapping(target = "writeNews", ignore = true)})
     AuthorDto authorToAuthorDto(Author author);
-    @Mappings({@Mapping(target = "author", ignore = true)})
+    @Mappings({@Mapping(target = "authorId", ignore = true)})
     Author authorDtoToAuthor(AuthorDto authorDto);
 
 }
