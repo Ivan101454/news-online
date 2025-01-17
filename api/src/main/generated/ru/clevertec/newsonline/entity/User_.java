@@ -15,8 +15,8 @@ public abstract class User_ {
 	public static final String PASSWORD = "password";
 	public static final String ROLE = "role";
 	public static final String COMMENTS = "comments";
-	public static final String USER_ID = "user_id";
 	public static final String LOGIN = "login";
+	public static final String USER_ID = "userId";
 	public static final String USERNAME = "username";
 
 	
@@ -36,11 +36,6 @@ public abstract class User_ {
 	public static volatile ListAttribute<User, Comment> comments;
 	
 	/**
-	 * @see ru.clevertec.newsonline.entity.User#user_id
-	 **/
-	public static volatile SingularAttribute<User, UUID> user_id;
-	
-	/**
 	 * @see ru.clevertec.newsonline.entity.User#login
 	 **/
 	public static volatile SingularAttribute<User, String> login;
@@ -49,6 +44,11 @@ public abstract class User_ {
 	 * @see ru.clevertec.newsonline.entity.User
 	 **/
 	public static volatile EntityType<User> class_;
+	
+	/**
+	 * @see ru.clevertec.newsonline.entity.User#userId
+	 **/
+	public static volatile SingularAttribute<User, UUID> userId;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.User#username

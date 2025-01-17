@@ -43,7 +43,7 @@ public class NewsController {
      * либо NOT_FOUND если новость не найдена
      */
     @GetMapping("find/{newsId}")
-    public ResponseEntity<NewsDto> findNewsById(@PathVariable UUID newsId) {
+    public ResponseEntity<NewsDto> findNewsById(@PathVariable("newsId") UUID newsId) {
         Optional<NewsDto> newsDto = newsService.findById(newsId).map(INSTANCE::newsToNewsDto);
         return newsDto.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK)).
                 orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -56,8 +56,8 @@ public class NewsController {
      * @return ResponseEntity со статусом OK, либо NO_CONTENT если список пуст
      */
     @GetMapping("find/allnews")
-    public ResponseEntity<List<NewsDto>> findAllNews(@RequestParam(defaultValue = "1") int pageNumber,
-                                                     @RequestParam(defaultValue = "10") int pageSize) {
+    public ResponseEntity<List<NewsDto>> findAllNews(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         List<NewsDto> allNews = newsService.findByPage(pageNumber, pageSize)
                 .stream().map(INSTANCE::newsToNewsDto).toList();
         if (allNews.isEmpty()) {
@@ -110,13 +110,13 @@ public class NewsController {
 
     /**
      * Метод для нахождения всех комментво у новости
-     * @param id uuid самой новости
+     * @param commentID uuid самого комментария
      * @return ResponseEntity со списком комментов и статусом OK, либо NO_CONTENT
      * если нет комментов
      */
-    @GetMapping("/{newsId}/comment")
-    public ResponseEntity<List<CommentDto>> findAllCommentByNews(@PathVariable UUID id) {
-        Optional<News> byId = newsService.findById(id);
+    @GetMapping("/{newsId}/comment/{commentID}")
+    public ResponseEntity<List<CommentDto>> findAllCommentByNews(@PathVariable("commentID") UUID commentID) {
+        Optional<News> byId = newsService.findById(commentID);
         List<CommentDto> listComment = byId.stream().map(News::getComments).flatMap(List::stream).map(INSTANCE::commentToCommentDto).toList();
         if (listComment.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -127,15 +127,15 @@ public class NewsController {
 
     /**
      * Метод находит необходимый коммент uuid новости и uuid коммента
-     * @param newsid uuid новости
-     * @param commentid uuid комментария
+     * @param newsId uuid новости
+     * @param commentId uuid комментария
      * @return ResponseEntity со статусом Ok в случае, если комментарий найден,
      * либо NOT_FOUND сли коммент не найден
      */
-    @GetMapping("/{newsId}/comment/{commentsId}")
-    public ResponseEntity<CommentDto> findCommentOfNewsById(@PathVariable UUID newsid, @PathVariable UUID commentid) {
-        Optional<News> newsById = newsService.findById(newsid);
-        return newsById.map(n -> n.getComments().stream().filter(c -> c.getCommentId().equals(commentid))
+    @GetMapping("/{newsId}/comment/{commentId}")
+    public ResponseEntity<CommentDto> findCommentOfNewsById(@PathVariable("newsId") UUID newsId, @PathVariable("commentId") UUID commentId) {
+        Optional<News> newsById = newsService.findById(newsId);
+        return newsById.map(n -> n.getComments().stream().filter(c -> c.getCommentId().equals(commentId))
                         .map(INSTANCE::commentToCommentDto).toList().stream().map(Optional::of).toList().getFirst()
                         .map(comment -> new ResponseEntity<>(comment, HttpStatus.OK))).get()
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -144,16 +144,16 @@ public class NewsController {
     /**
      * Метод создающий комментарий у определенной новости
      * @param commentDto dto коммента из формы на сайте
-     * @param id uuid для новости
+     * @param newsId uuid для новости
      * @return ResponseEntity со статусом OK, если прошло успешно,
      * либо NOT_FOUND если новость не найдена
      */
     @PostMapping("/{newsId}/comment/edit/createcomment")
-    public ResponseEntity<NewsDto> createComment(@RequestBody CommentDto commentDto, @PathVariable UUID id) {
-        Optional<News> byId = newsService.findById(id);
+    public ResponseEntity<NewsDto> createComment(@RequestBody CommentDto commentDto, @PathVariable("newsId") UUID newsId) {
+        Optional<News> byId = newsService.findById(newsId);
         return byId.map(news -> {
             news.addComment(INSTANCE.commentDtoToComment(commentDto));
-            newsService.update(id, news);
+            newsService.update(newsId, news);
             return new ResponseEntity<>(INSTANCE.newsToNewsDto(news), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -161,15 +161,15 @@ public class NewsController {
     /**
      * Метод обновляет комментарий пользователя
      * @param newsId uuid новости, которой принадлежит комментарий
-     * @param commId uuid комментарий, которыйй требуется обновить
+     * @param commentId uuid комментарий, которыйй требуется обновить
      * @param commentDto dto коммента из формы
      * @return ResponseEntity со статусом OK, если прошло успешно,
      * либо INTERNAL_SERVER_ERROR если ошибка
      */
-    @PostMapping("/{newsId}/comment/edit/updatecomment/{commId}")
-    public ResponseEntity<NewsDto> updateComment(@PathVariable UUID newsId, @PathVariable UUID commId, @RequestBody CommentDto commentDto) {
+    @PostMapping("/{newsId}/comment/edit/updatecomment/{commentId}")
+    public ResponseEntity<NewsDto> updateComment(@PathVariable("newsId") UUID newsId, @PathVariable("commentId") UUID commentId, @RequestBody CommentDto commentDto) {
         Optional<News> newsById = newsService.findById(newsId);
-        newsById.ifPresent(news -> news.deleteComment(commId));
+        newsById.ifPresent(news -> news.deleteComment(commentId));
         newsById.ifPresent(news -> news.addComment(INSTANCE.commentDtoToComment(commentDto)));
         return newsById.map(news -> {
             newsService.update(newsId, news);
@@ -180,14 +180,14 @@ public class NewsController {
     /**
      * Метод удаляет комментарий из новости
      * @param newsId uuid новости
-     * @param commId uuid коммента
+     * @param commentId uuid коммента
      * @return ResponseEntity со статусом Ok, либо INTERNAL_SERVER_ERROR если
      * произошла ошибка
      */
-    @PostMapping("/{newsId}/comment/edit/deletecomment/{commId}")
-    public ResponseEntity<NewsDto> deleteComment(@PathVariable UUID newsId, @PathVariable UUID commId) {
+    @PostMapping("/{newsId}/comment/edit/deletecomment/{commentId}")
+    public ResponseEntity<NewsDto> deleteComment(@PathVariable("newsId") UUID newsId, @PathVariable("commentId") UUID commentId) {
         Optional<News> newsById = newsService.findById(newsId);
-        newsById.ifPresent(news -> news.deleteComment(commId));
+        newsById.ifPresent(news -> news.deleteComment(commentId));
         Optional<NewsDto> updateDto = newsById.map(INSTANCE::newsToNewsDto);
         return updateDto.map(x -> new ResponseEntity<>(x, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
@@ -202,8 +202,8 @@ public class NewsController {
      */
     @GetMapping("/{newsId}/comment/findcomment")
     public ResponseEntity<List<CommentDto>> findCommentByWord(@RequestBody CommentFilter commentFilter,
-                                                              @RequestParam(defaultValue = "1") int pageNumber,
-                                                              @RequestParam(defaultValue = "10") int pageSize) {
+                                                              @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
         List<CommentDto> entityByFilter = commentService.findEntityByFilter(commentFilter, Comment.class, pageNumber, pageSize).stream()
                 .map(INSTANCE::commentToCommentDto).toList();
@@ -224,8 +224,8 @@ public class NewsController {
      */
     @GetMapping("find/findnews")
     public ResponseEntity<List<NewsDto>> findNewsByWord(@RequestBody NewsFilter newsFilter,
-                                                        @RequestParam(defaultValue = "1") int pageNumber,
-                                                        @RequestParam(defaultValue = "10") int pageSize) {
+                                                        @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         List<NewsDto> entityByFilter = newsService.findEntityByFilter(newsFilter, News.class, pageNumber, pageSize).stream()
                 .map(INSTANCE::newsToNewsDto).toList();
         if (entityByFilter.isEmpty()) {

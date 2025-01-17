@@ -33,7 +33,8 @@ import java.util.UUID;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID user_id;
+    @Column(name = "user_id")
+    private UUID userId;
     @Column(name = "username", unique = true)
     private String username;
     @Column(name = "login")

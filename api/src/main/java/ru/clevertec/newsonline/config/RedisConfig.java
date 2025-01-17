@@ -20,7 +20,7 @@ public class RedisConfig {
         return new JedisConnectionFactory();
     }
 
-        @Bean
+    @Bean
     @Profile("redis")
     public RedisTemplate<Object, Object> redisTemplate() {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

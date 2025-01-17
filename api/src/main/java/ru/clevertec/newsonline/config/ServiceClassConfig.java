@@ -1,8 +1,10 @@
 package ru.clevertec.newsonline.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.entity.User;
@@ -31,13 +33,15 @@ public class ServiceClassConfig {
         return new CommentService<Comment, CommentFilter>(commentRepository, commentRepository);
     }
     @Bean
-    public UserService createUserService(UserRepository userRepository) {
+    public UserService createUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 
-        return new UserService<User, UserFilter>(userRepository, userRepository, userRepository);
+        return new UserService<User, UserFilter>(passwordEncoder, userRepository, userRepository, userRepository);
     }
     @Bean
     public ObjectMapper createObjectMapper() {
-        return new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
     }
 
 

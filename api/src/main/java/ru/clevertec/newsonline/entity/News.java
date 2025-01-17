@@ -40,7 +40,7 @@ public class News implements Serializable {
     private UUID newsId;
     @Column(name = "header_news")
     private String headerNews;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
     @Column(name = "date_of_news", updatable = false)

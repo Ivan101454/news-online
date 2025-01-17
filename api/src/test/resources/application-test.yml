@@ -9,3 +9,6 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master-test.yaml
+app:
+  logging:
+    enabled: true

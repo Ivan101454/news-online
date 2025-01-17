@@ -1,6 +1,7 @@
 package ru.clevertec.newsonline.service;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
 import ru.clevertec.newsonline.serviceinteface.IRepository;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional
 public abstract class CrudService<E, F> implements ICrudService<E, F> {
 
     private final IRepository<E> iRepository;

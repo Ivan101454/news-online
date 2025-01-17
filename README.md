@@ -6,6 +6,8 @@ docker-compose up --build
 Создадутся контейнера Redis, Postgres и приложения.
 При запуске приложения по default профайлу заполнится БД. Затем в application.yml  необходимо поставить liquibase:
 enabled: false
+### !!!Сейчас добавлена конфигурация через spring cloud, запускать сначала Main модуля config-server и прописывать токен с него в application.yml модуля :api
+### !!!В Докере должны быть запущены Редис и Постгрес контейнера 
 
 ### Приложение разбито на 2 модуля: *:api*, содержащий слой Repository и Controller,и *:core*, содержащий Service слой
 
@@ -57,6 +59,7 @@ WebSecurityConfig конфигурирует метода шифрования, 
 сконфигурирован в ru/clevertec/newsonline/config/RedisConfig. Применен для метода findById
 в абстрактном Crud классе в :core с помощью аннотации @Cacheable(value = "byIdCache", key = "#p0")
 ###  Код контроллеров документирован @JavaDoc
+### 
 
 
 

@@ -19,6 +19,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ru.clevertec.newsonline.enums.Section;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "category", schema = "news_online")
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id")
