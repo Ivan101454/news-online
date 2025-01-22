@@ -21,7 +21,7 @@ import ru.clevertec.newsonline.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-17T16:37:09+0300",
+    date = "2025-01-22T21:02:23+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -120,14 +120,13 @@ public class NewsMapperImpl implements NewsMapper {
         String username = null;
         String login = null;
         String password = null;
-        List<CommentDto> comments = null;
 
         username = user.getUsername();
         login = user.getLogin();
         password = user.getPassword();
-        comments = commentListToCommentDtoList( user.getComments() );
 
         Role role = null;
+        List<CommentDto> comments = null;
 
         UserDto userDto = new UserDto( username, login, password, comments, role );
 
@@ -219,19 +218,6 @@ public class NewsMapperImpl implements NewsMapper {
         category.newsList( newsDtoListToNewsList( categoryDto.newsList() ) );
 
         return category.build();
-    }
-
-    protected List<CommentDto> commentListToCommentDtoList(List<Comment> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<CommentDto> list1 = new ArrayList<CommentDto>( list.size() );
-        for ( Comment comment : list ) {
-            list1.add( commentToCommentDto( comment ) );
-        }
-
-        return list1;
     }
 
     protected List<Comment> commentDtoListToCommentList(List<CommentDto> list) {

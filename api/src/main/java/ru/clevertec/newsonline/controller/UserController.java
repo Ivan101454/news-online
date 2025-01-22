@@ -76,9 +76,9 @@ public class UserController {
      * и NOT_FOUND в случае если не найдена
      */
     @PostMapping("/admin/delete/{userId}")
-    public ResponseEntity<UserDto> delete(@PathVariable("userId") UUID userId) {
+    public ResponseEntity<Void> delete(@PathVariable("userId") UUID userId) {
         Optional<User> delete = userService.delete(userId);
-        return delete.map(deleteUser -> new ResponseEntity<>(INSTANCE.userToUserDto(deleteUser), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return delete.map(deleteUser -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT))
+                .orElseGet(() -> new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 }

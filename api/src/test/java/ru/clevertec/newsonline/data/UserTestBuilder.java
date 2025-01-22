@@ -20,8 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserTestBuilder {
 
-    private final NewsMapper newsMapper;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public User buildUser() {
         return User.builder().userId(UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2"))
@@ -29,15 +27,25 @@ public class UserTestBuilder {
                 .build();
     }
 
+    public User buildNewUser() {
+        return User.builder()
+                .login("NewUser@mail.ru").password("123456").username("New123").role(Role.ADMIN)
+                .build();
+    }
+
     public UUID getUserUUID() {
         return UUID.fromString("0a77c64d-9dc9-452b-a9b9-7cc983d809c2");
     }
 
-    public UserDto createUserDto() {
+    public UserDto createUserDto(NewsMapper newsMapper) {
         return Optional.of(buildUser()).map(newsMapper.INSTANCE::userToUserDto).orElseThrow();
     }
 
-    public String getJsonUserDto() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(createUserDto());
+    public UserDto createUserDtoNew(NewsMapper newsMapper) {
+        return Optional.of(buildNewUser()).map(newsMapper.INSTANCE::userToUserDto).orElseThrow();
+    }
+
+    public String getJsonUserDto(ObjectMapper objectMapper, NewsMapper newsMapper) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(createUserDto(newsMapper));
     }
 }

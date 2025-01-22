@@ -7,8 +7,8 @@ spring:
   cloud:
     config:
       username: user
-      # Ввести свой токен security
-      password: 83436ede-d241-4cd7-a18f-002da900e84d
+      # Ввести свой токен security. Запустить модуль config server и взять токе из консоли
+      password: 131bcd19-7788-44be-955a-e90343e3b6d7
       fail-fast: true
 server:
   port: 8080
@@ -32,4 +32,6 @@ server:
 cache:
   #  algorithm: LRU
   max-size: 10
-
+app:
+  logging:
+    enabled: true

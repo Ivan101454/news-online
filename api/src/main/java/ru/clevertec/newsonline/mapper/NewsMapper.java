@@ -29,7 +29,7 @@ public interface NewsMapper {
     @Mappings({@Mapping(target = "commentId", ignore = true)})
     Comment commentDtoToComment(CommentDto commentDto);
 
-    @Mappings({@Mapping(target = "role", ignore = true)})
+    @Mappings({@Mapping(target = "role", ignore = true), @Mapping(target = "comments", ignore = true)})
     UserDto userToUserDto(User user);
     @Mappings({@Mapping(target = "userId", ignore = true), @Mapping(target = "role", ignore = true)})
     User userDtoToUser(UserDto userDto);

@@ -1,12 +1,15 @@
 package ru.clevertec.newsonline.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -37,13 +40,15 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     void findUserById() throws JsonProcessingException {
         UserTestBuilder ub = UserTestBuilder.builder().build();
         UUID userUUID = ub.getUserUUID();
         User user = ub.buildUser();
-        UserDto userDto = ub.createUserDto();
-        String jsonUserDto = ub.getJsonUserDto();
+        UserDto userDto = ub.createUserDto(INSTANCE);
+        String jsonUserDto = ub.getJsonUserDto(objectMapper, INSTANCE);
         WireMock.stubFor(WireMock.get(WireMock.urlEqualTo("/user/admin/" + userUUID))
                 .willReturn(WireMock.aResponse()
                         .withStatus(200)

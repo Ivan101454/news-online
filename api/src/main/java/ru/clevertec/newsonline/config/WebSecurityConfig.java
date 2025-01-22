@@ -19,14 +19,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers("/users/registration").permitAll()
-//                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
-//                        .requestMatchers("/users/admin/update/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
-////                        .requestMatchers("/news/find/**").permitAll()
-////                        .requestMatchers("/news/find/*").permitAll()
-////                        .requestMatchers("/news/find/allnews").permitAll()
-//                        .requestMatchers("/news/*/comment/*").permitAll()
-//                        .requestMatchers("/news/*/comment/edit/*").hasAnyAuthority("ADMIN", "JOURNALIST", "SUBSCRIBER")
+                        .requestMatchers("/users/registration").permitAll()
+                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/users/admin/update/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
+                        .requestMatchers("/news/find/**").permitAll()
+                        .requestMatchers("/news/find/*").permitAll()
+                        .requestMatchers("/news/find/allnews").permitAll()
+                        .requestMatchers("/news/*/comment/*").permitAll()
+                        .requestMatchers("/news/*/comment/edit/*").hasAnyAuthority("ADMIN", "JOURNALIST", "SUBSCRIBER")
                         .anyRequest().authenticated()
 
                 )
