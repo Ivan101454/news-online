@@ -14,8 +14,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
@@ -31,6 +32,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
+@Setter
+@Getter
 @Table(name = "news", schema = "news_online")
 public class News implements Serializable {
     @Id
