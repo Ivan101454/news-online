@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.UUID;
 
 @ToString(exclude = {"comments"})
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -47,5 +46,4 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Comment> comments;
-
 }

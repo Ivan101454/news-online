@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 @ToString(exclude = "writeNews")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

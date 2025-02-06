@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.UUID;
 
 @ToString(exclude = {"pictures", "comments"})
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
