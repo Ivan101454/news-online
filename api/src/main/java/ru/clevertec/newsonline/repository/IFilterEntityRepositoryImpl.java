@@ -50,6 +50,6 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
         criteria.select(root).where(cb.and(listOfPredicates.toArray(predicates)));
 
         return entityManager.createQuery(criteria)
-                .setFirstResult(pageNumber).setMaxResults(pageSize).getResultList();
+                .setFirstResult(pageNumber - 1).setMaxResults(pageSize).getResultList();
     }
 }

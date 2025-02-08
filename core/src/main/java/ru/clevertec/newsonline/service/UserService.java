@@ -11,6 +11,7 @@ import ru.clevertec.newsonline.serviceinteface.IRepository;
 import ru.clevertec.newsonline.serviceinteface.IUserRepository;
 
 import java.util.Collections;
+
 public class UserService<E, F> extends CrudService<E, F> implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
@@ -30,10 +31,6 @@ public class UserService<E, F> extends CrudService<E, F> implements UserDetailsS
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return iUserRepository.findUserByUsername(username).map(user ->
 
-//                new User(
-//                iUserRepository.getUsername(username),
-//                iUserRepository.getPassword(username),
-//                Collections.singleton(iUserRepository.getRole(username))
                 User.withUsername(iUserRepository.getUsername(username))
                         .password(passwordEncoder.encode(iUserRepository.getPassword(username)))
                         .authorities(Collections.singleton(iUserRepository.getRole(username)))

@@ -89,7 +89,7 @@ public class NewsController {
      * INTERNAL_SERVER_ERROR в случае ошибки
      */
     @PostMapping("edit/update/{newsId}")
-    public ResponseEntity<NewsDto> update(@PathVariable UUID newsId, @RequestBody NewsDto newsDto) {
+    public ResponseEntity<NewsDto> update(@PathVariable("newsId") UUID newsId, @RequestBody NewsDto newsDto) {
         Optional<News> updateNews = newsService.update(newsId, INSTANCE.newsDtoToNews(newsDto));
         Optional<NewsDto> updateDto = updateNews.map(INSTANCE::newsToNewsDto);
         return updateDto.map(x -> new ResponseEntity<>(x, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -102,10 +102,10 @@ public class NewsController {
      * если по uuid не удалось найти новость для удаления
      */
     @PostMapping("edit/delete/{newsId}")
-    public ResponseEntity<NewsDto> delete(@PathVariable UUID newsId) {
+    public ResponseEntity<Void> delete(@PathVariable("newsId") UUID newsId) {
         Optional<News> delete = newsService.delete(newsId);
-        return delete.map(deleteNews -> new ResponseEntity<>(INSTANCE.newsToNewsDto(deleteNews), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return delete.map(deleteNews -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT))
+                .orElseGet(() -> new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
     /**

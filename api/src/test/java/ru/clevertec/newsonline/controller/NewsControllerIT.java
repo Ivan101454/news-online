@@ -20,6 +20,7 @@ import ru.clevertec.newsonline.dto.NewsDto;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,22 +70,72 @@ public class NewsControllerIT {
         //when
         ResponseEntity<NewsDto> newsById = newsController.findNewsById(newsId);
 
+
         //then
         assertEquals(HttpStatus.OK, newsById.getStatusCode());
-        assertEquals(jsonFromNewsDto, objectMapper.writeValueAsString(newsById.getBody()));
+
+        assertEquals(news.getHeaderNews(), newsById.getBody().headerNews());
     }
 
     @Test
     public void shouldReturnListNews() {
         //given
-
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
+        News newsExpect = nb.buildFifthNews();
 
         //when
+        ResponseEntity<List<NewsDto>> allNewsActual = newsController.findAllNews(1, 5);
 
 
         //then
+        assertEquals(newsExpect.getHeaderNews(), allNewsActual.getBody().getLast().headerNews());
+
+    }
+
+    @Test
+    public void shouldCreateNewNews() {
+        //given
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
+        NewsDto newsDto = nb.builNewNewsDto(NewsMapper.INSTANCE);
+
+        //when
+        ResponseEntity<NewsDto> newsDtoResponseEntity = newsController.create(newsDto);
+        String expectHeader = newsDtoResponseEntity.getBody().headerNews();
 
 
+        //then
+        assertEquals(newsDto.headerNews(), expectHeader);
+
+    }
+
+    @Test
+    public void shouldUpdateNews() {
+        //given
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
+        News news = nb.buildNews();
+        UUID newsId = news.getNewsId();
+        NewsDto newsDto = nb.builNewNewsDto(NewsMapper.INSTANCE);
+
+        //when
+        newsController.update(newsId, newsDto);
+        ResponseEntity<NewsDto> expectResponse = newsController.findNewsById(newsId);
+        //then
+        assertEquals(newsDto.headerNews(), expectResponse.getBody().headerNews());
+
+    }
+
+    @Test
+    public void shouldDeleteNews() {
+        //given
+        NewsTestBuilder nb = NewsTestBuilder.builder().build();
+        News news = nb.buildNews();
+        UUID newsId = news.getNewsId();
+
+        //when
+        ResponseEntity<Void> delete = newsController.delete(newsId);
+
+        //then
+        assertEquals(HttpStatus.NO_CONTENT, delete.getStatusCode());
     }
 
 

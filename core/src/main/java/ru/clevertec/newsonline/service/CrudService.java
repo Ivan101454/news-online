@@ -35,7 +35,7 @@ public abstract class CrudService<E, F> implements ICrudService<E, F> {
     }
 
     public List<E> findByPage(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return iRepository.findAll(pageable).getContent();
     }
 

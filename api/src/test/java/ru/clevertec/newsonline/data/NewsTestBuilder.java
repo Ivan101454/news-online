@@ -48,6 +48,10 @@ public class NewsTestBuilder {
         return Optional.of(buildNews()).map(newsMapper::newsToNewsDto).orElseThrow();
     }
 
+    public NewsDto builNewNewsDto(NewsMapper newsMapper) {
+        return Optional.of(buildNewsForSave()).map(newsMapper::newsToNewsDto).orElseThrow();
+    }
+
     public String getJsonFromNewsDto(ObjectMapper objectMapper, NewsMapper newsMapper) throws JsonProcessingException {
         return objectMapper.writeValueAsString(getNewsDto(newsMapper));
     }
