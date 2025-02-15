@@ -8,7 +8,7 @@ spring:
     config:
       username: user
       # Ввести свой токен security. Запустить модуль config server и взять токе из консоли
-      password: 87039d52-dfad-48c2-ba6c-a5c98f1dff18
+      password: 1a382044-03be-4985-baa1-e4a5457e451a
       fail-fast: true
 server:
   port: 8080

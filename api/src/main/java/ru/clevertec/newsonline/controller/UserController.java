@@ -36,7 +36,7 @@ public class UserController {
      * @return ResponseEntity с UserDto
      */
     @GetMapping("/admin/{userId}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable("userId") UUID userId) {
+    public ResponseEntity<UserDto> findUserById(@PathVariable UUID userId) {
         Optional<UserDto> userDto = userService.findById(userId).map(user -> INSTANCE.userToUserDto((User) user));
         return userDto.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK)).
                 orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
