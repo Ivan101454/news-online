@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import ru.clevertec.newsonline.dto.AuthorDto;
-import ru.clevertec.newsonline.dto.CategoryDto;
-import ru.clevertec.newsonline.dto.CommentDto;
-import ru.clevertec.newsonline.dto.NewsDto;
-import ru.clevertec.newsonline.dto.PictureDto;
-import ru.clevertec.newsonline.dto.UserDto;
 import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.entity.User;
-import ru.clevertec.newsonline.enums.Role;
-import ru.clevertec.newsonline.enums.Section;
+import ru.clevertec.newsonline.newService.dto.AuthorDto;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
+import ru.clevertec.newsonline.newService.dto.CommentDto;
+import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.dto.PictureDto;
+import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.enums.Role;
+import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-24T20:03:05+0300",
+    date = "2025-02-24T23:42:48+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -214,7 +214,7 @@ public class NewsMapperImpl implements NewsMapper {
 
         Category.CategoryBuilder category = Category.builder();
 
-        category.section( categoryDto.section() );
+        category.section( sectionToSection( categoryDto.section() ) );
         category.newsList( newsDtoListToNewsList( categoryDto.newsList() ) );
 
         return category.build();
@@ -244,5 +244,31 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         return list1;
+    }
+
+    protected ru.clevertec.newsonline.enums.Section sectionToSection(Section section) {
+        if ( section == null ) {
+            return null;
+        }
+
+        ru.clevertec.newsonline.enums.Section section1;
+
+        switch ( section ) {
+            case PEOPLE: section1 = ru.clevertec.newsonline.enums.Section.PEOPLE;
+            break;
+            case CAR: section1 = ru.clevertec.newsonline.enums.Section.CAR;
+            break;
+            case INCIDENT: section1 = ru.clevertec.newsonline.enums.Section.INCIDENT;
+            break;
+            case EVENT: section1 = ru.clevertec.newsonline.enums.Section.EVENT;
+            break;
+            case FOOD: section1 = ru.clevertec.newsonline.enums.Section.FOOD;
+            break;
+            case TRAVEL: section1 = ru.clevertec.newsonline.enums.Section.TRAVEL;
+            break;
+            default: throw new IllegalArgumentException( "Unexpected enum constant: " + section );
+        }
+
+        return section1;
     }
 }
