@@ -6,9 +6,9 @@ spring:
 
   cloud:
     config:
-      username: user
+      username: catalogue_service_user
       # Ввести свой токен security. Запустить модуль config server и взять токе из консоли
-      password: 1a382044-03be-4985-baa1-e4a5457e451a
+      password: 'password'
       fail-fast: true
 server:
   port: 8080
