@@ -9,9 +9,8 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.data.repository.core.support.RepositoryMetadataAccess;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.util.MetaModelUtil;
 
 import java.lang.reflect.Field;
@@ -19,14 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepository<E, F>, RepositoryMetadataAccess {
+@Repository
+public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepository<E, F> {
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @SneakyThrows
     @Override
-    public List<E> filterWord(F f, Class<E> entityClass, int pageNumber, int pageSize) {
+    public List<E> filterWord(F f, Class<E> entityClass, Pageable pageable) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteria = cb.createQuery(entityClass);
@@ -50,6 +50,6 @@ public class IFilterEntityRepositoryImpl<E, F> implements IFilterEntityRepositor
         criteria.select(root).where(cb.and(listOfPredicates.toArray(predicates)));
 
         return entityManager.createQuery(criteria)
-                .setFirstResult(pageNumber - 1).setMaxResults(pageSize).getResultList();
+                .setFirstResult(pageable.getPageNumber()).setMaxResults(pageable.getPageSize()).getResultList();
     }
 }

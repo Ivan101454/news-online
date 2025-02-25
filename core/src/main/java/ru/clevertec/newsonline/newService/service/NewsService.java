@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 
@@ -56,6 +57,12 @@ public class NewsService implements NewsServicePort {
         entity.ifPresentOrElse(x -> newsPersistencePort.delete(id), () -> {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
+    }
+
+    @Override
+    public List<NewsDto> findEntityByFilter(NewsFilter filer, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return newsPersistencePort.filterWord(filer, pageable);
     }
 
 }

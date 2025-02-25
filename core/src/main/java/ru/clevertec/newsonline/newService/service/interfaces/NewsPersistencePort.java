@@ -3,12 +3,13 @@ package ru.clevertec.newsonline.newService.service.interfaces;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.filter.NewsFilter;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface NewsPersistencePort {
+public interface NewsPersistencePort{
 
     List<NewsDto> findAll();
 
@@ -19,5 +20,7 @@ public interface NewsPersistencePort {
     NewsDto save(NewsDto newsDto);
 
     void delete(UUID id);
+
+    List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable);
 
 }

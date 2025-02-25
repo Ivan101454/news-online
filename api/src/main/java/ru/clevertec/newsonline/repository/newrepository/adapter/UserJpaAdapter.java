@@ -5,9 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
+import ru.clevertec.newsonline.entity.User;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.UserFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.UserPersistencePort;
+import ru.clevertec.newsonline.repository.IFilterEntityRepository;
 import ru.clevertec.newsonline.repository.newrepository.UserRepository;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.UUID;
 public class UserJpaAdapter implements UserPersistencePort {
 
     private final UserRepository userRepository;
+    private final IFilterEntityRepository<User, UserFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
 
     @Override
@@ -47,6 +51,12 @@ public class UserJpaAdapter implements UserPersistencePort {
     public void delete(UUID id) {
         userRepository.findById(id)
                         .ifPresentOrElse(userRepository::delete, () -> {throw new NoSuchElementException("Нет такого пользователя");});
+    }
+
+    @Override
+    public List<UserDto> filterWord(UserFilter filer, Pageable pageable) {
+        return iFilterEntityRepository.filterWord(filer, User.class, pageable)
+                .stream().map(newsMapper::userToUserDto).toList();
     }
 
     @Override

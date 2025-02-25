@@ -1,6 +1,9 @@
 package ru.clevertec.newsonline.repository;
 
-import ru.clevertec.newsonline.serviceinteface.IFilterRepository;
+import org.springframework.data.domain.Pageable;
 
-public interface IFilterEntityRepository<E, F> extends IFilterRepository<E, F> {
+import java.util.List;
+
+public interface IFilterEntityRepository<E, F> {
+    List<E> filterWord(F filter, Class<E> entityClazz, Pageable pageable);
 }

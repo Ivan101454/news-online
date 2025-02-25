@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
+import ru.clevertec.newsonline.repository.IFilterEntityRepository;
 import ru.clevertec.newsonline.repository.newrepository.NewsRepository;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class NewsJpaAdapter implements NewsPersistencePort {
 
     private final NewsRepository newsRepository;
+    private final IFilterEntityRepository<News, NewsFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
 
     @Override
@@ -46,5 +50,11 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     public void delete(UUID id) {
         newsRepository.findById(id)
                 .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет такого пользователя");});
+    }
+
+    @Override
+    public List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable) {
+        return iFilterEntityRepository.filterWord(newsFilter, News.class, pageable).stream()
+                .map(newsMapper::newsToNewsDto).toList();
     }
 }

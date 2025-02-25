@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.UserFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.UserPersistencePort;
+import ru.clevertec.newsonline.newService.service.interfaces.UserServicePort;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Transactional
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, UserServicePort {
 
     private final PasswordEncoder passwordEncoder;
     private final UserPersistencePort userPersistencePort;
@@ -64,6 +66,12 @@ public class UserService implements UserDetailsService {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
     }
+
+    @Override
+    public List<UserDto> findEntityByFilter(UserFilter filer, Pageable pageable) {
+        return userPersistencePort.filterWord(filer, pageable);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userPersistencePort.findUserByUsername(username).map(user ->

@@ -3,8 +3,8 @@ package ru.clevertec.newsonline.newService.service.interfaces;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
-import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.UserFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +21,8 @@ public interface UserPersistencePort {
     UserDto save(UserDto userDto);
 
     void delete(UUID id);
+
+    List<UserDto> filterWord(UserFilter filer, Pageable pageable);
 
     Optional<UserDto> findUserByUsername(String username);
     String getUsername(String username);

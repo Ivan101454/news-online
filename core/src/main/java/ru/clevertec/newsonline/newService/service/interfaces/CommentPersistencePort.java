@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.CommentFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,6 @@ public interface CommentPersistencePort {
     CommentDto save(CommentDto commentDto);
 
     void delete(UUID id);
+
+    List<CommentDto> filterWord(CommentFilter filter, Pageable pageable);
 }

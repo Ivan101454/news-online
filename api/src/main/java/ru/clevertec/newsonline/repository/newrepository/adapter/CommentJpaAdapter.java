@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
+import ru.clevertec.newsonline.newService.filter.CommentFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.CommentPersistencePort;
+import ru.clevertec.newsonline.repository.IFilterEntityRepository;
 import ru.clevertec.newsonline.repository.newrepository.CommentRepository;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class CommentJpaAdapter implements CommentPersistencePort {
 
     private final CommentRepository commentRepository;
+    private final IFilterEntityRepository<Comment, CommentFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
 
     @Override
@@ -46,5 +50,11 @@ public class CommentJpaAdapter implements CommentPersistencePort {
     public void delete(UUID id) {
         commentRepository.findById(id)
                 .ifPresentOrElse(commentRepository::delete, () -> {throw new NoSuchElementException("Нет такого комментария");});
+    }
+
+    @Override
+    public List<CommentDto> filterWord(CommentFilter filter, Pageable pageable) {
+        return iFilterEntityRepository.filterWord(filter, Comment.class, pageable)
+                .stream().map(newsMapper::commentToCommentDto).toList();
     }
 }

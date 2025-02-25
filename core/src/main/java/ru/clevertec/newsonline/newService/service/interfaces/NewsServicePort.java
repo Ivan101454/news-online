@@ -1,6 +1,8 @@
 package ru.clevertec.newsonline.newService.service.interfaces;
 
+import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.filter.NewsFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +21,5 @@ public interface NewsServicePort {
 
     void delete(UUID id);
 
-//    List<NewsDto> findEntityByFilter(F f, Class<NewsDto> entityClazz, int pageNumber, int pageSize);
+    List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize);
 }

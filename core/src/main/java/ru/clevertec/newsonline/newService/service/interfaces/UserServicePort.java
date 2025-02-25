@@ -1,7 +1,9 @@
 package ru.clevertec.newsonline.newService.service.interfaces;
 
+import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.UserFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +22,6 @@ public interface UserServicePort {
     void update(UUID id, UserDto userDto);
 
     void delete(UUID id);
+
+    List<UserDto> findEntityByFilter(UserFilter filer, Pageable pageable);
 }

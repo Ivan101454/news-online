@@ -1,7 +1,11 @@
 package ru.clevertec.newsonline.newService.service.interfaces;
 
+import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
+import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.UserDto;
+import ru.clevertec.newsonline.newService.filter.CommentFilter;
+import ru.clevertec.newsonline.newService.filter.NewsFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +25,6 @@ public interface CommentServicePort {
     void update(UUID id, CommentDto commentDto);
 
     void delete(UUID id);
+
+    List<CommentDto> findEntityByFilter(CommentFilter filter, Pageable pageable);
 }

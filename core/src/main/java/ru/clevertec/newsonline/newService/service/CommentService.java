@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
+import ru.clevertec.newsonline.newService.filter.CommentFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.CommentPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.CommentServicePort;
 
@@ -56,6 +57,11 @@ public class CommentService implements CommentServicePort {
         entity.ifPresentOrElse(x -> commentPersistencePort.delete(id), () -> {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
+    }
+
+    @Override
+    public List<CommentDto> findEntityByFilter(CommentFilter filter, Pageable pageable) {
+        return commentPersistencePort.filterWord(filter, pageable);
     }
 
 }
