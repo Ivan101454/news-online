@@ -8,11 +8,6 @@ import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
-//import ru.clevertec.newsonline.dto.AuthorDto;
-//import ru.clevertec.newsonline.dto.CategoryDto;
-//import ru.clevertec.newsonline.dto.CommentDto;
-//import ru.clevertec.newsonline.dto.NewsDto;
-//import ru.clevertec.newsonline.dto.UserDto;
 import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
@@ -28,7 +23,7 @@ public interface NewsMapper {
     @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "isPublished", ignore = true)})
     NewsDto newsToNewsDto(News news);
 
-    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true)})
+    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})
     News newsDtoToNews(NewsDto newsDto);
 
     CommentDto commentToCommentDto(Comment comment);
@@ -45,12 +40,12 @@ public interface NewsMapper {
     @Mappings({@Mapping(target = "writeNews", ignore = true)})
     AuthorDto authorToAuthorDto(Author author);
 
-    @Mappings({@Mapping(target = "authorId", ignore = true)})
+    @Mappings({@Mapping(target = "authorId", ignore = true), @Mapping(target = "dateOfRegistration", ignore = true), @Mapping(target = "writeNews", ignore = true)})
     Author authorDtoToAuthor(AuthorDto authorDto);
 
-    @Mappings({@Mapping(target = "section", ignore = true), @Mapping(target = "newsList", ignore = true)})
+    @Mappings({@Mapping(target = "newsList", ignore = true)})
     CategoryDto categoryToCategoryDto(Category category);
 
-    @Mappings({@Mapping(target = "categoryId", ignore = true)})
-    Category categorDtoToCategory(CategoryDto categoryDto);
+    @Mappings({@Mapping(target = "categoryId", ignore = true), @Mapping(target = "newsList", ignore = true)})
+    Category categoryDtoToCategory(CategoryDto categoryDto);
 }

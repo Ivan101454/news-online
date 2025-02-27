@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -49,7 +50,7 @@ public class News implements Serializable {
     @JoinColumn(name = "author_id")
     private Author author;
     @Column(name = "date_of_news", updatable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    @CreationTimestamp
     private LocalDateTime dateOfNews;
     @Column(name = "is_published")
     private boolean isPublished;
@@ -62,9 +63,11 @@ public class News implements Serializable {
     private String contentLink;
     @ManyToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Builder.Default
     private List<Picture> pictures = new ArrayList<>();
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     public void addPicture(Picture picture) {
@@ -79,8 +82,8 @@ public class News implements Serializable {
         comments.add(comment);
     }
 
-    public void deleteComment(UUID commentId) {
-        comments.remove(commentId);
+    public void deleteComment(Comment comment) {
+        comments.remove(comment);
     }
 
 }

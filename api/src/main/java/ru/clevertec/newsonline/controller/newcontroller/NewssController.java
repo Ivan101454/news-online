@@ -63,7 +63,7 @@ public class NewssController {
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .replacePath("/catalogue-api/news/list")
-                            .build(Map.of("article", newsDto.headerNews())))
+                            .build(Map.of("article", newsDto.articleId())))
                     .body(news);
         }
 

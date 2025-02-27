@@ -12,8 +12,8 @@ import java.util.List;
 public record NewsDto(
         @NotEmpty(message = "{catalogue.errors.news.title_header_is_invalid}")
         String headerNews,
-        @Min(value = 100000, message = "{catalogue.errors.news.number_article_less_is_required_invalid}")
-        @Max(value = 999999, message = "{catalogue.errors.news.number_article_more_is_required_invalid}")
+        @Min(value = 1000000, message = "{catalogue.errors.news.number_article_less_is_required_invalid}")
+        @Max(value = 9999999, message = "{catalogue.errors.news.number_article_more_is_required_invalid}")
         int articleId,
         @NotNull(message = "{catalogue.errors.news.author_is_invalid}")
         AuthorDto author,

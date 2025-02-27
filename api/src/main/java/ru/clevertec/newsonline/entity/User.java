@@ -18,7 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.clevertec.newsonline.enums.Role;
+import ru.clevertec.newsonline.newService.enums.Role;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,5 +49,15 @@ public class User implements Serializable {
     private Role role;
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        comment.setAuthorComment(this);
+        comments.add(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        comments.remove(comment);
+    }
 }

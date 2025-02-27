@@ -21,7 +21,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-27T17:30:27+0300",
+    date = "2025-02-28T00:07:29+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -183,10 +183,8 @@ public class NewsMapperImpl implements NewsMapper {
 
         author.nameAuthor( authorDto.nameAuthor() );
         author.lastName( authorDto.lastName() );
-        author.dateOfRegistration( authorDto.dateOfRegistration() );
         author.phoneNumber( authorDto.phoneNumber() );
         author.email( authorDto.email() );
-        author.writeNews( newsDtoListToNewsList( authorDto.writeNews() ) );
 
         return author.build();
     }
@@ -198,6 +196,9 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         Section section = null;
+
+        section = category.getSection();
+
         List<NewsDto> newsList = null;
 
         CategoryDto categoryDto = new CategoryDto( section, newsList );
@@ -206,15 +207,14 @@ public class NewsMapperImpl implements NewsMapper {
     }
 
     @Override
-    public Category categorDtoToCategory(CategoryDto categoryDto) {
+    public Category categoryDtoToCategory(CategoryDto categoryDto) {
         if ( categoryDto == null ) {
             return null;
         }
 
         Category.CategoryBuilder category = Category.builder();
 
-        category.section( sectionToSection( categoryDto.section() ) );
-        category.newsList( newsDtoListToNewsList( categoryDto.newsList() ) );
+        category.section( categoryDto.section() );
 
         return category.build();
     }
@@ -230,44 +230,5 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         return list1;
-    }
-
-    protected List<News> newsDtoListToNewsList(List<NewsDto> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<News> list1 = new ArrayList<News>( list.size() );
-        for ( NewsDto newsDto : list ) {
-            list1.add( newsDtoToNews( newsDto ) );
-        }
-
-        return list1;
-    }
-
-    protected ru.clevertec.newsonline.enums.Section sectionToSection(Section section) {
-        if ( section == null ) {
-            return null;
-        }
-
-        ru.clevertec.newsonline.enums.Section section1;
-
-        switch ( section ) {
-            case PEOPLE: section1 = ru.clevertec.newsonline.enums.Section.PEOPLE;
-            break;
-            case CAR: section1 = ru.clevertec.newsonline.enums.Section.CAR;
-            break;
-            case INCIDENT: section1 = ru.clevertec.newsonline.enums.Section.INCIDENT;
-            break;
-            case EVENT: section1 = ru.clevertec.newsonline.enums.Section.EVENT;
-            break;
-            case FOOD: section1 = ru.clevertec.newsonline.enums.Section.FOOD;
-            break;
-            case TRAVEL: section1 = ru.clevertec.newsonline.enums.Section.TRAVEL;
-            break;
-            default: throw new IllegalArgumentException( "Unexpected enum constant: " + section );
-        }
-
-        return section1;
     }
 }

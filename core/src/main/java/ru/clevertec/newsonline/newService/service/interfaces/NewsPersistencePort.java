@@ -17,11 +17,11 @@ public interface NewsPersistencePort{
 
     Page<NewsDto> findAll(Pageable pageable);
 
-    Optional<NewsDto> findById(UUID id);
-
     NewsDto save(NewsDto newsDto);
 
     void deleteByArticleId(int id);
+
+    void update(int id, NewsDto newsDto);
 
     List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable);
 

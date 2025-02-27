@@ -18,7 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.clevertec.newsonline.enums.Section;
+import ru.clevertec.newsonline.newService.enums.Section;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,5 +43,11 @@ public class Category implements Serializable {
     private Section section;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Builder.Default
     private List<News> newsList = new ArrayList<>();
+
+    public void addNews(News news) {
+        news.setCategory(this);
+        newsList.add(news);
+    }
 }

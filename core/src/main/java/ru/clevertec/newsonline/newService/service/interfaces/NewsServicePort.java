@@ -8,13 +8,15 @@ import java.util.Optional;
 
 public interface NewsServicePort {
 
-    Optional<NewsDto> findByArticle(int article);
+    Optional<NewsDto> findByArticleId(int article);
 
     List<NewsDto> findAll();
 
     List<NewsDto> findByPage(int pageNumber, int pageSize);
 
     Optional<NewsDto> create(NewsDto newsDto);
+
+    void update(int id, NewsDto newsDto);
 
     void delete(int id);
 

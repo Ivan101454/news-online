@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -42,7 +43,7 @@ public class Author implements Serializable {
     @Column(name = "last_name_author")
     private String lastName;
     @Column(name = "date_of_registration", nullable = false, updatable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    @CreationTimestamp
     private LocalDateTime dateOfRegistration;
     @Column(name = "phone_number")
     private String phoneNumber;

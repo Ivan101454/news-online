@@ -13,14 +13,13 @@ import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Transactional
 public class NewsService implements NewsServicePort {
 
     private final NewsPersistencePort newsPersistencePort;
 
-    public NewsService(NewsPersistencePort newsPersistencePort, AuthorPersistencePort authorPersistencePort) {
+    public NewsService(NewsPersistencePort newsPersistencePort) {
         this.newsPersistencePort = newsPersistencePort;
     }
 //    @Cacheable(value = "byIdCache", key = "#p0")
@@ -31,7 +30,7 @@ public class NewsService implements NewsServicePort {
 //    }
 
     @Override
-    public Optional<NewsDto> findByArticle(int article) {
+    public Optional<NewsDto> findByArticleId(int article) {
         return newsPersistencePort.findByArticleId(article);
     }
 
@@ -55,7 +54,7 @@ public class NewsService implements NewsServicePort {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        newsPersistencePort.save(update);
+        newsPersistencePort.update(id, update);
     }
 
     public void delete(int id) {

@@ -44,6 +44,7 @@ public class Picture implements Serializable {
             joinColumns = @JoinColumn(name = "news_id"),
             inverseJoinColumns = @JoinColumn(name = "picture_id")
     )
+    @Builder.Default
     private List<News> news = new ArrayList<>();
 
 }

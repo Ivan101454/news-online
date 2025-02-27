@@ -6,7 +6,7 @@ import jakarta.persistence.metamodel.ListAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 import java.util.UUID;
-import ru.clevertec.newsonline.enums.Role;
+import ru.clevertec.newsonline.newService.enums.Role;
 
 @StaticMetamodel(User.class)
 @Generated("org.hibernate.processor.HibernateProcessor")
