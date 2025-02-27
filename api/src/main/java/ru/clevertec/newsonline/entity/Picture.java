@@ -17,6 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +44,6 @@ public class Picture implements Serializable {
             joinColumns = @JoinColumn(name = "news_id"),
             inverseJoinColumns = @JoinColumn(name = "picture_id")
     )
-    private List<News> news;
+    private List<News> news = new ArrayList<>();
 
 }

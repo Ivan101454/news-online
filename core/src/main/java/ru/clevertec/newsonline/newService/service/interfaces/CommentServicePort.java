@@ -13,9 +13,6 @@ import java.util.UUID;
 
 public interface CommentServicePort {
 
-
-    Optional<CommentDto> findById(UUID id);
-
     List<CommentDto> findAll();
 
     List<CommentDto> findByPage(int pageNumber, int pageSize);

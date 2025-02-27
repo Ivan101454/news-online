@@ -49,7 +49,7 @@ public class NewssController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createPart(@RequestBody NewsDto newsDto,
+    public ResponseEntity<?> createPart(@Valid @RequestBody NewsDto newsDto,
                                         BindingResult bindingResult,
                                         UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if (bindingResult.hasErrors()) {

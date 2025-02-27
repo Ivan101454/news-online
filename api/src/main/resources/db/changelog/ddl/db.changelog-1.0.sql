@@ -37,6 +37,7 @@ create table news_online.comment
 create table news_online.news
 (
     news_id           uuid         DEFAULT uuid_generate_v4(),
+    article_id        int,
     content_link      varchar(255),
     date_of_news      timestamp(6) default CURRENT_TIMESTAMP,
     header_news       varchar(255),

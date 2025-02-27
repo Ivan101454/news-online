@@ -30,12 +30,13 @@ public class UserService implements UserDetailsService, UserServicePort {
         this.userPersistencePort = userPersistencePort;
         this.passwordEncoder = passwordEncoder;
     }
-    @Cacheable(value = "byIdCache", key = "#p0")
-    public Optional<UserDto> findById(UUID id) {
-        Optional<UserDto> entity = userPersistencePort.findById(id);
-        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
-        return entity;
-    }
+//    @Cacheable(value = "byIdCache", key = "#p0")
+//    public Optional<UserDto> findById(UUID id) {
+//        Optional<UserDto> entity = userPersistencePort.findById(id);
+//        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+//        return entity;
+//    }
+
 
     public List<UserDto> findAll() {
         return userPersistencePort.findAll();

@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface NewsPersistencePort{
 
+    Optional<NewsDto> findByArticleId(int id);
+
     List<NewsDto> findAll();
 
     Page<NewsDto> findAll(Pageable pageable);
@@ -19,7 +21,7 @@ public interface NewsPersistencePort{
 
     NewsDto save(NewsDto newsDto);
 
-    void delete(UUID id);
+    void deleteByArticleId(int id);
 
     List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable);
 

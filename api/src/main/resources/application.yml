@@ -3,11 +3,12 @@ spring:
     name: api
   config:
     import: optional:configserver:http://localhost:8888
-
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   cloud:
     config:
       username: catalogue_service_user
-      # Ввести свой токен security. Запустить модуль config server и взять токе из консоли
       password: 'password'
       fail-fast: true
 server:

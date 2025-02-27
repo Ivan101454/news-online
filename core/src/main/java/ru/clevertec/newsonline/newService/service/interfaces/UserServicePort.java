@@ -11,8 +11,6 @@ import java.util.UUID;
 
 public interface UserServicePort {
 
-    Optional<UserDto> findById(UUID id);
-
     List<UserDto> findAll();
 
     List<UserDto> findByPage(int pageNumber, int pageSize);

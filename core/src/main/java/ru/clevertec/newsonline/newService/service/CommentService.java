@@ -22,12 +22,12 @@ public class CommentService implements CommentServicePort {
     public CommentService(CommentPersistencePort commentPersistencePort) {
         this.commentPersistencePort = commentPersistencePort;
     }
-    @Cacheable(value = "byIdCache", key = "#p0")
-    public Optional<CommentDto> findById(UUID id) {
-        Optional<CommentDto> entity = commentPersistencePort.findById(id);
-        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
-        return entity;
-    }
+//    @Cacheable(value = "byIdCache", key = "#p0")
+//    public Optional<CommentDto> findById(UUID id) {
+//        Optional<CommentDto> entity = commentPersistencePort.findById(id);
+//        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+//        return entity;
+//    }
 
     public List<CommentDto> findAll() {
         return commentPersistencePort.findAll();

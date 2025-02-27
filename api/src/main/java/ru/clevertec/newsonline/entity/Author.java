@@ -20,6 +20,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,11 +51,14 @@ public class Author implements Serializable {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @Column(name = "write_news")
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<News> writeNews;
+    @Builder.Default
+    private List<News> writeNews = new ArrayList<>();
 
     public void addNews(News news) {
         news.setAuthor(this);
         writeNews.add(news);
     }
+
+
 
 }

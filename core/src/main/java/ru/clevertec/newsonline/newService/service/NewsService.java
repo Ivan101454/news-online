@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
+import ru.clevertec.newsonline.newService.service.interfaces.AuthorPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 
@@ -19,14 +20,19 @@ public class NewsService implements NewsServicePort {
 
     private final NewsPersistencePort newsPersistencePort;
 
-    public NewsService(NewsPersistencePort newsPersistencePort) {
+    public NewsService(NewsPersistencePort newsPersistencePort, AuthorPersistencePort authorPersistencePort) {
         this.newsPersistencePort = newsPersistencePort;
     }
-    @Cacheable(value = "byIdCache", key = "#p0")
-    public Optional<NewsDto> findById(UUID id) {
-        Optional<NewsDto> entity = newsPersistencePort.findById(id);
-        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
-        return entity;
+//    @Cacheable(value = "byIdCache", key = "#p0")
+//    public Optional<NewsDto> findById(UUID id) {
+//        Optional<NewsDto> entity = newsPersistencePort.findById(id);
+//        entity.orElseThrow(() -> new NotFoundException("Новость не найдена по ав"));
+//        return entity;
+//    }
+
+    @Override
+    public Optional<NewsDto> findByArticle(int article) {
+        return newsPersistencePort.findByArticleId(article);
     }
 
     public List<NewsDto> findAll() {
@@ -43,18 +49,18 @@ public class NewsService implements NewsServicePort {
         return Optional.ofNullable(newsDto);
     }
 
-    public void update(UUID id, NewsDto update) {
+    public void update(int id, NewsDto update) {
         try {
-            newsPersistencePort.findById(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+            newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
         newsPersistencePort.save(update);
     }
 
-    public void delete(UUID id) {
-        Optional<NewsDto> entity = newsPersistencePort.findById(id);
-        entity.ifPresentOrElse(x -> newsPersistencePort.delete(id), () -> {
+    public void delete(int id) {
+        Optional<NewsDto> entity = newsPersistencePort.findByArticleId(id);
+        entity.ifPresentOrElse(x -> newsPersistencePort.deleteByArticleId(id), () -> {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
     }

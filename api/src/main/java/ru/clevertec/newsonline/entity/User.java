@@ -21,6 +21,7 @@ import org.hibernate.annotations.FetchMode;
 import ru.clevertec.newsonline.enums.Role;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,5 +49,5 @@ public class User implements Serializable {
     private Role role;
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }

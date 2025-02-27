@@ -21,7 +21,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-26T00:41:18+0300",
+    date = "2025-02-27T17:30:27+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -34,15 +34,15 @@ public class NewsMapperImpl implements NewsMapper {
         }
 
         String headerNews = null;
+        int articleId = 0;
         AuthorDto author = null;
-        LocalDateTime dateOfNews = null;
         CategoryDto category = null;
         String shortDescription = null;
         String contentLink = null;
 
         headerNews = news.getHeaderNews();
+        articleId = news.getArticleId();
         author = authorToAuthorDto( news.getAuthor() );
-        dateOfNews = news.getDateOfNews();
         category = categoryToCategoryDto( news.getCategory() );
         shortDescription = news.getShortDescription();
         contentLink = news.getContentLink();
@@ -51,7 +51,7 @@ public class NewsMapperImpl implements NewsMapper {
         List<CommentDto> comments = null;
         boolean isPublished = false;
 
-        NewsDto newsDto = new NewsDto( headerNews, author, dateOfNews, isPublished, category, shortDescription, contentLink, pictures, comments );
+        NewsDto newsDto = new NewsDto( headerNews, articleId, author, isPublished, category, shortDescription, contentLink, pictures, comments );
 
         return newsDto;
     }
@@ -64,9 +64,8 @@ public class NewsMapperImpl implements NewsMapper {
 
         News.NewsBuilder news = News.builder();
 
+        news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
-        news.author( authorDtoToAuthor( newsDto.author() ) );
-        news.dateOfNews( newsDto.dateOfNews() );
         news.isPublished( newsDto.isPublished() );
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );

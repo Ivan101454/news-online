@@ -24,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,8 @@ public class News implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "news_id")
     private UUID newsId;
+    @Column(name = "article_id")
+    private int articleId;
     @Column(name = "header_news")
     private String headerNews;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -59,10 +62,10 @@ public class News implements Serializable {
     private String contentLink;
     @ManyToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<Picture> pictures;
+    private List<Picture> pictures = new ArrayList<>();
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public void addPicture(Picture picture) {
         List<News> news = picture.getNews();

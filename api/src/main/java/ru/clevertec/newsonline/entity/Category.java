@@ -21,6 +21,7 @@ import org.hibernate.annotations.FetchMode;
 import ru.clevertec.newsonline.enums.Section;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,5 +43,5 @@ public class Category implements Serializable {
     private Section section;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<News> newsList;
+    private List<News> newsList = new ArrayList<>();
 }
