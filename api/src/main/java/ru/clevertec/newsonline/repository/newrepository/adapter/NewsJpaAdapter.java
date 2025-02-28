@@ -8,6 +8,7 @@ import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.exception.NotFoundException;
+import ru.clevertec.newsonline.mapper.JpaContext;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
@@ -33,6 +34,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     private final CategoryRepository categoryRepository;
     private final IFilterEntityRepository<News, NewsFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
+    private final JpaContext jpaCtx;
 
     @Override
     public List<NewsDto> findAll() {
@@ -54,7 +56,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         AuthorDto authorDto = newsDto.author();
         CategoryDto categoryDto = newsDto.category();
         Section section = categoryDto.section();
-        News newsSave = newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto));
+        News newsSave = newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx));
         Optional<Author> author = authorRepository.findByNameAuthorIgnoreCaseAndLastNameIgnoreCase(authorDto.nameAuthor(), authorDto.lastName());
         if (author.isPresent()) {
             author.ifPresent(x -> x.addNews(newsSave));

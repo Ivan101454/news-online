@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -56,5 +58,10 @@ public class NewsController {
     public ResponseEntity<Void> deleteNews(@ModelAttribute("news") NewsDto newsDto) {
         newsServicePort.delete(newsDto.articleId());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("comments")
+    public List<CommentDto> getComments(@ModelAttribute("news") NewsDto newsDto) {
+        return newsDto.comments();
     }
 }

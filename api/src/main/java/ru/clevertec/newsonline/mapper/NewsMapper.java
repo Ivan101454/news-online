@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.mapper;
 
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -20,16 +21,16 @@ public interface NewsMapper {
 
     NewsMapper INSTANCE = Mappers.getMapper(NewsMapper.class);
 
-    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "isPublished", ignore = true)})
+    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "isPublished", ignore = true)})
     NewsDto newsToNewsDto(News news);
 
-    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "comments", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})
-    News newsDtoToNews(NewsDto newsDto);
+    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})
+    News newsDtoToNews(NewsDto newsDto, @Context JpaContext ctx);
 
     CommentDto commentToCommentDto(Comment comment);
 
-    @Mappings({@Mapping(target = "commentId", ignore = true)})
-    Comment commentDtoToComment(CommentDto commentDto);
+    @Mappings({@Mapping(target = "news", ignore = true)})
+    Comment commentDtoToComment(CommentDto commentDto, @Context JpaContext ctx);
 
     @Mappings({@Mapping(target = "role", ignore = true), @Mapping(target = "comments", ignore = true)})
     UserDto userToUserDto(User user);

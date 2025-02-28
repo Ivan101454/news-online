@@ -3,6 +3,7 @@ package ru.clevertec.newsonline.mapper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import ru.clevertec.newsonline.entity.Author;
@@ -21,7 +22,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-28T00:07:29+0300",
+    date = "2025-02-28T23:33:32+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -33,31 +34,34 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
+        UUID newsId = null;
         String headerNews = null;
         int articleId = 0;
         AuthorDto author = null;
         CategoryDto category = null;
         String shortDescription = null;
         String contentLink = null;
+        List<CommentDto> comments = null;
 
+        newsId = news.getNewsId();
         headerNews = news.getHeaderNews();
         articleId = news.getArticleId();
         author = authorToAuthorDto( news.getAuthor() );
         category = categoryToCategoryDto( news.getCategory() );
         shortDescription = news.getShortDescription();
         contentLink = news.getContentLink();
+        comments = commentListToCommentDtoList( news.getComments() );
 
         List<PictureDto> pictures = null;
-        List<CommentDto> comments = null;
         boolean isPublished = false;
 
-        NewsDto newsDto = new NewsDto( headerNews, articleId, author, isPublished, category, shortDescription, contentLink, pictures, comments );
+        NewsDto newsDto = new NewsDto( newsId, headerNews, articleId, author, isPublished, category, shortDescription, contentLink, pictures, comments );
 
         return newsDto;
     }
 
     @Override
-    public News newsDtoToNews(NewsDto newsDto) {
+    public News newsDtoToNews(NewsDto newsDto, JpaContext ctx) {
         if ( newsDto == null ) {
             return null;
         }
@@ -69,6 +73,7 @@ public class NewsMapperImpl implements NewsMapper {
         news.isPublished( newsDto.isPublished() );
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );
+        news.comments( commentDtoListToCommentList( newsDto.comments(), ctx ) );
 
         return news.build();
     }
@@ -79,33 +84,33 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
+        UUID commentId = null;
         LocalDateTime dateOfComment = null;
         String textComment = null;
         UserDto authorComment = null;
-        NewsDto news = null;
 
+        commentId = comment.getCommentId();
         dateOfComment = comment.getDateOfComment();
         textComment = comment.getTextComment();
         authorComment = userToUserDto( comment.getAuthorComment() );
-        news = newsToNewsDto( comment.getNews() );
 
-        CommentDto commentDto = new CommentDto( dateOfComment, textComment, authorComment, news );
+        CommentDto commentDto = new CommentDto( commentId, dateOfComment, textComment, authorComment );
 
         return commentDto;
     }
 
     @Override
-    public Comment commentDtoToComment(CommentDto commentDto) {
+    public Comment commentDtoToComment(CommentDto commentDto, JpaContext ctx) {
         if ( commentDto == null ) {
             return null;
         }
 
         Comment.CommentBuilder comment = Comment.builder();
 
+        comment.commentId( commentDto.commentId() );
         comment.dateOfComment( commentDto.dateOfComment() );
         comment.textComment( commentDto.textComment() );
         comment.authorComment( userDtoToUser( commentDto.authorComment() ) );
-        comment.news( newsDtoToNews( commentDto.news() ) );
 
         return comment.build();
     }
@@ -143,7 +148,7 @@ public class NewsMapperImpl implements NewsMapper {
         user.username( userDto.username() );
         user.login( userDto.login() );
         user.password( userDto.password() );
-        user.comments( commentDtoListToCommentList( userDto.comments() ) );
+        user.comments( commentDtoListToCommentList1( userDto.comments() ) );
 
         return user.build();
     }
@@ -219,14 +224,55 @@ public class NewsMapperImpl implements NewsMapper {
         return category.build();
     }
 
-    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list) {
+    protected List<CommentDto> commentListToCommentDtoList(List<Comment> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<CommentDto> list1 = new ArrayList<CommentDto>( list.size() );
+        for ( Comment comment : list ) {
+            list1.add( commentToCommentDto( comment ) );
+        }
+
+        return list1;
+    }
+
+    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list, JpaContext ctx) {
         if ( list == null ) {
             return null;
         }
 
         List<Comment> list1 = new ArrayList<Comment>( list.size() );
         for ( CommentDto commentDto : list ) {
-            list1.add( commentDtoToComment( commentDto ) );
+            list1.add( commentDtoToComment( commentDto, ctx ) );
+        }
+
+        return list1;
+    }
+
+    protected Comment commentDtoToComment1(CommentDto commentDto) {
+        if ( commentDto == null ) {
+            return null;
+        }
+
+        Comment.CommentBuilder comment = Comment.builder();
+
+        comment.commentId( commentDto.commentId() );
+        comment.dateOfComment( commentDto.dateOfComment() );
+        comment.textComment( commentDto.textComment() );
+        comment.authorComment( userDtoToUser( commentDto.authorComment() ) );
+
+        return comment.build();
+    }
+
+    protected List<Comment> commentDtoListToCommentList1(List<CommentDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<Comment> list1 = new ArrayList<Comment>( list.size() );
+        for ( CommentDto commentDto : list ) {
+            list1.add( commentDtoToComment1( commentDto ) );
         }
 
         return list1;
