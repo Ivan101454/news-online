@@ -66,11 +66,5 @@ public class NewssController {
                             .build(Map.of("article", newsDto.articleId())))
                     .body(news);
         }
-
     }
-
-
-
-
-
 }

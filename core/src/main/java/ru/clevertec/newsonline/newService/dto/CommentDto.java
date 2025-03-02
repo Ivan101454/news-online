@@ -11,7 +11,5 @@ public record CommentDto(
         UUID commentId,
         LocalDateTime dateOfComment,
         @NotEmpty(message = "{catalogue.errors.comment.text_is_invalid}")
-        String textComment,
-        @NotNull(message = "{catalogue.errors.comment.text_is_invalid}")
-        UserDto authorComment) {
+        String textComment) {
 }

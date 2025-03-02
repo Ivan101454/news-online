@@ -60,6 +60,8 @@ public class Author implements Serializable {
         writeNews.add(news);
     }
 
-
+    public void removeNews(News news) {
+        writeNews.remove(news);
+    }
 
 }

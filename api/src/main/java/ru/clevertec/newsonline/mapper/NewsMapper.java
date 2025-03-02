@@ -21,32 +21,29 @@ public interface NewsMapper {
 
     NewsMapper INSTANCE = Mappers.getMapper(NewsMapper.class);
 
-    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "isPublished", ignore = true)})
+    @Mappings({@Mapping(target = "pictures", ignore = true)})
     NewsDto newsToNewsDto(News news);
 
     @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})
-    News newsDtoToNews(NewsDto newsDto, @Context JpaContext ctx);
+    News newsDtoToNews(NewsDto newsDto, @Context JpaContextNews ctx, @Context JpaContextAuthor ctxA);
 
     CommentDto commentToCommentDto(Comment comment);
 
-    @Mappings({@Mapping(target = "news", ignore = true)})
-    Comment commentDtoToComment(CommentDto commentDto, @Context JpaContext ctx);
+    @Mappings({@Mapping(target = "news", ignore = true), @Mapping(target = "commentId", ignore = true), @Mapping(target = "dateOfComment", ignore = true)})
+    Comment commentDtoToComment(CommentDto commentDto, @Context JpaContextNews ctx, @Context JpaContextUser ctxU);
 
-    @Mappings({@Mapping(target = "role", ignore = true), @Mapping(target = "comments", ignore = true)})
     UserDto userToUserDto(User user);
 
-    @Mappings({@Mapping(target = "userId", ignore = true), @Mapping(target = "role", ignore = true)})
-    User userDtoToUser(UserDto userDto);
+    @Mappings({@Mapping(target = "userId", ignore = true)})
+    User userDtoToUser(UserDto userDto, @Context JpaContextUser ctxU);
 
-    @Mappings({@Mapping(target = "writeNews", ignore = true)})
     AuthorDto authorToAuthorDto(Author author);
 
-    @Mappings({@Mapping(target = "authorId", ignore = true), @Mapping(target = "dateOfRegistration", ignore = true), @Mapping(target = "writeNews", ignore = true)})
-    Author authorDtoToAuthor(AuthorDto authorDto);
+    @Mappings({@Mapping(target = "authorId", ignore = true), @Mapping(target = "dateOfRegistration", ignore = true)})
+    Author authorDtoToAuthor(AuthorDto authorDto, @Context JpaContextAuthor ctxA);
 
-    @Mappings({@Mapping(target = "newsList", ignore = true)})
     CategoryDto categoryToCategoryDto(Category category);
 
-    @Mappings({@Mapping(target = "categoryId", ignore = true), @Mapping(target = "newsList", ignore = true)})
+    @Mappings({@Mapping(target = "categoryId", ignore = true)})
     Category categoryDtoToCategory(CategoryDto categoryDto);
 }

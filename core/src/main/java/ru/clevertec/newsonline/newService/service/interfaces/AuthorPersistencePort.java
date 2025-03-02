@@ -16,7 +16,7 @@ public interface AuthorPersistencePort {
 
     List<AuthorDto> findAll(Pageable pageable);
 
-    AuthorDto create(AuthorDto authorDto);
+    AuthorDto save(AuthorDto authorDto);
 
     void delete(UUID id);
 }

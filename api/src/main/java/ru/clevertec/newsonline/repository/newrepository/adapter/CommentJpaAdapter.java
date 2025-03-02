@@ -5,7 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.newsonline.entity.Comment;
-import ru.clevertec.newsonline.mapper.JpaContext;
+import ru.clevertec.newsonline.mapper.JpaContextNews;
+import ru.clevertec.newsonline.mapper.JpaContextUser;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.filter.CommentFilter;
@@ -25,7 +26,8 @@ public class CommentJpaAdapter implements CommentPersistencePort {
     private final CommentRepository commentRepository;
     private final IFilterEntityRepository<Comment, CommentFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
-    private final JpaContext jpaCtx;
+    private final JpaContextNews jpaCtx;
+    private final JpaContextUser ctxU;
 
     @Override
     public List<CommentDto> findAll() {
@@ -44,7 +46,7 @@ public class CommentJpaAdapter implements CommentPersistencePort {
 
     @Override
     public CommentDto save(CommentDto commentDto) {
-        commentRepository.save(newsMapper.commentDtoToComment(commentDto, jpaCtx));
+        commentRepository.save(newsMapper.commentDtoToComment(commentDto, jpaCtx, ctxU));
         return commentDto;
     }
 

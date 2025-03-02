@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.newsonline.entity.User;
+import ru.clevertec.newsonline.mapper.JpaContextUser;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.UserDto;
 import ru.clevertec.newsonline.newService.filter.UserFilter;
@@ -25,6 +26,7 @@ public class UserJpaAdapter implements UserPersistencePort {
     private final UserRepository userRepository;
     private final IFilterEntityRepository<User, UserFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
+    private final JpaContextUser ctxU;
 
     @Override
     public List<UserDto> findAll() {
@@ -43,7 +45,7 @@ public class UserJpaAdapter implements UserPersistencePort {
 
     @Override
     public UserDto save(UserDto userDto) {
-        userRepository.save(newsMapper.userDtoToUser(userDto));
+        userRepository.save(newsMapper.userDtoToUser(userDto, ctxU));
         return userDto;
     }
 

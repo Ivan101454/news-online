@@ -8,7 +8,8 @@ import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.exception.NotFoundException;
-import ru.clevertec.newsonline.mapper.JpaContext;
+import ru.clevertec.newsonline.mapper.JpaContextAuthor;
+import ru.clevertec.newsonline.mapper.JpaContextNews;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
@@ -34,7 +35,8 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     private final CategoryRepository categoryRepository;
     private final IFilterEntityRepository<News, NewsFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
-    private final JpaContext jpaCtx;
+    private final JpaContextNews jpaCtx;
+    private final JpaContextAuthor jpaCtxA;
 
     @Override
     public List<NewsDto> findAll() {
@@ -53,29 +55,14 @@ public class NewsJpaAdapter implements NewsPersistencePort {
 
     @Override
     public NewsDto save(NewsDto newsDto) {
-        AuthorDto authorDto = newsDto.author();
-        CategoryDto categoryDto = newsDto.category();
-        Section section = categoryDto.section();
-        News newsSave = newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx));
-        Optional<Author> author = authorRepository.findByNameAuthorIgnoreCaseAndLastNameIgnoreCase(authorDto.nameAuthor(), authorDto.lastName());
-        if (author.isPresent()) {
-            author.ifPresent(x -> x.addNews(newsSave));
-        } else {
-            Author authorMap = newsMapper.authorDtoToAuthor(authorDto);
-            Author save = authorRepository.saveAndFlush(authorMap);
-            save.addNews(newsSave);
-        }
-        Optional<Category> bySection = categoryRepository.findBySection(section);
-        if(bySection.isPresent()) {
-            bySection.ifPresent(x -> x.addNews(newsSave));
-        }
+        newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA));
         return newsDto;
     }
 
     @Override
     public void deleteByArticleId(int id) {
         newsRepository.findByArticleId(id)
-                .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет такого пользователя");});
+                .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет новости с таким артиклем");});
     }
 
     @Override

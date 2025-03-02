@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class Comment implements Serializable {
     @Column(name = "comment_id")
     private UUID commentId;
     @Column(name = "date_of_comment", updatable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    @CreationTimestamp
     private LocalDateTime dateOfComment;
     @Column(name = "text_comment")
     private String textComment;

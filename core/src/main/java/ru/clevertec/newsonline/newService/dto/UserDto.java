@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import ru.clevertec.newsonline.newService.enums.Role;
 
 import java.util.List;
+import java.util.UUID;
 
 public record UserDto(
+        UUID userId,
         @NotBlank(message = "{catalogue.errors.user.name_is_invalid}")
         String username,
         @NotBlank(message = "{catalogue.errors.user.login_is_invalid}")

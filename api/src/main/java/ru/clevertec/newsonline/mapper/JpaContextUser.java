@@ -7,25 +7,22 @@ import org.mapstruct.BeforeMapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Component;
 import ru.clevertec.newsonline.entity.Comment;
-import ru.clevertec.newsonline.entity.News;
-import ru.clevertec.newsonline.newService.dto.CommentDto;
-import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.entity.User;
 
 @RequiredArgsConstructor
 @Component
-public class JpaContext {
+public class JpaContextUser {
 
     private final EntityManager entityManager;
-    private News news;
+    private User user;
 
     @BeforeMapping
-    public void setEntity(@MappingTarget News news) {
-        this.news = news;
+    public void setEntity(@MappingTarget User user) {
+        this.user = user;
     }
 
     @AfterMapping
     private void establishRelation(@MappingTarget Comment comment) {
-        comment.setNews(news);
+        comment.setAuthorComment(user);
     }
-
 }
