@@ -23,7 +23,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-02T21:30:44+0300",
+    date = "2025-03-02T23:40:39+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 21.0.5 (Amazon.com Inc.)"
 )
 @Component
@@ -35,7 +35,6 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
-        UUID newsId = null;
         String headerNews = null;
         LocalDateTime dateOfNews = null;
         int articleId = 0;
@@ -43,7 +42,6 @@ public class NewsMapperImpl implements NewsMapper {
         String contentLink = null;
         List<CommentDto> comments = null;
 
-        newsId = news.getNewsId();
         headerNews = news.getHeaderNews();
         dateOfNews = news.getDateOfNews();
         articleId = news.getArticleId();
@@ -54,7 +52,7 @@ public class NewsMapperImpl implements NewsMapper {
         List<PictureDto> pictures = null;
         boolean isPublished = false;
 
-        NewsDto newsDto = new NewsDto( newsId, headerNews, dateOfNews, articleId, isPublished, shortDescription, contentLink, pictures, comments );
+        NewsDto newsDto = new NewsDto( headerNews, dateOfNews, articleId, isPublished, shortDescription, contentLink, pictures, comments );
 
         return newsDto;
     }
@@ -83,15 +81,13 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
-        UUID commentId = null;
         LocalDateTime dateOfComment = null;
         String textComment = null;
 
-        commentId = comment.getCommentId();
         dateOfComment = comment.getDateOfComment();
         textComment = comment.getTextComment();
 
-        CommentDto commentDto = new CommentDto( commentId, dateOfComment, textComment );
+        CommentDto commentDto = new CommentDto( dateOfComment, textComment );
 
         return commentDto;
     }
@@ -199,15 +195,13 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
-        UUID categoryId = null;
         Section section = null;
         List<NewsDto> newsList = null;
 
-        categoryId = category.getCategoryId();
         section = category.getSection();
         newsList = newsListToNewsDtoList( category.getNewsList() );
 
-        CategoryDto categoryDto = new CategoryDto( categoryId, section, newsList );
+        CategoryDto categoryDto = new CategoryDto( section, newsList );
 
         return categoryDto;
     }
@@ -246,7 +240,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
-        comment.commentId( commentDto.commentId() );
         comment.dateOfComment( commentDto.dateOfComment() );
         comment.textComment( commentDto.textComment() );
 
@@ -273,7 +266,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
-        comment.commentId( commentDto.commentId() );
         comment.dateOfComment( commentDto.dateOfComment() );
         comment.textComment( commentDto.textComment() );
 
@@ -313,7 +305,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Picture.PictureBuilder picture = Picture.builder();
 
-        picture.pictureId( pictureDto.pictureId() );
         picture.nameOfPicture( pictureDto.nameOfPicture() );
         picture.linkOnPicture( pictureDto.linkOnPicture() );
         picture.news( newsDtoListToNewsList( pictureDto.news(), ctxA ) );
@@ -341,7 +332,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
-        comment.commentId( commentDto.commentId() );
         comment.dateOfComment( commentDto.dateOfComment() );
         comment.textComment( commentDto.textComment() );
 
@@ -368,7 +358,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         News.NewsBuilder news = News.builder();
 
-        news.newsId( newsDto.newsId() );
         news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
         news.dateOfNews( newsDto.dateOfNews() );
@@ -401,7 +390,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Picture.PictureBuilder picture = Picture.builder();
 
-        picture.pictureId( pictureDto.pictureId() );
         picture.nameOfPicture( pictureDto.nameOfPicture() );
         picture.linkOnPicture( pictureDto.linkOnPicture() );
         picture.news( newsDtoListToNewsList1( pictureDto.news() ) );
@@ -429,7 +417,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
-        comment.commentId( commentDto.commentId() );
         comment.dateOfComment( commentDto.dateOfComment() );
         comment.textComment( commentDto.textComment() );
 
@@ -456,7 +443,6 @@ public class NewsMapperImpl implements NewsMapper {
 
         News.NewsBuilder news = News.builder();
 
-        news.newsId( newsDto.newsId() );
         news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
         news.dateOfNews( newsDto.dateOfNews() );

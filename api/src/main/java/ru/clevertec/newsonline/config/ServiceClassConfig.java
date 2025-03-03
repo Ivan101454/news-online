@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import ru.clevertec.newsonline.newService.service.NewsService;
+import ru.clevertec.newsonline.newService.service.UserService;
 import ru.clevertec.newsonline.repository.newrepository.adapter.NewsJpaAdapter;
+import ru.clevertec.newsonline.repository.newrepository.adapter.UserJpaAdapter;
 
 
 @Configuration
@@ -18,6 +20,11 @@ public class ServiceClassConfig {
     @Bean
     public NewsService createNewsService(NewsJpaAdapter newsJpaAdapter) {
         return new NewsService(newsJpaAdapter);
+    }
+
+    @Bean
+    public UserService createUserService(UserJpaAdapter userJpaAdapter) {
+        return new UserService(userJpaAdapter);
     }
 
     @Bean

@@ -21,22 +21,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Transactional
-public class UserService implements UserDetailsService, UserServicePort {
+public class UserService implements UserServicePort {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserPersistencePort userPersistencePort;
 
-    public UserService(UserPersistencePort userPersistencePort, PasswordEncoder passwordEncoder) {
+    public UserService(UserPersistencePort userPersistencePort) {
         this.userPersistencePort = userPersistencePort;
-        this.passwordEncoder = passwordEncoder;
     }
-//    @Cacheable(value = "byIdCache", key = "#p0")
-//    public Optional<UserDto> findById(UUID id) {
-//        Optional<UserDto> entity = userPersistencePort.findById(id);
-//        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
-//        return entity;
-//    }
-
+    @Cacheable(value = "byIdCache", key = "#p0")
+    public Optional<UserDto> findById(UUID id) {
+        Optional<UserDto> entity = userPersistencePort.findById(id);
+        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+        return entity;
+    }
 
     public List<UserDto> findAll() {
         return userPersistencePort.findAll();
@@ -52,20 +49,25 @@ public class UserService implements UserDetailsService, UserServicePort {
         return Optional.ofNullable(userDto);
     }
 
-    public void update(UUID id, UserDto update) {
+    public void update(String username, UserDto update) {
         try {
-            userPersistencePort.findById(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+            userPersistencePort.findUserByUsername(username).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
         userPersistencePort.save(update);
     }
 
-    public void delete(UUID id) {
-        Optional<UserDto> entity = userPersistencePort.findById(id);
-        entity.ifPresentOrElse(x -> userPersistencePort.delete(id), () -> {
+    public void delete(String username) {
+        Optional<UserDto> entity = userPersistencePort.findUserByUsername(username);
+        entity.ifPresentOrElse(x -> userPersistencePort.delete(x.userId()), () -> {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
+    }
+
+    @Override
+    public Optional<UserDto> findUserByUsername(String username) {
+        return userPersistencePort.findUserByUsername(username);
     }
 
     @Override
@@ -73,14 +75,5 @@ public class UserService implements UserDetailsService, UserServicePort {
         return userPersistencePort.filterWord(filer, pageable);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userPersistencePort.findUserByUsername(username).map(user ->
 
-                User.withUsername(userPersistencePort.getUsername(username))
-                        .password(passwordEncoder.encode(userPersistencePort.getPassword(username)))
-                        .authorities(Collections.singleton(userPersistencePort.getRole(username)))
-                        .build())
-        .orElseThrow(() -> new NotFoundException("User не найден: " + username));
-    }
 }

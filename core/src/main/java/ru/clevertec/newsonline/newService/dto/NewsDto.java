@@ -6,10 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public record NewsDto(
-        UUID newsId,
         @NotEmpty(message = "{catalogue.errors.news.title_header_is_invalid}")
         String headerNews,
         LocalDateTime dateOfNews,

@@ -30,8 +30,8 @@ public class NewsController {
     private final NewsServicePort newsServicePort;
 
     @ModelAttribute("news")
-    public NewsDto getProduct(@PathVariable("newsArticle") int newsArticle) {
-        return newsServicePort.findByArticleId(newsArticle).orElseThrow(() -> new NoSuchElementException("catalogue.errors.product.not_found"));
+    public NewsDto getNews(@PathVariable("newsArticle") int newsArticle) {
+        return newsServicePort.findByArticleId(newsArticle).orElseThrow(() -> new NoSuchElementException("{catalogue.errors.news.not_found}"));
     }
 
     @GetMapping()
@@ -64,4 +64,6 @@ public class NewsController {
     public List<CommentDto> getComments(@ModelAttribute("news") NewsDto newsDto) {
         return newsDto.comments();
     }
+
+
 }
