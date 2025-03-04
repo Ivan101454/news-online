@@ -11,6 +11,26 @@ spring:
       username: catalogue_service_user
       password: 'password'
       fail-fast: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/news
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: api
+            client-secret: HSDuGRBd7EAziOm13ItRTlNfRNzDsbcv
+            scope:
+              - openid
+              - edit_catalogue
+              - get_settings
+              - microprofile-jwt
+
+
+
+
 server:
   port: 8080
 #  datasource:
