@@ -3,6 +3,7 @@ package ru.clevertec.newsonline.newService.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import ru.clevertec.newsonline.newService.enums.Section;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ public record NewsDto(
         String shortDescription,
         @NotEmpty(message = "{catalogue.errors.news.content_link_is_invalid}")
         String contentLink,
+        Section section,
         List<PictureDto> pictures,
         List<CommentDto> comments) {
 }

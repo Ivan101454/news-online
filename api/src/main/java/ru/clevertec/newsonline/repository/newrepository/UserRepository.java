@@ -1,7 +1,7 @@
 package ru.clevertec.newsonline.repository.newrepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.newsonline.entity.User;
 
@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     default String getPassword(String username) {
         return findUserByUsername(username).orElseThrow().getPassword();
     }
-    default GrantedAuthority getRole(String username) {
-        return findUserByUsername(username).orElseThrow().getRole();
-    }
+//    default GrantedAuthority getRole(String username) {
+//        return findUserByUsername(username).orElseThrow().getRole();
+//    }
 
 }

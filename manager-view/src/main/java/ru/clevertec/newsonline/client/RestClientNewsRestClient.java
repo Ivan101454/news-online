@@ -69,7 +69,7 @@ public class RestClientNewsRestClient implements NewsRestClient {
     public Optional<NewsDto> findNews(int articleId) {
         try {
             return Optional.of(restClient.get()
-                    .uri("/catalogue-api/parts/{newsArticle}", articleId)
+                    .uri("/catalogue-api/news/{newsArticle}", articleId)
                     .retrieve()
                     .body(NewsDto.class));
         } catch (HttpClientErrorException.NotFound exception) {

@@ -8,7 +8,7 @@
 <body>
 <a data-th-href="@{/manager-api/news/create}">&llarr; Создать новую новость</a>
 <h1>Список новостей</h1>
-<form method="get" data-th-action="@{/catalogue/parts/list}">
+<form method="get" data-th-action="@{/manager-api/news/list}">
     <label>по заголовку:<input type="text" name="headerNews" data-th-value="${headerNews}">
     </label><br>
     <label>по описанию:<input type="text" name="shortDescription" data-th-value="${shortDescription}">
@@ -27,7 +27,7 @@
     <tr data-th-each="news : ${list}">
         <td data-th-text="${news.articleId}"></td>
         <td>
-            <a data-th-href="@{/manager-api/news/{articleId}(articleId=${part.articleId})}"
+            <a data-th-href="@{/manager-api/news/{articleId}(articleId=${news.articleId})}"
                data-th-text="${news.headerNews}"></a>
         </td>
         <td data-th-text="${news.shortDescription}"></td>

@@ -1,6 +1,5 @@
 package ru.clevertec.newsonline.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +47,7 @@ public class NewssController {
 
     @GetMapping("create")
     public String getCreateNewsPage() {
-        return "catalogue/products/create_news";
+        return "catalogue/news/create";
     }
 
     @PostMapping("create")
@@ -58,7 +57,7 @@ public class NewssController {
         } catch (BadRequestException exception) {
             model.addAttribute("news", newsDto);
             model.addAttribute("errors", exception.getErrors());
-            return "catalogue/products/create_news";
+            return "create";
         }
     }
 }

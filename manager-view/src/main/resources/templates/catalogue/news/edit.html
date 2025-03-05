@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование новости &laquo;[[${news.articleId}]]&raquo; &ndash; NEWSONLINE</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<a data-th-href="@{/manager-api/news/{articleId}(articleId=${news.articleId()})}">&llarr; К новости</a>
+<h1>Редактирование новости &laquo;[[${news.headerNews}]]&raquo;</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error:${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">
+    <label>
+        Заголовок новости:<br>
+        <textarea type="text" name="headerNews" data-th-text="${newsUpdate != null ? newsUpdate.headerNews : news.headerNews}" rows="10" cols="50"></textarea>
+    </label><br>
+    <label>
+        Краткое описание:<br>
+        <textarea type="text" name="shortDescription" data-th-text="${newsUpdate != null ? newsUpdate.shortDescription : news.shortDescription}" rows="10" cols="50"></textarea>
+    </label><br>
+    <label>
+        Ссылка:<br>
+        <input type="text" name="shortDescription" data-th-value="${newsUpdate != null ? newsUpdate.shortDescription : news.shortDescription}">
+    </label><br>
+    <label>
+        Категория:<br>
+        <select name="category">
+            <option data-th-each="kind: ${section}" data-th-value="${kind}" data-th-text="${kind}"></option>
+        </select>
+    </label><br>
+    <button type="submit">Изменить</button>
+</form>
+</body>
+</html>

@@ -1,2 +1,28 @@
+news:
+  services:
+    catalogue:
+      uri: http://localhost:8081
 server:
   port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/news
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: api
+            client-secret: HSDuGRBd7EAziOm13ItRTlNfRNzDsbcv
+            scope:
+              - openid
+              - edit_catalogue
+              - get_settings
+              - microprofile-jwt

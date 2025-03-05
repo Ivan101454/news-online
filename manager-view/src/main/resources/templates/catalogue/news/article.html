@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${news.headerNews}]] &ndash; Магазин автозапчастей</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<h1 data-th-text="${news.headerNews}"></h1>
+<ul>
+    <li><strong>Article: </strong>: <span data-th-text="${news.articleId}"></span></li>
+    <li><strong>Header: </strong>: <span data-th-text="${news.headerNews}"></span></li>
+    <li><strong>Date: </strong>: <span data-th-text="${news.dateOfNews}"></span></li>
+    <li><strong>Description: </strong>: <span data-th-text="${news.shortDescription}"></span></li>
+</ul>
+<a data-th-href="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">&llarr; Редактировать</a><br>
+<a data-th-href="@{/manager-api/news/list}">&llarr; К списку запчастей</a>
+<form method="post" data-th-action="@{/manager-api/news/{articleId}/delete(articleId=${news.articleId})}">
+    <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

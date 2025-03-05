@@ -3,7 +3,7 @@ package ru.clevertec.newsonline.repository.newrepository.adapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.newsonline.entity.User;
 import ru.clevertec.newsonline.mapper.JpaContextUser;
@@ -76,8 +76,8 @@ public class UserJpaAdapter implements UserPersistencePort {
         return findUserByUsername(username).orElseThrow().password();
     }
 
-    @Override
-    public GrantedAuthority getRole(String username) {
-        return findUserByUsername(username).orElseThrow().role();
-    }
+//    @Override
+//    public GrantedAuthority getRole(String username) {
+//        return findUserByUsername(username).orElseThrow().role();
+//    }
 }
