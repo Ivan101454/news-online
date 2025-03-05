@@ -25,7 +25,7 @@ public class NewssController {
 
     @ModelAttribute
     public void populateModel(Model model) {
-        model.addAttribute("countries", Section.values());
+        model.addAttribute("section", Section.values());
     }
 
     @GetMapping("list")
@@ -37,11 +37,13 @@ public class NewssController {
         List<NewsDto> newsList;
         if (headerNews != null && shortDescription != null) {
             newsList = newsRestClient.findNewsByFilter(headerNews, shortDescription, pageNumber, pageSize);
+            model.addAttribute("headerNews", headerNews);
+            model.addAttribute("shortDescription", shortDescription);
         } else {
             newsList = newsRestClient.findNewsWithPagination(pageNumber, pageSize);
         }
-        model.addAttribute("news-list", newsList);
-        return "catalogue/parts/list";
+        model.addAttribute("list", newsList);
+        return "catalogue/news/list";
     }
 
     @GetMapping("create")
@@ -52,7 +54,7 @@ public class NewssController {
     @PostMapping("create")
     public String createNews(NewsDto newsDto, Model model) {
         try {
-            return "redirect:/catalogue/news/%d".formatted(newsDto.articleId());
+            return "redirect:/manager-api/news/%d".formatted(newsDto.articleId());
         } catch (BadRequestException exception) {
             model.addAttribute("news", newsDto);
             model.addAttribute("errors", exception.getErrors());

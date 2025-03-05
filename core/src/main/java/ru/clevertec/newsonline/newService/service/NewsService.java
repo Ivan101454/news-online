@@ -65,9 +65,9 @@ public class NewsService implements NewsServicePort {
     }
 
     @Override
-    public List<NewsDto> findEntityByFilter(NewsFilter filer, int pageNumber, int pageSize) {
+    public List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-        return newsPersistencePort.filterWord(filer, pageable);
+        return newsPersistencePort.filterWord(filter, pageable);
     }
 
 }

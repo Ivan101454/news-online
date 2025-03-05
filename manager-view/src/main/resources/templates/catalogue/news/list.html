@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новостная лента &ndash; NEWONLINE</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<a data-th-href="@{/manager-api/news/create}">&llarr; Создать новую новость</a>
+<h1>Список новостей</h1>
+<form method="get" data-th-action="@{/catalogue/parts/list}">
+    <label>по заголовку:<input type="text" name="headerNews" data-th-value="${headerNews}">
+    </label><br>
+    <label>по описанию:<input type="text" name="shortDescription" data-th-value="${shortDescription}">
+    </label><br>
+    <button type="submit">Поиск</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Заголовок</th>
+        <th>Содержание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="news : ${list}">
+        <td data-th-text="${news.articleId}"></td>
+        <td>
+            <a data-th-href="@{/manager-api/news/{articleId}(articleId=${part.articleId})}"
+               data-th-text="${news.headerNews}"></a>
+        </td>
+        <td data-th-text="${news.shortDescription}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
