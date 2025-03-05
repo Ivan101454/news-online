@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   application:
     name: api
@@ -27,12 +29,6 @@ spring:
               - edit_catalogue
               - get_settings
               - microprofile-jwt
-
-
-
-
-server:
-  port: 8080
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/demo
 #    username: postgres
