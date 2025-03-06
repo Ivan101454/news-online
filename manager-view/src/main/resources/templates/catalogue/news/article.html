@@ -14,7 +14,7 @@
     <li><strong>Description: </strong>: <span data-th-text="${news.shortDescription}"></span></li>
 </ul>
 <a data-th-href="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">&llarr; Редактировать</a><br>
-<a data-th-href="@{/manager-api/news/list}">&llarr; К списку запчастей</a>
+<a data-th-href="@{/manager-api/news/list}">&llarr; К списку новостей</a>
 <form method="post" data-th-action="@{/manager-api/news/{articleId}/delete(articleId=${news.articleId})}">
     <button type="submit">Удалить</button>
 </form>
