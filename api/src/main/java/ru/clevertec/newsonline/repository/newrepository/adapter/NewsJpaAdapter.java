@@ -31,8 +31,6 @@ import java.util.Optional;
 public class NewsJpaAdapter implements NewsPersistencePort {
 
     private final NewsRepository newsRepository;
-    private final AuthorRepository authorRepository;
-    private final CategoryRepository categoryRepository;
     private final IFilterEntityRepository<News, NewsFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
     private final JpaContextNews jpaCtx;

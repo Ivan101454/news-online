@@ -45,9 +45,9 @@ public class NewsController {
     }
 
     @PostMapping("edit")
-    public String updateNews(@ModelAttribute("news") NewsDto news, Model model) {
+    public String updateNews(@ModelAttribute(name = "news", binding = false) NewsDto news, NewsDto updateNews, Model model) {
         try {
-            newsRestClient.updateNews(news);
+            newsRestClient.updateNews(updateNews);
             return "redirect:/manager-api/news/%d".formatted(news.articleId());
         } catch (BadRequestException exception) {
             model.addAttribute("newsUpdate", news);

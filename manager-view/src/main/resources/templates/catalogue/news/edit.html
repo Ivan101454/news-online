@@ -16,6 +16,10 @@
 </div>
 <form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">
     <label>
+        Артикль:<br>
+        <input type="text" name="articleId" data-th-value="${newsUpdate != null ? newsUpdate.articleId() : news.articleId()}">
+    </label>
+    <br><label>
         Заголовок новости:<br>
         <textarea type="text" name="headerNews" data-th-text="${newsUpdate != null ? newsUpdate.headerNews : news.headerNews}" rows="10" cols="50"></textarea>
     </label><br>
@@ -25,7 +29,11 @@
     </label><br>
     <label>
         Ссылка:<br>
-        <input type="text" name="shortDescription" data-th-value="${newsUpdate != null ? newsUpdate.shortDescription : news.shortDescription}">
+        <input type="text" name="contentLink" data-th-value="${newsUpdate != null ? newsUpdate.contentLink() : news.contentLink()}">
+    </label><br>
+    <label>
+        Опубликовано:<br>
+        <input type="checkbox" name="isPublished" th:checked="${newsUpdate != null ? newsUpdate.contentLink() : news.contentLink()}">
     </label><br>
     <label>
         Категория:<br>
