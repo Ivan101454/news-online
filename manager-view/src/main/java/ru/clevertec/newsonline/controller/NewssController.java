@@ -24,7 +24,6 @@ import java.util.List;
 public class NewssController {
 
     private final NewsRestClient newsRestClient;
-    private static final Logger log= LoggerFactory.getLogger(NewsController.class);
 
     @ModelAttribute
     public void populateModel(Model model) {
@@ -36,9 +35,8 @@ public class NewssController {
     public String getNewsList(Model model,
                               @RequestParam(name = "headerNews", required = false) String headerNews,
                               @RequestParam(name = "shortDescription", required = false) String shortDescription,
-                              @RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+                              @RequestParam(name = "pageNumber", defaultValue = "1") @Min(1) int pageNumber,
                               @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
-        log.info("Получен запрос: pageNumber={}, pageSize={}", pageNumber, pageSize);
         List<NewsDto> newsList;
         if (headerNews != null && shortDescription != null) {
             newsList = newsRestClient.findNewsByFilter(headerNews, shortDescription, pageNumber, pageSize);
@@ -47,7 +45,7 @@ public class NewssController {
         } else {
             newsList = newsRestClient.findNewsWithPagination(pageNumber, pageSize);
         }
-        if (pageNumber != 1) {
+        if (pageNumber > 1) {
             model.addAttribute("page", pageNumber);
         }
         model.addAttribute("list", newsList);
@@ -62,7 +60,6 @@ public class NewssController {
     @PostMapping("create")
     public String createNews(NewsDto newsDto, Model model) {
         try {
-            log.info(newsDto.toString());
             newsRestClient.createNews(newsDto);
             return "redirect:/manager-api/news/%d".formatted(newsDto.articleId());
         } catch (BadRequestException exception) {

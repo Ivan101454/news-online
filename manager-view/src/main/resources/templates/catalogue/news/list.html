@@ -34,17 +34,10 @@
     </tr>
     </tbody>
 </table>
-<div>
-    <ul>
-        <li>
-            <a data-th-href="@{/manager-api/news/list/(pageNumber=${page + 1})}"
-               data-th-text="'Следующая страница'"></a>
-        </li>
-        <li>
-            <a data-th-href="@{/manager-api/news/list/(pageNumber=${page > 1 ? page - 1 : page})}"
-               data-th-text="'Предыдущая страница'"></a>
-        </li>
-    </ul>
-</div>
+<form method="get" data-th-action="@{/manager-api/news/list}">
+    <label>перейти<input type="text" name="pageNumber" data-th-value="${page}">
+    </label><br>
+    <button type="submit">Следующая страница</button>
+</form>
 </body>
 </html>
