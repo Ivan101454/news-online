@@ -2,6 +2,7 @@ news:
   services:
     catalogue:
       uri: http://localhost:8081
+      registration-id: keycloak
 server:
   port: 8080
 spring:

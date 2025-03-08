@@ -27,6 +27,7 @@ public class SecurityBean {
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                         .anyRequest().hasRole("AUTHOR"))
                 .oauth2Login(Customizer.withDefaults())
+                .oauth2Client(Customizer.withDefaults())
                 .build();
     }
 

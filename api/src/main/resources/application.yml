@@ -13,7 +13,11 @@ spring:
       username: catalogue_service_user
       password: 'password'
       fail-fast: true
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/news
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/demo
 #    username: postgres
