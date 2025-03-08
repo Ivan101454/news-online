@@ -33,7 +33,7 @@
     </label><br>
     <label>
         Опубликовано:<br>
-        <input type="checkbox" name="isPublished" th:checked="${newsUpdate != null ? newsUpdate.isPublished() : news.isPublished()}">
+        <input type="checkbox" name="isPublished" data-th-checked="${newsUpdate != null ? newsUpdate.contentLink() : news.contentLink()}">
     </label><br>
     <label>
         Категория:<br>

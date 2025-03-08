@@ -15,7 +15,7 @@ public record NewsDto(
         @Min(value = 1000000, message = "{catalogue.errors.news.number_article_less_is_required_invalid}")
         @Max(value = 9999999, message = "{catalogue.errors.news.number_article_more_is_required_invalid}")
         int articleId,
-        boolean isPublished,
+        Boolean isPublished,
         @NotEmpty(message = "{catalogue.errors.news.shortDescription_is_invalid}")
         String shortDescription,
         @NotEmpty(message = "{catalogue.errors.news.content_link_is_invalid}")
@@ -23,4 +23,5 @@ public record NewsDto(
         Section section,
         List<PictureDto> pictures,
         List<CommentDto> comments) {
+
 }

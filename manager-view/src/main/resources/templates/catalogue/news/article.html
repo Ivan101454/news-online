@@ -12,7 +12,17 @@
     <li><strong>Header: </strong>: <span data-th-text="${news.headerNews}"></span></li>
     <li><strong>Date: </strong>: <span data-th-text="${news.dateOfNews}"></span></li>
     <li><strong>Description: </strong>: <span data-th-text="${news.shortDescription}"></span></li>
+    <ul data-th-each="comment : ${news.comments()}">
+        <li><strong>Comment:</strong> <span data-th-text="${comment.textComment()}"></span></li>
+    </ul>
 </ul>
+<form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">
+    <label>
+        Опубликовано:<br>
+        <input type="text" name="textComment">
+    </label><br>
+    <button type="submit">Добавить комментарий</button>
+</form>
 <a data-th-href="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">&llarr; Редактировать</a><br>
 <a data-th-href="@{/manager-api/news/list}">&llarr; К списку новостей</a>
 <form method="post" data-th-action="@{/manager-api/news/{articleId}/delete(articleId=${news.articleId})}">

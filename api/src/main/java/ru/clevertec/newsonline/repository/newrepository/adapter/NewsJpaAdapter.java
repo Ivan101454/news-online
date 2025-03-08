@@ -68,7 +68,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         Optional<News> byArticleId = newsRepository.findByArticleId(id);
         byArticleId.ifPresentOrElse(x -> {
                     x.setHeaderNews(newsDto.headerNews());
-                    x.setPublished(newsDto.isPublished());
+                    x.setPublished(newsDto.isPublished() != null ? newsDto.isPublished() : false);
                     x.setShortDescription(newsDto.shortDescription());
                     x.setContentLink(newsDto.contentLink());}
                 , () -> {

@@ -18,13 +18,13 @@ public class SecurityBeans {
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                         .requestMatchers(HttpMethod.POST, "catalogue-api/news")
                         .hasAuthority("SCOPE_edit_catalogue")
-                        .requestMatchers(HttpMethod.PATCH, "catalogue-api/news/{articleId:\\d}")
-                        .hasAuthority("SCOPE_edit_catalogue")
-                        .requestMatchers(HttpMethod.DELETE, "catalogue-api/news/{articleId:\\d}")
+                        .requestMatchers(HttpMethod.PATCH, "catalogue-api/news/{articleId:\\d+}")
+                        .hasAnyAuthority("SCOPE_edit_catalogue", "SCOPE_view_catalogue")
+                        .requestMatchers(HttpMethod.DELETE, "catalogue-api/news/{articleId:\\d+}")
                         .hasAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.GET)
                         .hasAnyAuthority("SCOPE_edit_catalogue", "SCOPE_view_catalogue")
-                        .anyRequest().denyAll())
+                        )
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

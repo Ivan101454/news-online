@@ -23,7 +23,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-08T20:52:57+0300",
+    date = "2025-03-09T01:49:28+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -51,7 +51,7 @@ public class NewsMapperImpl implements NewsMapper {
 
         List<PictureDto> pictures = null;
         Section section = null;
-        boolean isPublished = false;
+        Boolean isPublished = null;
 
         NewsDto newsDto = new NewsDto( headerNews, dateOfNews, articleId, isPublished, shortDescription, contentLink, section, pictures, comments );
 
@@ -68,7 +68,9 @@ public class NewsMapperImpl implements NewsMapper {
 
         news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
-        news.isPublished( newsDto.isPublished() );
+        if ( newsDto.isPublished() != null ) {
+            news.isPublished( newsDto.isPublished() );
+        }
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );
         news.comments( commentDtoListToCommentList( newsDto.comments(), ctx, ctxA ) );
@@ -362,7 +364,9 @@ public class NewsMapperImpl implements NewsMapper {
         news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
         news.dateOfNews( newsDto.dateOfNews() );
-        news.isPublished( newsDto.isPublished() );
+        if ( newsDto.isPublished() != null ) {
+            news.isPublished( newsDto.isPublished() );
+        }
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );
         news.pictures( pictureDtoListToPictureList( newsDto.pictures(), ctxA ) );
@@ -447,7 +451,9 @@ public class NewsMapperImpl implements NewsMapper {
         news.articleId( newsDto.articleId() );
         news.headerNews( newsDto.headerNews() );
         news.dateOfNews( newsDto.dateOfNews() );
-        news.isPublished( newsDto.isPublished() );
+        if ( newsDto.isPublished() != null ) {
+            news.isPublished( newsDto.isPublished() );
+        }
         news.shortDescription( newsDto.shortDescription() );
         news.contentLink( newsDto.contentLink() );
         news.pictures( pictureDtoListToPictureList1( newsDto.pictures() ) );
