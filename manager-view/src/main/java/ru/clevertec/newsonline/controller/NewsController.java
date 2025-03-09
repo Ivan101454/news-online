@@ -63,6 +63,12 @@ public class NewsController {
         return "redirect:/manager-api/news/list";
     }
 
+    @PostMapping("add-comment")
+    public String addComment(@ModelAttribute("news") NewsDto news, CommentDto commentDto) {
+        newsRestClient.addComment(news.articleId(), commentDto);
+        return "redirect:/manager-api/news/%d".formatted(news.articleId());
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
     public String handleNoSuchElementException(NoSuchElementException e, Model model, HttpServletResponse response, Locale locale) {
         response.setStatus(HttpStatus.NOT_FOUND.value());

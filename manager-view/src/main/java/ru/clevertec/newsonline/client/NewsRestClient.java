@@ -16,4 +16,5 @@ public interface NewsRestClient {
     void updateNews(NewsDto updateNewsDto);
     void deleteNews(int articleId);
     List<CommentDto> getComments(int articleId);
+    void addComment(int articleId, CommentDto commentDto);
 }

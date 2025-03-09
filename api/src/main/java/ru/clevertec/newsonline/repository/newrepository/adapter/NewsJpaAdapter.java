@@ -6,13 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
+import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.mapper.JpaContextAuthor;
 import ru.clevertec.newsonline.mapper.JpaContextNews;
+import ru.clevertec.newsonline.mapper.JpaContextUser;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
+import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.enums.Section;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
@@ -35,6 +38,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     private final NewsMapper newsMapper;
     private final JpaContextNews jpaCtx;
     private final JpaContextAuthor jpaCtxA;
+    private final JpaContextUser jpaCtxU;
 
     @Override
     public List<NewsDto> findAll() {
@@ -80,5 +84,12 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     public List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable) {
         return iFilterEntityRepository.filterWord(newsFilter, News.class, pageable).stream()
                 .map(newsMapper::newsToNewsDto).toList();
+    }
+
+    @Override
+    public void addCommentToNewsList(int id, CommentDto commentDto) {
+        Optional<News> byArticleId = newsRepository.findByArticleId(id);
+        Comment comment = newsMapper.commentDtoToComment(commentDto, jpaCtx, jpaCtxU);
+        byArticleId.ifPresent(news -> news.addComment(comment));
     }
 }

@@ -2,6 +2,7 @@ package ru.clevertec.newsonline.newService.service.interfaces;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 
@@ -25,4 +26,5 @@ public interface NewsPersistencePort{
 
     List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable);
 
+    void addCommentToNewsList(int id, CommentDto commentDto);
 }

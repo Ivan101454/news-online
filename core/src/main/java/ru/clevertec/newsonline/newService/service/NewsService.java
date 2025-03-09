@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
+import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.AuthorPersistencePort;
@@ -68,6 +69,11 @@ public class NewsService implements NewsServicePort {
     public List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return newsPersistencePort.filterWord(filter, pageable);
+    }
+
+    @Override
+    public void addComment(int id, CommentDto commentDto) {
+        newsPersistencePort.addCommentToNewsList(id, commentDto);
     }
 
 }

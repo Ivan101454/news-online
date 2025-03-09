@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,5 +66,9 @@ public class NewsController {
         return newsDto.comments();
     }
 
-
+    @PatchMapping("add-comment")
+    public ResponseEntity<Void> updateNews(@PathVariable("newsArticle") int newsArticle, @RequestBody CommentDto commentDto) {
+            newsServicePort.addComment(newsArticle, commentDto);
+            return ResponseEntity.noContent().build();
+    }
 }

@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.newService.service.interfaces;
 
+import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 
@@ -21,4 +22,6 @@ public interface NewsServicePort {
     void delete(int id);
 
     List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize);
+
+    void addComment(int id, CommentDto commentDto);
 }

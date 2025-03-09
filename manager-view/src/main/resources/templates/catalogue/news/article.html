@@ -16,9 +16,9 @@
         <li><strong>Comment:</strong> <span data-th-text="${comment.textComment()}"></span></li>
     </ul>
 </ul>
-<form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">
+<form method="post" data-th-action="@{/manager-api/news/{articleId}/add-comment(articleId=${news.articleId})}">
     <label>
-        Опубликовано:<br>
+        Опубликовать:<br>
         <input type="text" name="textComment">
     </label><br>
     <button type="submit">Добавить комментарий</button>

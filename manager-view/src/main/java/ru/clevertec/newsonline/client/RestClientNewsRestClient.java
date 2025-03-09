@@ -114,4 +114,21 @@ public class RestClientNewsRestClient implements NewsRestClient {
                 .retrieve()
                 .body(NewsDto.class).comments();
     }
+
+    @Override
+    public void addComment(int articleId, CommentDto commentDto) {
+        try {
+            restClient
+                    .patch()
+                    .uri("/catalogue-api/news/{articleId}/add-comment", articleId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(commentDto)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException.BadRequest exception) {
+            ProblemDetail problemDetail = exception.getResponseBodyAs(ProblemDetail.class);
+            throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
+        }
+
+    }
 }
