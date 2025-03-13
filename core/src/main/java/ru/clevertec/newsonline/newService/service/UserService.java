@@ -28,7 +28,6 @@ public class UserService implements UserServicePort {
     public UserService(UserPersistencePort userPersistencePort) {
         this.userPersistencePort = userPersistencePort;
     }
-    @Cacheable(value = "byIdCache", key = "#p0")
     public Optional<UserDto> findById(UUID id) {
         Optional<UserDto> entity = userPersistencePort.findById(id);
         entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));

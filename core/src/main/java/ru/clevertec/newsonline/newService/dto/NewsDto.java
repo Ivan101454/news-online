@@ -8,7 +8,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record NewsDto(
+public record NewsDto (
         @NotEmpty(message = "{catalogue.errors.news.title_header_is_invalid}")
         String headerNews,
         LocalDateTime dateOfNews,
@@ -23,5 +23,4 @@ public record NewsDto(
         Section section,
         List<PictureDto> pictures,
         List<CommentDto> comments) {
-
 }

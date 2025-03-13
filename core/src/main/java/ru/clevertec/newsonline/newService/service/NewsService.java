@@ -1,5 +1,9 @@
 package ru.clevertec.newsonline.newService.service;
 
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +33,8 @@ public class NewsService implements NewsServicePort {
 //        entity.orElseThrow(() -> new NotFoundException("Новость не найдена по ав"));
 //        return entity;
 //    }
-
-    @Override
-    public Optional<NewsDto> findByArticleId(int article) {
-        return newsPersistencePort.findByArticleId(article);
+    public Optional<NewsDto> findByArticleId(int articleId) {
+        return newsPersistencePort.findByArticleId(articleId);
     }
 
     public List<NewsDto> findAll() {
@@ -45,8 +47,8 @@ public class NewsService implements NewsServicePort {
     }
 
     public Optional<NewsDto> create(NewsDto newsDto) {
-        newsPersistencePort.save(newsDto);
-        return Optional.ofNullable(newsDto);
+        NewsDto saveNews = newsPersistencePort.save(newsDto);
+        return Optional.of(newsDto);
     }
 
     public void update(int id, NewsDto update) {
@@ -58,22 +60,20 @@ public class NewsService implements NewsServicePort {
         newsPersistencePort.update(id, update);
     }
 
-    public void delete(int id) {
-        Optional<NewsDto> entity = newsPersistencePort.findByArticleId(id);
-        entity.ifPresentOrElse(x -> newsPersistencePort.deleteByArticleId(id), () -> {
+    public void delete(int articleId) {
+        Optional<NewsDto> entity = newsPersistencePort.findByArticleId(articleId);
+        entity.ifPresentOrElse(x -> newsPersistencePort.deleteByArticleId(articleId), () -> {
             throw new NotFoundException("Удаляемая сушность не найдено по id");
         });
     }
 
-    @Override
     public List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return newsPersistencePort.filterWord(filter, pageable);
     }
 
-    @Override
-    public void addComment(int id, CommentDto commentDto) {
-        newsPersistencePort.addCommentToNewsList(id, commentDto);
+    public void addComment(int articleId, CommentDto commentDto) {
+        newsPersistencePort.addCommentToNewsList(articleId, commentDto);
     }
 
 }

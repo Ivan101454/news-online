@@ -1,6 +1,9 @@
 package ru.clevertec.newsonline.repository.newrepository.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -50,26 +53,30 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         return newsRepository.findAll(pageable).map(newsMapper::newsToNewsDto);
     }
 
+    @Cacheable(value = "NEWS_CACHE", key = "#p0")
     @Override
-    public Optional<NewsDto> findByArticleId(int id) {
-        return newsRepository.findByArticleId(id).map(newsMapper::newsToNewsDto);
+    public Optional<NewsDto> findByArticleId(int articleId) {
+        return newsRepository.findByArticleId(articleId).map(newsMapper::newsToNewsDto);
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#result.articleId()")
     @Override
     public NewsDto save(NewsDto newsDto) {
         newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA));
         return newsDto;
     }
 
+    @CacheEvict(value = "NEWS_CACHE", key = "#articleId")
     @Override
-    public void deleteByArticleId(int id) {
-        newsRepository.findByArticleId(id)
+    public void deleteByArticleId(int articleId) {
+        newsRepository.findByArticleId(articleId)
                 .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет новости с таким артиклем");});
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#result.articleId()")
     @Override
-    public void update(int id, NewsDto newsDto) {
-        Optional<News> byArticleId = newsRepository.findByArticleId(id);
+    public void update(int articleId, NewsDto newsDto) {
+        Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         byArticleId.ifPresentOrElse(x -> {
                     x.setHeaderNews(newsDto.headerNews());
                     x.setPublished(newsDto.isPublished() != null ? newsDto.isPublished() : false);
@@ -87,8 +94,8 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     }
 
     @Override
-    public void addCommentToNewsList(int id, CommentDto commentDto) {
-        Optional<News> byArticleId = newsRepository.findByArticleId(id);
+    public void addCommentToNewsList(int articleId, CommentDto commentDto) {
+        Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Comment comment = newsMapper.commentDtoToComment(commentDto, jpaCtx, jpaCtxU);
         byArticleId.ifPresent(news -> news.addComment(comment));
     }

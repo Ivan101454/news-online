@@ -23,8 +23,8 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-09T01:49:28+0300",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.6 (Amazon.com Inc.)"
+    date = "2025-03-13T20:05:00+0300",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.3 (Amazon.com Inc.)"
 )
 @Component
 public class NewsMapperImpl implements NewsMapper {

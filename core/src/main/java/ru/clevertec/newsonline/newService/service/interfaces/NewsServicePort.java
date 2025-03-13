@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface NewsServicePort {
 
-    Optional<NewsDto> findByArticleId(int article);
+    Optional<NewsDto> findByArticleId(int articleId);
 
     List<NewsDto> findAll();
 
@@ -17,11 +17,11 @@ public interface NewsServicePort {
 
     Optional<NewsDto> create(NewsDto newsDto);
 
-    void update(int id, NewsDto newsDto);
+    void update(int articleId, NewsDto newsDto);
 
-    void delete(int id);
+    void delete(int articleId);
 
     List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize);
 
-    void addComment(int id, CommentDto commentDto);
+    void addComment(int articleId, CommentDto commentDto);
 }
