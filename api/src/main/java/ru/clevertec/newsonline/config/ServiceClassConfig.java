@@ -16,7 +16,6 @@ import ru.clevertec.newsonline.repository.newrepository.adapter.UserJpaAdapter;
 @Configuration
 public class ServiceClassConfig {
 
-
     @Bean
     public NewsService createNewsService(NewsJpaAdapter newsJpaAdapter) {
         return new NewsService(newsJpaAdapter);
@@ -35,6 +34,4 @@ public class ServiceClassConfig {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return objectMapper;
     }
-
-
 }

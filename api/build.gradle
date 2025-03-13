@@ -25,16 +25,18 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-config:4.2.0'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
-
-
-
-
-    testImplementation 'org.testcontainers:postgresql'
-    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.4.0'
-
-
     implementation project(':core')
     implementation project(':application-log-starter')
+
+
+
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.4.0'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.testcontainers:junit-jupiter'
+
+
 }
 
 jacocoTestReport {
