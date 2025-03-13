@@ -1,5 +1,8 @@
 package ru.clevertec.newsonline.aspect;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -32,7 +35,17 @@ public class ControllerAspect {
     }
 
     @Before("anyNewssRestControllers()")
-    public void beforeAnyRestControllerNewss() {
-        logger.info("BEFORE");
+    public void beforeAnyRestControllerNewss(JoinPoint joinPoint) {
+        logger.info("Entering in Method : " + joinPoint.getSignature().getName());
+    }
+
+    @AfterReturning(pointcut = "anyNewssRestControllers()", returning = "result")
+    public void logAfterFindNewsById(JoinPoint joinPoint, Object result) {
+        logger.info("Method Return value : " + result);
+    }
+
+    @AfterThrowing(pointcut = "anyNewssRestControllers()", throwing = "error")
+    public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
+        logger.error("Method Exception : " + error);
     }
 }
