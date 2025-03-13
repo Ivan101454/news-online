@@ -66,7 +66,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         return newsDto;
     }
 
-    @CacheEvict(value = "NEWS_CACHE", key = "#articleId")
+    @CacheEvict(value = "NEWS_CACHE", key = "#p0")
     @Override
     public void deleteByArticleId(int articleId) {
         newsRepository.findByArticleId(articleId)
