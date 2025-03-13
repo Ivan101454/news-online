@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>[[${news.headerNews}]] &ndash; Магазин автозапчастей</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" data-th-href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" data-th-href="@{/css/styles.css}">
 </head>
 <body>
 <h1 data-th-text="${news.headerNews}"></h1>
@@ -28,5 +30,6 @@
 <form method="post" data-th-action="@{/manager-api/news/{articleId}/delete(articleId=${news.articleId})}">
     <button type="submit">Удалить</button>
 </form>
+<script data-th-src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

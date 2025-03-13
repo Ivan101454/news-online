@@ -73,7 +73,6 @@ public class NewsJpaAdapter implements NewsPersistencePort {
                 .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет новости с таким артиклем");});
     }
 
-    @CachePut(value = "NEWS_CACHE", key = "#result.articleId()")
     @Override
     public void update(int articleId, NewsDto newsDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
