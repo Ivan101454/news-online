@@ -54,6 +54,6 @@ class NewssControllerIT {
     }
 
     @Test
-    void createPart() {
+    void createNews() {
     }
 }

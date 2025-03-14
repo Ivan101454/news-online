@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.clevertec.newsonline.client.BadRequestException;
 import ru.clevertec.newsonline.client.NewsRestClient;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.enums.Section;
 
