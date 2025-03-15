@@ -14,7 +14,7 @@
         <li data-th-each="error:${errors}" data-th-text="${error}"></li>
     </ul>
 </div>
-<form method="post" data-th-action="@{/manager-api/news/create}">
+<form method="post" data-th-action="@{/manager-api/news/create}" enctype="multipart/form-data">
     <label>
         Артикль:<br>
         <input type="text" name="articleId" data-th-value="${news?.articleId()}">
@@ -28,8 +28,8 @@
         <textarea type="text" name="shortDescription" data-th-text="${news?.shortDescription}" rows="10" cols="50"></textarea>
     </label><br>
     <label>
-        Ссылка:<br>
-        <input type="text" name="contentLink" data-th-value="${news?.contentLink()}">
+        Фото:<br>
+        <input type="file" name="image" accept="image/*">
     </label><br>
     <label>
         Опубликовано:<br>
@@ -37,8 +37,8 @@
     </label><br>
     <label>
         Категория:<br>
-        <select name="category">
-            <option data-th-each="kind: ${section}" data-th-value="${kind}" data-th-text="${kind}"></option>
+        <select name="section">
+            <option data-th-each="kind: ${kindList}" data-th-value="${kind}" data-th-text="${kind}"></option>
         </select>
     </label><br>
     <button type="submit">Создать</button>

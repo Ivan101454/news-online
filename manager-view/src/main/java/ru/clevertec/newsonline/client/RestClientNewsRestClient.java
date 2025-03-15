@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 
@@ -50,13 +53,20 @@ public class RestClientNewsRestClient implements NewsRestClient {
     }
 
     @Override
-    public NewsDto createNews(NewsDto newsDto) {
+    public NewsDto createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
+            MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+            bodyBuilder.part("updateNewsDto", newsDto)
+                    .contentType(MediaType.APPLICATION_JSON);
+            bodyBuilder.part("categoryDto", categoryDto)
+                    .contentType(MediaType.APPLICATION_JSON);
+            bodyBuilder.part("image", image.getResource())
+                    .contentType(MediaType.MULTIPART_FORM_DATA);
             return restClient
                     .post()
                     .uri("/catalogue-api/news")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(newsDto)
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(bodyBuilder)
                     .retrieve()
                     .body(NewsDto.class);
         } catch (HttpClientErrorException.BadRequest exception) {
@@ -75,17 +85,23 @@ public class RestClientNewsRestClient implements NewsRestClient {
         } catch (HttpClientErrorException.NotFound exception) {
             return Optional.empty();
         }
-
     }
 
     @Override
-    public void updateNews(NewsDto updateNewsDto) {
+    public void updateNews(NewsDto updateNewsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
+            MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+            bodyBuilder.part("updateNewsDto", updateNewsDto)
+                    .contentType(MediaType.APPLICATION_JSON);
+            bodyBuilder.part("categoryDto", categoryDto)
+                    .contentType(MediaType.APPLICATION_JSON);
+            bodyBuilder.part("image", image.getResource())
+                    .contentType(MediaType.MULTIPART_FORM_DATA);
             restClient
                     .patch()
                     .uri("/catalogue-api/news/{articleId}", updateNewsDto.articleId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(updateNewsDto)
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(bodyBuilder)
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException.BadRequest exception) {

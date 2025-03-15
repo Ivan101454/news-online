@@ -39,14 +39,14 @@ class NewssControllerTest {
 
         doReturn(news)
                 .when(newsRestClient)
-                .createNews(news);
+                .createNews(news, null, null);
         //when
-        var result = newssController.createNews(news, concurrentModel);
+        var result = newssController.createNews(news, null, null, concurrentModel);
 
         //then
         assertEquals("redirect:/manager-api/news/5354289", result);
 
-        verify(newsRestClient).createNews(news);
+        verify(newsRestClient).createNews(news, null, null);
         verifyNoMoreInteractions(newsRestClient);
     }
 
@@ -59,16 +59,16 @@ class NewssControllerTest {
 
         doThrow(new BadRequestException(List.of("Ошибка 1", "Ошибка 2")))
                 .when(newsRestClient)
-                .createNews(news);
+                .createNews(news, null, null);
         //when
-        var result = newssController.createNews(news, concurrentModel);
+        var result = newssController.createNews(news, null, null, concurrentModel);
 
         //then
         assertEquals("catalogue/news/create", result);
         assertEquals(news, concurrentModel.getAttribute("news"));
         assertEquals(List.of("Ошибка 1", "Ошибка 2"), concurrentModel.getAttribute("errors"));
 
-        verify(newsRestClient).createNews(news);
+        verify(newsRestClient).createNews(news, null, null);
         verifyNoMoreInteractions(newsRestClient);
     }
 }

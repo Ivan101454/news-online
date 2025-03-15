@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.client.BadRequestException;
 import ru.clevertec.newsonline.client.NewsRestClient;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
@@ -28,7 +29,7 @@ public class NewssController {
 
     @ModelAttribute
     public void populateModel(Model model) {
-        model.addAttribute("section", Section.values());
+        model.addAttribute("kindList", Section.values());
         model.addAttribute("page", 1);
     }
 
@@ -59,9 +60,9 @@ public class NewssController {
     }
 
     @PostMapping("create")
-    public String createNews(NewsDto newsDto, Model model) {
+    public String createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image, Model model) {
         try {
-            newsRestClient.createNews(newsDto);
+            newsRestClient.createNews(newsDto, categoryDto, image);
             return "redirect:/manager-api/news/%d".formatted(newsDto.articleId());
         } catch (BadRequestException exception) {
             model.addAttribute("news", newsDto);

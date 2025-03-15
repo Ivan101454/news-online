@@ -18,9 +18,6 @@ public record NewsDto (
         Boolean isPublished,
         @NotEmpty(message = "{catalogue.errors.news.shortDescription_is_invalid}")
         String shortDescription,
-        @NotEmpty(message = "{catalogue.errors.news.content_link_is_invalid}")
-        String contentLink,
-        Section section,
         List<PictureDto> pictures,
         List<CommentDto> comments) {
 }

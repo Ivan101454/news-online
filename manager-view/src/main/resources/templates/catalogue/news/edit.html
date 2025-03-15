@@ -14,7 +14,7 @@
         <li data-th-each="error:${errors}" data-th-text="${error}"></li>
     </ul>
 </div>
-<form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}">
+<form method="post" data-th-action="@{/manager-api/news/{articleId}/edit(articleId=${news.articleId})}" enctype="multipart/form-data">
     <label>
         Артикль:<br>
         <input type="text" name="articleId" data-th-value="${newsUpdate != null ? newsUpdate.articleId() : news.articleId()}">
@@ -28,17 +28,17 @@
         <textarea type="text" name="shortDescription" data-th-text="${newsUpdate != null ? newsUpdate.shortDescription : news.shortDescription}" rows="10" cols="50"></textarea>
     </label><br>
     <label>
-        Ссылка:<br>
-        <input type="text" name="contentLink" data-th-value="${newsUpdate != null ? newsUpdate.contentLink() : news.contentLink()}">
+        Фото:<br>
+        <input type="file" name="image" accept="image/*">
     </label><br>
     <label>
         Опубликовано:<br>
-        <input type="checkbox" name="isPublished" data-th-checked="${newsUpdate != null ? newsUpdate.contentLink() : news.contentLink()}">
+        <input type="checkbox" name="isPublished" data-th-checked="${newsUpdate != null ? newsUpdate.isPublished() : news.isPublished()}">
     </label><br>
     <label>
         Категория:<br>
-        <select name="category">
-            <option data-th-each="kind: ${section}" data-th-value="${kind}" data-th-text="${kind}"></option>
+        <select name="section">
+            <option data-th-each="kind: ${kindList}" data-th-value="${kind}" data-th-text="${kind}"></option>
         </select>
     </label><br>
     <button type="submit">Изменить</button>

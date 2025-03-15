@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.client.BadRequestException;
 import ru.clevertec.newsonline.client.NewsRestClient;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.enums.Section;
@@ -31,7 +34,7 @@ public class NewsController {
 
     @ModelAttribute("news")
     public NewsDto news(@PathVariable("articleId") int articleId, Model model) {
-        model.addAttribute("section", Section.values());
+        model.addAttribute("kindList", Section.values());
         return newsRestClient.findNews(articleId).orElseThrow(() -> new NoSuchElementException("catalogue.errors.product.not_found"));
     }
 
@@ -46,9 +49,9 @@ public class NewsController {
     }
 
     @PostMapping("edit")
-    public String updateNews(@ModelAttribute(name = "news", binding = false) NewsDto news, NewsDto updateNews, Model model) {
+    public String updateNews(@ModelAttribute(name = "news", binding = false) NewsDto news, CategoryDto categoryDto, @RequestParam("image") MultipartFile image, NewsDto updateNews, Model model) {
         try {
-            newsRestClient.updateNews(updateNews);
+            newsRestClient.updateNews(updateNews, categoryDto, image);
             return "redirect:/manager-api/news/%d".formatted(news.articleId());
         } catch (BadRequestException exception) {
             model.addAttribute("newsUpdate", news);

@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
@@ -42,6 +45,8 @@ public class NewsController {
 
     @PatchMapping()
     public ResponseEntity<Void> updateNews(@Valid @RequestBody NewsDto update,
+                                           @RequestBody CategoryDto categoryDto,
+                                           @RequestPart(value = "image", required = false) MultipartFile image,
                                             BindingResult bindingResult, Locale locale) throws BindException {
         if (bindingResult.hasErrors()) {
             if (bindingResult instanceof BindException exception) {

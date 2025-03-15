@@ -80,7 +80,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
                     x.setHeaderNews(newsDto.headerNews());
                     x.setPublished(newsDto.isPublished() != null ? newsDto.isPublished() : false);
                     x.setShortDescription(newsDto.shortDescription());
-                    x.setContentLink(newsDto.contentLink());}
+                    }
                 , () -> {
                     throw new NotFoundException("Сущность не найдена по id");
                 });

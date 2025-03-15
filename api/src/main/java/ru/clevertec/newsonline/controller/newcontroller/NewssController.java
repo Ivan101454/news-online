@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
@@ -50,6 +53,8 @@ public class NewssController {
 
     @PostMapping()
     public ResponseEntity<?> createNews(@Valid @RequestBody NewsDto newsDto,
+                                        @RequestBody CategoryDto categoryDto,
+                                        @RequestPart(value = "image", required = false) MultipartFile image,
                                         BindingResult bindingResult,
                                         UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if (bindingResult.hasErrors()) {
