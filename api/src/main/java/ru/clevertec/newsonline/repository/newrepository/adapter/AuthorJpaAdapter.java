@@ -40,7 +40,7 @@ public class AuthorJpaAdapter implements AuthorPersistencePort {
 
     @Override
     public AuthorDto save(AuthorDto authorDto) {
-        authorRepository.save(newsMapper.authorDtoToAuthor(authorDto, ctxA));
+        authorRepository.save(newsMapper.authorDtoToAuthor(authorDto));
         return authorDto;
     }
 

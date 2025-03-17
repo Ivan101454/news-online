@@ -69,19 +69,16 @@ public class NewssController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Optional<NewsDto> news = newsServicePort.create(newsDto);
-            if (image != null && !image.isEmpty() && news.isPresent()) {
-                String persist = SaveImage.persist(image);
-                PictureDto pictureDto = new PictureDto(image.getName(), persist, null);
-                Optional<PictureDto> pictureDtoSave = pictureServicePort.create(pictureDto);
-                pictureDtoSave.ifPresent(x -> newsServicePort.addPicture(newsDto.articleId(), x));
+            int articleId = newsDto.articleId();
+            categoryServicePort.addNews(categoryDto.section(), newsDto);
+            if (image != null && !image.isEmpty()) {
+                newsServicePort.addPicture(articleId, image);
             }
-            news.ifPresent(dto -> categoryServicePort.addNews(categoryDto.section(), dto));
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .replacePath("/catalogue-api/news/list")
-                            .build(Map.of("article", newsDto.articleId())))
-                    .body(news);
+                            .build(Map.of("article", articleId)))
+                    .body(newsServicePort.findByArticleId(articleId));
         }
     }
 }

@@ -60,7 +60,8 @@ public class NewssController {
     }
 
     @PostMapping("create")
-    public String createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image, Model model) {
+    public String createNews(NewsDto newsDto, CategoryDto categoryDto,
+                             @RequestParam("image") MultipartFile image, Model model) {
         try {
             newsRestClient.createNews(newsDto, categoryDto, image);
             return "redirect:/manager-api/news/%d".formatted(newsDto.articleId());

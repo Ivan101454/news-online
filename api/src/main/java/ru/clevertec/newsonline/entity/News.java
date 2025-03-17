@@ -42,7 +42,7 @@ public class News implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "news_id")
     private UUID newsId;
-    @Column(name = "article_id")
+    @Column(name = "article_id", unique = true)
     private int articleId;
     @Column(name = "header_news")
     private String headerNews;
@@ -59,9 +59,7 @@ public class News implements Serializable {
     private Category category;
     @Column(name = "short_description", length = 500)
     private String shortDescription;
-    @Column(name = "content_link")
-    private String contentLink;
-    @ManyToMany(mappedBy = "news", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
     @Builder.Default
     private List<Picture> pictures = new ArrayList<>();
@@ -71,9 +69,7 @@ public class News implements Serializable {
     private List<Comment> comments = new ArrayList<>();
 
     public void addPicture(Picture picture) {
-        List<News> news = picture.getNews();
-        news.add(this);
-        picture.setNews(news);
+        picture.setNews(this);
         pictures.add(picture);
     }
 

@@ -12,11 +12,12 @@ import java.nio.file.Paths;
 @UtilityClass
 public class SaveImage {
 
-    public String persist(MultipartFile image) {
-        if (image != null && !image.isEmpty()) {
-            String uploadDir = "c:/uploads/";
-            Path uploadPath = Paths.get(uploadDir);
 
+
+    public String persist(MultipartFile image, String uploadDir) {
+
+        Path uploadPath = Paths.get(uploadDir);
+        if (image != null && !image.isEmpty()) {
             if (!Files.exists(uploadPath)) {
                 try {
                     Files.createDirectories(uploadPath);

@@ -39,5 +39,7 @@ cache:
   #  algorithm: LRU
   max-size: 10
 app:
+  upload:
+    path: C:\Users\user\IdeaProjects\Clevertec\news-online\manager-view\src\main\resources\static\images\
   logging:
     enabled: true

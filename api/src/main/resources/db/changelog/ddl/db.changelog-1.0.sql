@@ -37,21 +37,15 @@ create table news_online.comment
 create table news_online.news
 (
     news_id           uuid         DEFAULT uuid_generate_v4(),
-    article_id        int,
-    content_link      varchar(255),
+    article_id        int          UNIQUE,
     date_of_news      timestamp(6) default CURRENT_TIMESTAMP,
     header_news       varchar(255),
     is_published      boolean,
     short_description varchar(500),
     author_id         uuid,
     category_id       uuid,
+    picture_id        uuid,
     primary key (news_id)
-);
---changeset ivan101454:5
-create table news_online.news_picture
-(
-    news_id    uuid DEFAULT uuid_generate_v4(),
-    picture_id uuid not null
 );
 --changeset ivan101454:6
 create table news_online.picture
@@ -59,6 +53,7 @@ create table news_online.picture
     picture_id      uuid DEFAULT uuid_generate_v4(),
     link_on_picture varchar(255),
     name_of_picture varchar(255),
+    news_id         uuid,
     primary key (picture_id)
 );
 --changeset ivan101454:7
@@ -93,12 +88,7 @@ alter table if exists news_online.news
         foreign key (category_id)
             references news_online.category;
 --changeset ivan101454:12
-alter table if exists news_online.news_picture
+alter table if exists news_online.picture
     add constraint FKgeijupaul1r5ugaatfa5ioq0c
-        foreign key (picture_id)
-            references news_online.news;
---changeset ivan101454:13
-alter table if exists news_online.news_picture
-    add constraint FK88bvgf0bf0ldwv0qj2nlulxjw
         foreign key (news_id)
-            references news_online.picture;
+            references news_online.news;

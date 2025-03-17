@@ -10,7 +10,7 @@
 <body>
 <h1 data-th-text="${news.headerNews}"></h1>
 <div data-th-each="pic : ${news?.pictures}">
-    <img data-th-src="@{${pic.linkOnPicture}}"/>
+    <img data-th-src="@{/images/{image}(image=${pic.nameOfPicture()})}" width="500" data-th-alt="${pic.nameOfPicture()}"/>
 </div>
 <ul>
     <li><strong>Article: </strong>: <span data-th-text="${news.articleId}"></span></li>

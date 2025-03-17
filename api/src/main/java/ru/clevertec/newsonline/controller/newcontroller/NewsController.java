@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -20,10 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
-import ru.clevertec.newsonline.newService.dto.PictureDto;
+import ru.clevertec.newsonline.newService.service.interfaces.CategoryServicePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 import ru.clevertec.newsonline.newService.service.interfaces.PictureServicePort;
-import ru.clevertec.newsonline.util.SaveImage;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +35,7 @@ public class NewsController {
 
     private final NewsServicePort newsServicePort;
     private final PictureServicePort pictureServicePort;
+    private final CategoryServicePort categoryServicePort;
 
     @ModelAttribute("news")
     public NewsDto getNews(@PathVariable("newsArticle") int newsArticle) {
@@ -60,14 +59,10 @@ public class NewsController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Optional<NewsDto> news = newsServicePort.create(update);
-            if (image != null && !image.isEmpty() && news.isPresent()) {
-                String persist = SaveImage.persist(image);
-                PictureDto pictureDto = new PictureDto(image.getName(), persist, null);
-                Optional<PictureDto> pictureDtoSave = pictureServicePort.create(pictureDto);
-                pictureDtoSave.ifPresent(x -> newsServicePort.addPicture(update.articleId(), x));
+            newsServicePort.update(update.articleId(), update, categoryDto);
+            if (image != null && !image.isEmpty()) {
+                newsServicePort.addPicture(update.articleId(), image);
             }
-            newsServicePort.update(update.articleId(), update);
             return ResponseEntity.noContent().build();
         }
     }

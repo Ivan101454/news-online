@@ -23,7 +23,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-17T00:06:05+0300",
+    date = "2025-03-17T23:26:29+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.3 (Amazon.com Inc.)"
 )
 @Component
@@ -57,7 +57,7 @@ public class NewsMapperImpl implements NewsMapper {
     }
 
     @Override
-    public News newsDtoToNews(NewsDto newsDto, JpaContextNews ctx, JpaContextAuthor ctxA) {
+    public News newsDtoToNews(NewsDto newsDto, JpaContextNews ctx, JpaContextAuthor ctxA, JpaContextNewsCategory ctxNC) {
         if ( newsDto == null ) {
             return null;
         }
@@ -70,7 +70,7 @@ public class NewsMapperImpl implements NewsMapper {
             news.isPublished( newsDto.isPublished() );
         }
         news.shortDescription( newsDto.shortDescription() );
-        news.comments( commentDtoListToCommentList( newsDto.comments(), ctx, ctxA ) );
+        news.comments( commentDtoListToCommentList( newsDto.comments(), ctx, ctxA, ctxNC ) );
 
         return news.build();
     }
@@ -173,7 +173,7 @@ public class NewsMapperImpl implements NewsMapper {
     }
 
     @Override
-    public Author authorDtoToAuthor(AuthorDto authorDto, JpaContextAuthor ctxA) {
+    public Author authorDtoToAuthor(AuthorDto authorDto) {
         if ( authorDto == null ) {
             return null;
         }
@@ -184,7 +184,7 @@ public class NewsMapperImpl implements NewsMapper {
         author.lastName( authorDto.lastName() );
         author.phoneNumber( authorDto.phoneNumber() );
         author.email( authorDto.email() );
-        author.writeNews( newsDtoListToNewsList( authorDto.writeNews(), ctxA ) );
+        author.writeNews( newsDtoListToNewsList( authorDto.writeNews() ) );
 
         return author.build();
     }
@@ -195,19 +195,21 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
+        UUID categoryId = null;
         Section section = null;
         List<NewsDto> newsList = null;
 
+        categoryId = category.getCategoryId();
         section = category.getSection();
         newsList = newsListToNewsDtoList( category.getNewsList() );
 
-        CategoryDto categoryDto = new CategoryDto( section, newsList );
+        CategoryDto categoryDto = new CategoryDto( categoryId, section, newsList );
 
         return categoryDto;
     }
 
     @Override
-    public Category categoryDtoToCategory(CategoryDto categoryDto, JpaContextNewsCategory ctxNC) {
+    public Category categoryDtoToCategory(CategoryDto categoryDto) {
         if ( categoryDto == null ) {
             return null;
         }
@@ -225,21 +227,21 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
+        UUID pictureId = null;
         String nameOfPicture = null;
         String linkOnPicture = null;
-        List<NewsDto> news = null;
 
+        pictureId = picture.getPictureId();
         nameOfPicture = picture.getNameOfPicture();
         linkOnPicture = picture.getLinkOnPicture();
-        news = newsListToNewsDtoList( picture.getNews() );
 
-        PictureDto pictureDto = new PictureDto( nameOfPicture, linkOnPicture, news );
+        PictureDto pictureDto = new PictureDto( pictureId, nameOfPicture, linkOnPicture );
 
         return pictureDto;
     }
 
     @Override
-    public Picture pictureDtoToPicture(PictureDto pictureDto) {
+    public Picture pictureDtoToPicture(PictureDto pictureDto, JpaContextPictureNews ctxPN) {
         if ( pictureDto == null ) {
             return null;
         }
@@ -278,7 +280,7 @@ public class NewsMapperImpl implements NewsMapper {
         return list1;
     }
 
-    protected Comment commentDtoToComment1(CommentDto commentDto, JpaContextNews ctx, JpaContextAuthor ctxA) {
+    protected Comment commentDtoToComment1(CommentDto commentDto, JpaContextNews ctx, JpaContextAuthor ctxA, JpaContextNewsCategory ctxNC) {
         if ( commentDto == null ) {
             return null;
         }
@@ -291,14 +293,14 @@ public class NewsMapperImpl implements NewsMapper {
         return comment.build();
     }
 
-    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list, JpaContextNews ctx, JpaContextAuthor ctxA) {
+    protected List<Comment> commentDtoListToCommentList(List<CommentDto> list, JpaContextNews ctx, JpaContextAuthor ctxA, JpaContextNewsCategory ctxNC) {
         if ( list == null ) {
             return null;
         }
 
         List<Comment> list1 = new ArrayList<Comment>( list.size() );
         for ( CommentDto commentDto : list ) {
-            list1.add( commentDtoToComment1( commentDto, ctx, ctxA ) );
+            list1.add( commentDtoToComment1( commentDto, ctx, ctxA, ctxNC ) );
         }
 
         return list1;
@@ -343,20 +345,34 @@ public class NewsMapperImpl implements NewsMapper {
         return list1;
     }
 
-    protected List<Picture> pictureDtoListToPictureList(List<PictureDto> list, JpaContextAuthor ctxA) {
+    protected Picture pictureDtoToPicture1(PictureDto pictureDto) {
+        if ( pictureDto == null ) {
+            return null;
+        }
+
+        Picture.PictureBuilder picture = Picture.builder();
+
+        picture.pictureId( pictureDto.pictureId() );
+        picture.nameOfPicture( pictureDto.nameOfPicture() );
+        picture.linkOnPicture( pictureDto.linkOnPicture() );
+
+        return picture.build();
+    }
+
+    protected List<Picture> pictureDtoListToPictureList(List<PictureDto> list) {
         if ( list == null ) {
             return null;
         }
 
         List<Picture> list1 = new ArrayList<Picture>( list.size() );
         for ( PictureDto pictureDto : list ) {
-            list1.add( pictureDtoToPicture( pictureDto ) );
+            list1.add( pictureDtoToPicture1( pictureDto ) );
         }
 
         return list1;
     }
 
-    protected Comment commentDtoToComment3(CommentDto commentDto, JpaContextAuthor ctxA) {
+    protected Comment commentDtoToComment3(CommentDto commentDto) {
         if ( commentDto == null ) {
             return null;
         }
@@ -369,20 +385,20 @@ public class NewsMapperImpl implements NewsMapper {
         return comment.build();
     }
 
-    protected List<Comment> commentDtoListToCommentList2(List<CommentDto> list, JpaContextAuthor ctxA) {
+    protected List<Comment> commentDtoListToCommentList2(List<CommentDto> list) {
         if ( list == null ) {
             return null;
         }
 
         List<Comment> list1 = new ArrayList<Comment>( list.size() );
         for ( CommentDto commentDto : list ) {
-            list1.add( commentDtoToComment3( commentDto, ctxA ) );
+            list1.add( commentDtoToComment3( commentDto ) );
         }
 
         return list1;
     }
 
-    protected News newsDtoToNews1(NewsDto newsDto, JpaContextAuthor ctxA) {
+    protected News newsDtoToNews1(NewsDto newsDto) {
         if ( newsDto == null ) {
             return null;
         }
@@ -396,20 +412,20 @@ public class NewsMapperImpl implements NewsMapper {
             news.isPublished( newsDto.isPublished() );
         }
         news.shortDescription( newsDto.shortDescription() );
-        news.pictures( pictureDtoListToPictureList( newsDto.pictures(), ctxA ) );
-        news.comments( commentDtoListToCommentList2( newsDto.comments(), ctxA ) );
+        news.pictures( pictureDtoListToPictureList( newsDto.pictures() ) );
+        news.comments( commentDtoListToCommentList2( newsDto.comments() ) );
 
         return news.build();
     }
 
-    protected List<News> newsDtoListToNewsList(List<NewsDto> list, JpaContextAuthor ctxA) {
+    protected List<News> newsDtoListToNewsList(List<NewsDto> list) {
         if ( list == null ) {
             return null;
         }
 
         List<News> list1 = new ArrayList<News>( list.size() );
         for ( NewsDto newsDto : list ) {
-            list1.add( newsDtoToNews1( newsDto, ctxA ) );
+            list1.add( newsDtoToNews1( newsDto ) );
         }
 
         return list1;

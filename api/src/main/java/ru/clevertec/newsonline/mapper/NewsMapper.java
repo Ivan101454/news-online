@@ -27,7 +27,7 @@ public interface NewsMapper {
     NewsDto newsToNewsDto(News news);
 
     @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})
-    News newsDtoToNews(NewsDto newsDto, @Context JpaContextNews ctx, @Context JpaContextAuthor ctxA);
+    News newsDtoToNews(NewsDto newsDto, @Context JpaContextNews ctx, @Context JpaContextAuthor ctxA, @Context JpaContextNewsCategory ctxNC);
 
     CommentDto commentToCommentDto(Comment comment);
 
@@ -42,14 +42,15 @@ public interface NewsMapper {
     AuthorDto authorToAuthorDto(Author author);
 
     @Mappings({@Mapping(target = "authorId", ignore = true), @Mapping(target = "dateOfRegistration", ignore = true)})
-    Author authorDtoToAuthor(AuthorDto authorDto, @Context JpaContextAuthor ctxA);
+    Author authorDtoToAuthor(AuthorDto authorDto);
 
     CategoryDto categoryToCategoryDto(Category category);
 
     @Mappings({@Mapping(target = "categoryId", ignore = true), @Mapping(target = "newsList", ignore = true)})
-    Category categoryDtoToCategory(CategoryDto categoryDto, @Context JpaContextNewsCategory ctxNC);
+    Category categoryDtoToCategory(CategoryDto categoryDto);
 
     PictureDto pictureToPictureDto(Picture picture);
+
     @Mappings({@Mapping(target = "news", ignore = true), @Mapping(target = "pictureId", ignore = true)})
-    Picture pictureDtoToPicture(PictureDto pictureDto);
+    Picture pictureDtoToPicture(PictureDto pictureDto, @Context JpaContextPictureNews ctxPN);
 }

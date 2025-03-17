@@ -2,7 +2,6 @@ package ru.clevertec.newsonline.entity;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.metamodel.EntityType;
-import jakarta.persistence.metamodel.ListAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 import java.util.UUID;
@@ -20,7 +19,7 @@ public abstract class Picture_ {
 	/**
 	 * @see ru.clevertec.newsonline.entity.Picture#news
 	 **/
-	public static volatile ListAttribute<Picture, News> news;
+	public static volatile SingularAttribute<Picture, News> news;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.Picture#pictureId

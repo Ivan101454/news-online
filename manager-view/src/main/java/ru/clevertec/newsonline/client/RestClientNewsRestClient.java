@@ -61,7 +61,12 @@ public class RestClientNewsRestClient implements NewsRestClient {
             MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
             parts.add("newsDto", newsDto);
             parts.add("categoryDto", categoryDto);
-            parts.add("image", image);
+
+            if (image != null && !image.isEmpty()) {
+                HttpHeaders fileHeaders = new HttpHeaders();
+                fileHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+                parts.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
+            }
 
             return restClient
                     .post()

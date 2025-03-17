@@ -39,7 +39,7 @@ public class CategoryJpaAdapter implements CategoryPersistencePort {
 
     @Override
     public CategoryDto save(CategoryDto categoryDto) {
-        categoryRepository.save(newsMapper.categoryDtoToCategory(categoryDto, ctxNC));
+        categoryRepository.save(newsMapper.categoryDtoToCategory(categoryDto));
         return categoryDto;
     }
 
@@ -55,7 +55,7 @@ public class CategoryJpaAdapter implements CategoryPersistencePort {
 
     @Override
     public void addNewsToCategory(Section section, NewsDto newsDto) {
-        News news = newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA);
+        News news = newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA, ctxNC);
         categoryRepository.findBySection(section).ifPresent(cat -> cat.addNews(news));
     }
 }

@@ -18,7 +18,6 @@ public abstract class News_ {
 	public static final String AUTHOR = "author";
 	public static final String IS_PUBLISHED = "isPublished";
 	public static final String ARTICLE_ID = "articleId";
-	public static final String CONTENT_LINK = "contentLink";
 	public static final String HEADER_NEWS = "headerNews";
 	public static final String SHORT_DESCRIPTION = "shortDescription";
 	public static final String CATEGORY = "category";
@@ -54,11 +53,6 @@ public abstract class News_ {
 	 * @see ru.clevertec.newsonline.entity.News#articleId
 	 **/
 	public static volatile SingularAttribute<News, Integer> articleId;
-	
-	/**
-	 * @see ru.clevertec.newsonline.entity.News#contentLink
-	 **/
-	public static volatile SingularAttribute<News, String> contentLink;
 	
 	/**
 	 * @see ru.clevertec.newsonline.entity.News#headerNews

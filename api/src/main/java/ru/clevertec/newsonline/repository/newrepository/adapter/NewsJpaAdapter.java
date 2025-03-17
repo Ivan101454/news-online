@@ -15,6 +15,8 @@ import ru.clevertec.newsonline.entity.Picture;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.mapper.JpaContextAuthor;
 import ru.clevertec.newsonline.mapper.JpaContextNews;
+import ru.clevertec.newsonline.mapper.JpaContextNewsCategory;
+import ru.clevertec.newsonline.mapper.JpaContextPictureNews;
 import ru.clevertec.newsonline.mapper.JpaContextUser;
 import ru.clevertec.newsonline.mapper.NewsMapper;
 import ru.clevertec.newsonline.newService.dto.AuthorDto;
@@ -39,11 +41,14 @@ import java.util.Optional;
 public class NewsJpaAdapter implements NewsPersistencePort {
 
     private final NewsRepository newsRepository;
+    private final CategoryRepository categoryRepository;
     private final IFilterEntityRepository<News, NewsFilter> iFilterEntityRepository;
     private final NewsMapper newsMapper;
     private final JpaContextNews jpaCtx;
     private final JpaContextAuthor jpaCtxA;
     private final JpaContextUser jpaCtxU;
+    private final JpaContextNewsCategory jpaCtxNC;
+    private final JpaContextPictureNews jpaCtxPN;
 
     @Override
     public List<NewsDto> findAll() {
@@ -64,7 +69,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     @CachePut(value = "NEWS_CACHE", key = "#result.articleId()")
     @Override
     public NewsDto save(NewsDto newsDto) {
-        newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA));
+        newsRepository.saveAndFlush(newsMapper.newsDtoToNews(newsDto, jpaCtx, jpaCtxA, jpaCtxNC));
         return newsDto;
     }
 
@@ -76,12 +81,14 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     }
 
     @Override
-    public void update(int articleId, NewsDto newsDto) {
+    public void update(int articleId, NewsDto newsDto, CategoryDto categoryDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
+        Optional<Category> bySection = categoryRepository.findBySection(categoryDto.section());
         byArticleId.ifPresentOrElse(x -> {
                     x.setHeaderNews(newsDto.headerNews());
                     x.setPublished(newsDto.isPublished() != null ? newsDto.isPublished() : false);
                     x.setShortDescription(newsDto.shortDescription());
+                    bySection.ifPresent(x::setCategory);
                     }
                 , () -> {
                     throw new NotFoundException("Сущность не найдена по id");
@@ -103,9 +110,8 @@ public class NewsJpaAdapter implements NewsPersistencePort {
 
     @Override
     public void addPictureToNewsList(int articleId, PictureDto pictureDto) {
-        findByArticleId(articleId).ifPresent(x -> {
-                    News byArticleId = newsMapper.newsDtoToNews(x, jpaCtx, jpaCtxA);
-                    Picture picture = newsMapper.pictureDtoToPicture(pictureDto);
-                    byArticleId.addPicture(picture);});
+        Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
+        Picture picture = newsMapper.pictureDtoToPicture(pictureDto, jpaCtxPN);
+        byArticleId.ifPresent(news -> news.addPicture(picture));
     }
 }

@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.newService.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -8,7 +9,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.exception.NotFoundException;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.PictureDto;
@@ -16,6 +19,7 @@ import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.AuthorPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
+import ru.clevertec.newsonline.util.SaveImage;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +28,8 @@ import java.util.Optional;
 public class NewsService implements NewsServicePort {
 
     private final NewsPersistencePort newsPersistencePort;
+    @Value("${app.upload.path}")
+    String uploadDir;
 
     public NewsService(NewsPersistencePort newsPersistencePort) {
         this.newsPersistencePort = newsPersistencePort;
@@ -47,13 +53,13 @@ public class NewsService implements NewsServicePort {
         return Optional.of(newsDto);
     }
 
-    public void update(int id, NewsDto update) {
+    public void update(int id, NewsDto update, CategoryDto categoryDto) {
         try {
             newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        newsPersistencePort.update(id, update);
+        newsPersistencePort.update(id, update, categoryDto);
     }
 
     public void delete(int articleId) {
@@ -72,8 +78,14 @@ public class NewsService implements NewsServicePort {
         newsPersistencePort.addCommentToNewsList(articleId, commentDto);
     }
 
-    public void addPicture(int articleId, PictureDto pictureDto) {
+    public void addPicture(int articleId, MultipartFile image) {
+        String path = saveImage(image);
+        PictureDto pictureDto = new PictureDto(null, image.getOriginalFilename(), path);
         newsPersistencePort.addPictureToNewsList(articleId, pictureDto);
+    }
+
+    public String saveImage(MultipartFile image) {
+        return SaveImage.persist(image, uploadDir);
     }
 
 }
