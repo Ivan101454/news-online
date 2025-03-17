@@ -46,8 +46,8 @@ public class CommentJpaAdapter implements CommentPersistencePort {
 
     @Override
     public CommentDto save(CommentDto commentDto) {
-        commentRepository.save(newsMapper.commentDtoToComment(commentDto, jpaCtx, ctxU));
-        return commentDto;
+        Comment save = commentRepository.save(newsMapper.commentDtoToComment(commentDto, jpaCtx, ctxU));
+        return newsMapper.commentToCommentDto(save);
     }
 
     @Override

@@ -12,17 +12,25 @@ import java.nio.file.Paths;
 @UtilityClass
 public class SaveImage {
 
-    String persist(MultipartFile image) throws IOException {
+    public String persist(MultipartFile image) {
         if (image != null && !image.isEmpty()) {
-            String uploadDir = "uploads/";
+            String uploadDir = "c:/uploads/";
             Path uploadPath = Paths.get(uploadDir);
+
             if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+                try {
+                    Files.createDirectories(uploadPath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             String filePath = uploadDir + image.getOriginalFilename();
             File destinationFile = new File(filePath);
-            image.transferTo(destinationFile);
-            System.out.println("Файл загружен: " + filePath);
+            try {
+                image.transferTo(destinationFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             return filePath;
         } else {
             throw new RuntimeException("Нет изображения");

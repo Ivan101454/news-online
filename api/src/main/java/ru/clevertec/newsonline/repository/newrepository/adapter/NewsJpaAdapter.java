@@ -11,6 +11,7 @@ import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
+import ru.clevertec.newsonline.entity.Picture;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.mapper.JpaContextAuthor;
 import ru.clevertec.newsonline.mapper.JpaContextNews;
@@ -20,6 +21,7 @@ import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.dto.PictureDto;
 import ru.clevertec.newsonline.newService.enums.Section;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
@@ -97,5 +99,13 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Comment comment = newsMapper.commentDtoToComment(commentDto, jpaCtx, jpaCtxU);
         byArticleId.ifPresent(news -> news.addComment(comment));
+    }
+
+    @Override
+    public void addPictureToNewsList(int articleId, PictureDto pictureDto) {
+        findByArticleId(articleId).ifPresent(x -> {
+                    News byArticleId = newsMapper.newsDtoToNews(x, jpaCtx, jpaCtxA);
+                    Picture picture = newsMapper.pictureDtoToPicture(pictureDto);
+                    byArticleId.addPicture(picture);});
     }
 }

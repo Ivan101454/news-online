@@ -6,4 +6,5 @@ import ru.clevertec.newsonline.newService.enums.Section;
 public interface CategoryServicePort {
 
     void addNews(Section section, NewsDto newsDto);
+
 }

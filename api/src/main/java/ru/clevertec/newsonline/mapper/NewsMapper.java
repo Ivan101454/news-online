@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+import ru.clevertec.newsonline.entity.Picture;
 import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
@@ -14,6 +15,7 @@ import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.entity.User;
+import ru.clevertec.newsonline.newService.dto.PictureDto;
 import ru.clevertec.newsonline.newService.dto.UserDto;
 
 @Mapper(componentModel = "spring")
@@ -46,4 +48,8 @@ public interface NewsMapper {
 
     @Mappings({@Mapping(target = "categoryId", ignore = true), @Mapping(target = "newsList", ignore = true)})
     Category categoryDtoToCategory(CategoryDto categoryDto, @Context JpaContextNewsCategory ctxNC);
+
+    PictureDto pictureToPictureDto(Picture picture);
+    @Mappings({@Mapping(target = "news", ignore = true), @Mapping(target = "pictureId", ignore = true)})
+    Picture pictureDtoToPicture(PictureDto pictureDto);
 }

@@ -2,9 +2,12 @@ package ru.clevertec.newsonline.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,18 +58,16 @@ public class RestClientNewsRestClient implements NewsRestClient {
     @Override
     public NewsDto createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
-            MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
-            bodyBuilder.part("updateNewsDto", newsDto)
-                    .contentType(MediaType.APPLICATION_JSON);
-            bodyBuilder.part("categoryDto", categoryDto)
-                    .contentType(MediaType.APPLICATION_JSON);
-            bodyBuilder.part("image", image.getResource())
-                    .contentType(MediaType.MULTIPART_FORM_DATA);
+            MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+            parts.add("newsDto", newsDto);
+            parts.add("categoryDto", categoryDto);
+            parts.add("image", image);
+
             return restClient
                     .post()
                     .uri("/catalogue-api/news")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(bodyBuilder)
+                    .body(parts)
                     .retrieve()
                     .body(NewsDto.class);
         } catch (HttpClientErrorException.BadRequest exception) {
@@ -90,18 +91,21 @@ public class RestClientNewsRestClient implements NewsRestClient {
     @Override
     public void updateNews(NewsDto updateNewsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
-            MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
-            bodyBuilder.part("updateNewsDto", updateNewsDto)
-                    .contentType(MediaType.APPLICATION_JSON);
-            bodyBuilder.part("categoryDto", categoryDto)
-                    .contentType(MediaType.APPLICATION_JSON);
-            bodyBuilder.part("image", image.getResource())
-                    .contentType(MediaType.MULTIPART_FORM_DATA);
+            MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+            parts.add("newsDto", updateNewsDto);
+            parts.add("categoryDto", categoryDto);
+
+            if (image != null && !image.isEmpty()) {
+                HttpHeaders fileHeaders = new HttpHeaders();
+                fileHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+                parts.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
+            }
+
             restClient
                     .patch()
                     .uri("/catalogue-api/news/{articleId}", updateNewsDto.articleId())
                     .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(bodyBuilder)
+                    .body(parts)
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException.BadRequest exception) {

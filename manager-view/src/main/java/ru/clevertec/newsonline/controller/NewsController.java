@@ -49,7 +49,8 @@ public class NewsController {
     }
 
     @PostMapping("edit")
-    public String updateNews(@ModelAttribute(name = "news", binding = false) NewsDto news, CategoryDto categoryDto, @RequestParam("image") MultipartFile image, NewsDto updateNews, Model model) {
+    public String updateNews(@ModelAttribute(name = "news", binding = false) NewsDto news, CategoryDto categoryDto,
+                             @RequestParam("image") MultipartFile image, NewsDto updateNews, Model model) {
         try {
             newsRestClient.updateNews(updateNews, categoryDto, image);
             return "redirect:/manager-api/news/%d".formatted(news.articleId());

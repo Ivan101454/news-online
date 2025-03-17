@@ -50,4 +50,5 @@ public class Category implements Serializable {
         news.setCategory(this);
         newsList.add(news);
     }
+
 }

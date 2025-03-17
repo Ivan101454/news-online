@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.dto.PictureDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.AuthorPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
@@ -27,12 +28,7 @@ public class NewsService implements NewsServicePort {
     public NewsService(NewsPersistencePort newsPersistencePort) {
         this.newsPersistencePort = newsPersistencePort;
     }
-//    @Cacheable(value = "byIdCache", key = "#p0")
-//    public Optional<NewsDto> findById(UUID id) {
-//        Optional<NewsDto> entity = newsPersistencePort.findById(id);
-//        entity.orElseThrow(() -> new NotFoundException("Новость не найдена по ав"));
-//        return entity;
-//    }
+
     public Optional<NewsDto> findByArticleId(int articleId) {
         return newsPersistencePort.findByArticleId(articleId);
     }
@@ -74,6 +70,10 @@ public class NewsService implements NewsServicePort {
 
     public void addComment(int articleId, CommentDto commentDto) {
         newsPersistencePort.addCommentToNewsList(articleId, commentDto);
+    }
+
+    public void addPicture(int articleId, PictureDto pictureDto) {
+        newsPersistencePort.addPictureToNewsList(articleId, pictureDto);
     }
 
 }

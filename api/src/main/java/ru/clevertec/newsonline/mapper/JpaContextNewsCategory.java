@@ -14,16 +14,16 @@ import ru.clevertec.newsonline.entity.News;
 public class JpaContextNewsCategory {
 
     private final EntityManager entityManager;
-    private News news;
+    private Category category;
 
     @BeforeMapping
-    public void setEntity(@MappingTarget News news) {
-        this.news = news;
+    public void setEntity(@MappingTarget Category category) {
+        this.category = category;
     }
 
     @AfterMapping
-    private void establishRelation(@MappingTarget Category category) {
-        category.addNews(news);
+    private void establishRelation(@MappingTarget News news) {
+        news.setCategory(category);
     }
 
 }

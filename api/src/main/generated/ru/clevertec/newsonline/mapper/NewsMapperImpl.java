@@ -23,7 +23,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-15T23:37:01+0300",
+    date = "2025-03-17T00:06:05+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.3 (Amazon.com Inc.)"
 )
 @Component
@@ -219,20 +219,8 @@ public class NewsMapperImpl implements NewsMapper {
         return category.build();
     }
 
-    protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<NewsDto> list1 = new ArrayList<NewsDto>( list.size() );
-        for ( News news : list ) {
-            list1.add( newsToNewsDto( news ) );
-        }
-
-        return list1;
-    }
-
-    protected PictureDto pictureToPictureDto(Picture picture) {
+    @Override
+    public PictureDto pictureToPictureDto(Picture picture) {
         if ( picture == null ) {
             return null;
         }
@@ -248,6 +236,20 @@ public class NewsMapperImpl implements NewsMapper {
         PictureDto pictureDto = new PictureDto( nameOfPicture, linkOnPicture, news );
 
         return pictureDto;
+    }
+
+    @Override
+    public Picture pictureDtoToPicture(PictureDto pictureDto) {
+        if ( pictureDto == null ) {
+            return null;
+        }
+
+        Picture.PictureBuilder picture = Picture.builder();
+
+        picture.nameOfPicture( pictureDto.nameOfPicture() );
+        picture.linkOnPicture( pictureDto.linkOnPicture() );
+
+        return picture.build();
     }
 
     protected List<PictureDto> pictureListToPictureDtoList(List<Picture> list) {
@@ -328,18 +330,17 @@ public class NewsMapperImpl implements NewsMapper {
         return list1;
     }
 
-    protected Picture pictureDtoToPicture(PictureDto pictureDto, JpaContextAuthor ctxA) {
-        if ( pictureDto == null ) {
+    protected List<NewsDto> newsListToNewsDtoList(List<News> list) {
+        if ( list == null ) {
             return null;
         }
 
-        Picture.PictureBuilder picture = Picture.builder();
+        List<NewsDto> list1 = new ArrayList<NewsDto>( list.size() );
+        for ( News news : list ) {
+            list1.add( newsToNewsDto( news ) );
+        }
 
-        picture.nameOfPicture( pictureDto.nameOfPicture() );
-        picture.linkOnPicture( pictureDto.linkOnPicture() );
-        picture.news( newsDtoListToNewsList( pictureDto.news(), ctxA ) );
-
-        return picture.build();
+        return list1;
     }
 
     protected List<Picture> pictureDtoListToPictureList(List<PictureDto> list, JpaContextAuthor ctxA) {
@@ -349,7 +350,7 @@ public class NewsMapperImpl implements NewsMapper {
 
         List<Picture> list1 = new ArrayList<Picture>( list.size() );
         for ( PictureDto pictureDto : list ) {
-            list1.add( pictureDtoToPicture( pictureDto, ctxA ) );
+            list1.add( pictureDtoToPicture( pictureDto ) );
         }
 
         return list1;
