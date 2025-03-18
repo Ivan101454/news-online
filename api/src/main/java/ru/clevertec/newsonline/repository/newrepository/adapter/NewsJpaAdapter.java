@@ -80,8 +80,9 @@ public class NewsJpaAdapter implements NewsPersistencePort {
                 .ifPresentOrElse(newsRepository::delete, () -> {throw new NoSuchElementException("Нет новости с таким артиклем");});
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#p0")
     @Override
-    public void update(int articleId, NewsDto newsDto, CategoryDto categoryDto) {
+    public Optional<NewsDto> update(int articleId, NewsDto newsDto, CategoryDto categoryDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Optional<Category> bySection = categoryRepository.findBySection(categoryDto.section());
         byArticleId.ifPresentOrElse(x -> {
@@ -93,25 +94,30 @@ public class NewsJpaAdapter implements NewsPersistencePort {
                 , () -> {
                     throw new NotFoundException("Сущность не найдена по id");
                 });
+        return Optional.of(newsMapper.newsToNewsDto(byArticleId.orElseThrow()));
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#p0")
     @Override
     public List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable) {
         return iFilterEntityRepository.filterWord(newsFilter, News.class, pageable).stream()
                 .map(newsMapper::newsToNewsDto).toList();
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#p0")
     @Override
-    public void addCommentToNewsList(int articleId, CommentDto commentDto) {
+    public Optional<NewsDto> addCommentToNewsList(int articleId, CommentDto commentDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Comment comment = newsMapper.commentDtoToComment(commentDto, jpaCtx, jpaCtxU);
         byArticleId.ifPresent(news -> news.addComment(comment));
+        return byArticleId.map(newsMapper::newsToNewsDto);
     }
 
     @Override
-    public void addPictureToNewsList(int articleId, PictureDto pictureDto) {
+    public Optional<NewsDto> addPictureToNewsList(int articleId, PictureDto pictureDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Picture picture = newsMapper.pictureDtoToPicture(pictureDto, jpaCtxPN);
         byArticleId.ifPresent(news -> news.addPicture(picture));
+        return byArticleId.map(newsMapper::newsToNewsDto);
     }
 }

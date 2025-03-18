@@ -24,11 +24,11 @@ public interface NewsPersistencePort{
 
     void deleteByArticleId(int id);
 
-    void update(int id, NewsDto newsDto, CategoryDto categoryDto);
+    Optional<NewsDto> update(int id, NewsDto newsDto, CategoryDto categoryDto);
 
     List<NewsDto> filterWord(NewsFilter newsFilter, Pageable pageable);
 
-    void addCommentToNewsList(int id, CommentDto commentDto);
+    Optional<NewsDto> addCommentToNewsList(int id, CommentDto commentDto);
 
-    void addPictureToNewsList(int id, PictureDto pictureDto);
+    Optional<NewsDto> addPictureToNewsList(int id, PictureDto pictureDto);
 }

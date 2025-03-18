@@ -71,4 +71,9 @@ public class NewssController {
             return "catalogue/news/create";
         }
     }
+
+    @GetMapping("start")
+    public String getStartPage() {
+        return "catalogue/news/index";
+    }
 }
