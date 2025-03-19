@@ -54,11 +54,7 @@ public class NewsService implements NewsServicePort {
     }
 
     public void update(int id, NewsDto update, CategoryDto categoryDto) {
-        try {
-            newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
         newsPersistencePort.update(id, update, categoryDto);
     }
 

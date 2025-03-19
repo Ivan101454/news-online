@@ -15,16 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
-import ru.clevertec.newsonline.newService.dto.PictureDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.CategoryServicePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
-import ru.clevertec.newsonline.newService.service.interfaces.PictureServicePort;
-import ru.clevertec.newsonline.util.SaveImage;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,7 +29,6 @@ public class NewssController {
 
     private final NewsServicePort newsServicePort;
     private final CategoryServicePort categoryServicePort;
-    private final PictureServicePort pictureServicePort;
 
     @GetMapping("list")
     public List<NewsDto> findNews() {
