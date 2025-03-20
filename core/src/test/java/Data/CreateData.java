@@ -1,5 +1,7 @@
 package Data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
@@ -43,4 +45,18 @@ public class CreateData {
         }
         return list;
     }
+
+    @SneakyThrows
+    public String writeNewsAsJsonString() {
+        NewsDto news = createNewsDto();
+        return new ObjectMapper().writeValueAsString(news);
+    }
+
+    @SneakyThrows
+    public String writeCategorieAsJsonString() {
+        CategoryDto categoryDto = createCategoryDto();
+        return new  ObjectMapper().writeValueAsString(categoryDto);
+    }
+
+
 }

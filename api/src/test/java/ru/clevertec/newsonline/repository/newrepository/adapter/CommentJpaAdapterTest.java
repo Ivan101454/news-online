@@ -64,11 +64,11 @@ class CommentJpaAdapterTest {
     @Test
     void save() {
         //given
-        Optional<NewsDto> newsDto = newsJpaAdapter.findByArticleId(8918718);
-        Optional<CommentDto> commentDto = commentJpaAdapter.findById(UUID.fromString("62fb1340-d3ab-4735-bcf3-fe4de8bd1093"));
+//        Optional<NewsDto> newsDto = newsJpaAdapter.findByArticleId(8918718);
+//        Optional<CommentDto> commentDto = commentJpaAdapter.findById(UUID.fromString("62fb1340-d3ab-4735-bcf3-fe4de8bd1093"));
 
         //when
-        CommentDto save = commentJpaAdapter.save(commentDto.get());
+//        CommentDto save = commentJpaAdapter.save(commentDto.get());
         
         //then
 

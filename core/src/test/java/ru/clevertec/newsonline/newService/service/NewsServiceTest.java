@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class NewsServiceTest {
@@ -162,5 +163,6 @@ class NewsServiceTest {
 
         //then
         assertEquals(newsDto.articleId(), newsDtoResult.get().articleId());
+        verify(newsPersistencePort).addPictureToNewsList(1234567, pictureDto);
     }
 }

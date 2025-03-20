@@ -1,7 +1,13 @@
 package data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.enums.Section;
+
+import java.util.UUID;
 
 @UtilityClass
 public class UtilNews {
@@ -16,5 +22,21 @@ public class UtilNews {
         return new NewsDto(" ",
                 null, 99, false, "",
                 null, null);
+    }
+
+    public CategoryDto createCategoryDto() {
+        return new CategoryDto(UUID.randomUUID(), Section.PEOPLE, null);
+    }
+
+    @SneakyThrows
+    public String writeNewsAsJsonString() {
+        NewsDto news = createNews();
+        return new ObjectMapper().writeValueAsString(news);
+    }
+
+    @SneakyThrows
+    public String writeCategorieAsJsonString() {
+        CategoryDto categoryDto = createCategoryDto();
+        return new  ObjectMapper().writeValueAsString(categoryDto);
     }
 }
