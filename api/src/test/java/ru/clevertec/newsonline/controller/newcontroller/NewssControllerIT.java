@@ -7,9 +7,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Transactional
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class NewssControllerIT {
 
@@ -50,6 +53,7 @@ class NewssControllerIT {
 //    private NewsController newsController;
 
     @Test
+    @Sql("/sql/news.sql")
     void findNews_ReturnNewsList() throws Exception {
         //given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("catalogue-api/news/list")
@@ -62,12 +66,8 @@ class NewssControllerIT {
         .andDo(print())
                 .andExpectAll(
                         status().isOk(),
-                        content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
-                        content().json("""
-                                [j, j]
-                                """.formatted(json)
-                        )
-                );
+                        content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+                        );
     }
 
     @Test

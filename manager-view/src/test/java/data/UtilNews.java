@@ -5,7 +5,11 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
+import ru.clevertec.newsonline.newService.enums.Section;
+
+import java.util.UUID;
 
 @UtilityClass
 public class UtilNews {
@@ -22,6 +26,10 @@ public class UtilNews {
                 null, null);
     }
 
+    public CategoryDto createCategoryDto() {
+        return new CategoryDto(UUID.randomUUID(), Section.PEOPLE, null);
+    }
+
     @SneakyThrows
     public String writeNewsAsJsonString() {
         NewsDto news = createNews();
@@ -30,8 +38,17 @@ public class UtilNews {
 
     @SneakyThrows
     public String writeCategorieAsJsonString() {
-        NewsDto news = createCa();
-        return new  ObjectMapper().writeValueAsString(news);
+        CategoryDto categoryDto = createCategoryDto();
+        return new  ObjectMapper().writeValueAsString(categoryDto);
+    }
+
+    public String writeListOfJsonNews() {
+        String s = writeNewsAsJsonString();
+        return """
+                [
+                %s, %s
+                ]
+                """.formatted(s, s);
     }
 
     public MockMultipartFile getFile() {
