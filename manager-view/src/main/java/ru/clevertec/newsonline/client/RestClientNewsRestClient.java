@@ -1,6 +1,8 @@
 package ru.clevertec.newsonline.client;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -58,6 +60,7 @@ public class RestClientNewsRestClient implements NewsRestClient {
     @Override
     public NewsDto createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
+            Logger log = LoggerFactory.getLogger(this.getClass());
             MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
             parts.add("newsDto", newsDto);
             parts.add("categoryDto", categoryDto);
@@ -67,6 +70,7 @@ public class RestClientNewsRestClient implements NewsRestClient {
                 fileHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
                 parts.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
             }
+            log.info("MAPA" + parts.get("newsDto") + "  " + parts.get("categoryDto") + "  " + parts.get("image").get(0));
 
             return restClient
                     .post()

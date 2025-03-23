@@ -31,7 +31,7 @@ public class TestingBeans {
     ) {
         return new RestClientNewsRestClient(RestClient.builder()
                 .baseUrl(catalogueBaseUri)
-                .requestFactory(new JdkClientHttpRequestFactory())
+//                .requestFactory(new JdkClientHttpRequestFactory())
                 .build());
     }
 }

@@ -3,8 +3,8 @@ package data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.enums.Section;
@@ -27,7 +27,7 @@ public class UtilNews {
     }
 
     public CategoryDto createCategoryDto() {
-        return new CategoryDto(UUID.randomUUID(), Section.PEOPLE, null);
+        return new CategoryDto(null, Section.PEOPLE, null);
     }
 
     @SneakyThrows
@@ -52,6 +52,6 @@ public class UtilNews {
     }
 
     public MockMultipartFile getFile() {
-        return new MockMultipartFile("file", "Sample file content".getBytes());
+        return new MockMultipartFile("image", "exemple.jpg", MediaType.IMAGE_PNG_VALUE, "Sample file content".getBytes());
     }
 }
