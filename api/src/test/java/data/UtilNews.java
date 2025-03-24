@@ -25,7 +25,7 @@ public class UtilNews {
     }
 
     public CategoryDto createCategoryDto() {
-        return new CategoryDto(UUID.randomUUID(), Section.PEOPLE, null);
+        return new CategoryDto(null, Section.PEOPLE, null);
     }
 
     @SneakyThrows

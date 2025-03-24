@@ -1,25 +1,9 @@
 spring:
   datasource:
-    url: jdbc:tc:postgresql:13.3:///demo
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  data:
-    redis:
-      repositories:
-        enabled: false
-  redis:
-    host=
-    port=
+    url: jdbc:tc:postgresql:13.3:///test
+    username: test
+    password: test
   liquibase:
-    enabled: false
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yaml
 
-#  jpa:
-#    hibernate:
-#      ddl-auto: none
-#  liquibase:
-#    enabled: true
-#    change-log: db/changelog/db.changelog-master-test.yaml
-#app:
-#  logging:
-#    enabled: true

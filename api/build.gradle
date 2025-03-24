@@ -31,7 +31,6 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.4.0'
     testImplementation 'org.testcontainers:postgresql'
-    testImplementation 'org.testcontainers:jdbc'
     testImplementation 'org.testcontainers:junit-jupiter'
 }
 
