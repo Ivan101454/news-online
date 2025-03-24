@@ -141,9 +141,6 @@ public class NewssControllerIT {
     @Test
     void createNews_ReturnListOfDefineNewsByArticle() throws Exception {
         //given
-        Logger log = LoggerFactory.getLogger(this.getClass());
-        log.info("!!!!!!!!BYTES = " + Arrays.equals(UtilNews.getFile().getBytes(), "Sample file content".getBytes()));
-
         NewsDto news = UtilNews.createNews();
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("newsDto", news);

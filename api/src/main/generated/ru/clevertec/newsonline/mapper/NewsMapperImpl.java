@@ -23,7 +23,7 @@ import ru.clevertec.newsonline.newService.enums.Section;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-21T20:35:31+0300",
+    date = "2025-03-24T22:04:22+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.3 (Amazon.com Inc.)"
 )
 @Component
@@ -35,6 +35,7 @@ public class NewsMapperImpl implements NewsMapper {
             return null;
         }
 
+        Boolean isPublished = null;
         String headerNews = null;
         LocalDateTime dateOfNews = null;
         int articleId = 0;
@@ -42,14 +43,13 @@ public class NewsMapperImpl implements NewsMapper {
         List<PictureDto> pictures = null;
         List<CommentDto> comments = null;
 
+        isPublished = news.isPublished();
         headerNews = news.getHeaderNews();
         dateOfNews = news.getDateOfNews();
         articleId = news.getArticleId();
         shortDescription = news.getShortDescription();
         pictures = pictureListToPictureDtoList( news.getPictures() );
         comments = commentListToCommentDtoList( news.getComments() );
-
-        Boolean isPublished = null;
 
         NewsDto newsDto = new NewsDto( headerNews, dateOfNews, articleId, isPublished, shortDescription, pictures, comments );
 

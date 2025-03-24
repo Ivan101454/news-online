@@ -1,5 +1,6 @@
 package ru.clevertec.newsonline.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -41,12 +42,13 @@ public class ServiceClassConfig {
     }
 
 
-    @Bean
-    public ObjectMapper createObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new Jdk8Module());
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return objectMapper;
-    }
+//    @Bean
+//    public ObjectMapper createObjectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new Jdk8Module());
+//        objectMapper.registerModule(new JavaTimeModule());
+//        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        return objectMapper;
+//    }
 }

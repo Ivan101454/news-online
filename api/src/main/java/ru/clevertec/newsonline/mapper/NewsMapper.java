@@ -23,7 +23,7 @@ public interface NewsMapper {
 
     NewsMapper INSTANCE = Mappers.getMapper(NewsMapper.class);
 
-//    @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "section", ignore = true)})
+    @Mapping(target = "isPublished", source = "published")
     NewsDto newsToNewsDto(News news);
 
     @Mappings({@Mapping(target = "pictures", ignore = true), @Mapping(target = "category", ignore = true), @Mapping(target = "author", ignore = true), @Mapping(target = "dateOfNews", ignore = true), @Mapping(target = "newsId", ignore = true)})

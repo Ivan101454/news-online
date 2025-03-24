@@ -71,7 +71,7 @@ public class NewssController {
             }
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .replacePath("/catalogue-api/news/list")
+                            .replacePath("/catalogue-api/news/{article}")
                             .build(Map.of("article", articleId)))
                     .body(newsServicePort.findByArticleId(articleId));
         }
