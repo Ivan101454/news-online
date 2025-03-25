@@ -1,6 +1,9 @@
 server:
   port: 8081
 spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
   application:
     name: api
   config:

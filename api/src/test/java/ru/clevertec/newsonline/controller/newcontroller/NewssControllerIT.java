@@ -1,18 +1,12 @@
 package ru.clevertec.newsonline.controller.newcontroller;
 
-import data.UtilNews;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -24,6 +18,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
+
+import java.util.Locale;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -70,12 +66,12 @@ class NewssControllerIT {
         //when
         mockMvc.perform(requestBuilder)
 
-        //then
-        .andDo(print())
+                //then
+                .andDo(print())
                 .andExpectAll(
                         status().isOk(),
                         content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-                        );
+                );
     }
 
     @Test
@@ -87,7 +83,7 @@ class NewssControllerIT {
         //when
         mockMvc.perform(requestBuilder)
 
-        //then
+                //then
                 .andExpectAll(
                         status().isForbidden()
                 );
@@ -95,7 +91,7 @@ class NewssControllerIT {
 
 
     @Test
-    void createNews_ShouldReturnNewsByArticle() throws Exception  {
+    void createNews_ShouldReturnNewsByArticle() throws Exception {
         //given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.multipart("/catalogue-api/news")
                 .file(new MockMultipartFile(
@@ -103,28 +99,28 @@ class NewssControllerIT {
                         null,
                         MediaType.APPLICATION_JSON_VALUE,
                         """
-                        {
-                            "headerNews": "Тестовый заголовок",
-                            "dateOfNews": null,
-                            "articleId": 1111111,
-                            "isPublished": true,
-                            "shortDescription": "Тестовое описание",
-                            "pictures": null,
-                            "comments": null
-                        }
-                        """.getBytes()
+                                {
+                                    "headerNews": "Тестовый заголовок",
+                                    "dateOfNews": null,
+                                    "articleId": 1111111,
+                                    "isPublished": true,
+                                    "shortDescription": "Тестовое описание",
+                                    "pictures": null,
+                                    "comments": null
+                                }
+                                """.getBytes()
                 ))
                 .file(new MockMultipartFile(
                         "categoryDto",
                         null,
                         MediaType.APPLICATION_JSON_VALUE,
                         """
-                        {
-                            "categoryId": null,
-                            "section": "PEOPLE",
-                            "newsList": null
-                        }
-                        """.getBytes() // JSON-данные для categoryDto
+                                {
+                                    "categoryId": null,
+                                    "section": "PEOPLE",
+                                    "newsList": null
+                                }
+                                """.getBytes() // JSON-данные для categoryDto
                 ))
                 .file(new MockMultipartFile(
                         "image",
@@ -137,7 +133,7 @@ class NewssControllerIT {
         //when
         mockMvc.perform(requestBuilder)
 
-        //then
+                //then
                 .andDo(print())
                 .andExpectAll(
                         status().isCreated(),
@@ -147,7 +143,61 @@ class NewssControllerIT {
                         jsonPath("$.articleId").value(1111111),
                         jsonPath("$.isPublished").value(true)
                 );
+    }
 
+    @Test
+    void createNews_RequestIsInvalid_ShouldReturnProblemDetail() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.multipart("/catalogue-api/news")
+                .file(new MockMultipartFile(
+                        "newsDto",
+                        null,
+                        MediaType.APPLICATION_JSON_VALUE,
+                        """
+                                {
+                                    "headerNews": " ",
+                                    "dateOfNews": null,
+                                    "articleId": 3,
+                                    "isPublished": true,
+                                    "shortDescription": "",
+                                    "pictures": null,
+                                    "comments": null
+                                }
+                                """.getBytes()
+                ))
+                .file(new MockMultipartFile(
+                        "categoryDto",
+                        null,
+                        MediaType.APPLICATION_JSON_VALUE,
+                        """
+                                {
+                                    "categoryId": null,
+                                    "section": "PEOPLE",
+                                    "newsList": null
+                                }
+                                """.getBytes() // JSON-данные для categoryDto
+                ))
+                .file(new MockMultipartFile(
+                        "image",
+                        "test-image.jpg",
+                        MediaType.IMAGE_JPEG_VALUE,
+                        "test image content".getBytes()
+                ))
+                .locale(Locale.of("ru", "RU"))
+                .with(jwt().jwt(builder -> builder.claim("scope", "edit_catalogue")));
 
+        //when
+        mockMvc.perform(requestBuilder)
+
+                //then
+                .andDo(print())
+                .andExpectAll(
+                        status().isBadRequest(),
+                        content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON),
+                        jsonPath("$.properties.errors").exists(),
+                        jsonPath("$.properties.errors").value(Matchers.containsInAnyOrder(
+                                "Нет описания",
+                                "Артикул должен быть 6 цифр"
+                        )));
     }
 }

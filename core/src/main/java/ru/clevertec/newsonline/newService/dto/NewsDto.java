@@ -17,7 +17,7 @@ public record NewsDto (
         int articleId,
         @NotNull
         Boolean isPublished,
-        @NotEmpty(message = "{catalogue.errors.news.shortDescription_is_invalid}")
+        @NotEmpty(message = "{catalogue.errors.news.short_description_is_invalid}")
         String shortDescription,
         List<PictureDto> pictures,
         List<CommentDto> comments) {

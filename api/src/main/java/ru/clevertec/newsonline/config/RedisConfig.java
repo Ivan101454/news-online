@@ -40,6 +40,7 @@ public class RedisConfig {
                 .configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .addModule(new JavaTimeModule())
                 .findAndAddModules()
                 .build();
