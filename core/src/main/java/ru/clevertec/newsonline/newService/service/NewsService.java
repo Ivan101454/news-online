@@ -1,27 +1,21 @@
 package ru.clevertec.newsonline.newService.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.PictureDto;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
-import ru.clevertec.newsonline.newService.service.interfaces.AuthorPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
 import ru.clevertec.newsonline.util.SaveImage;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Transactional
@@ -54,14 +48,14 @@ public class NewsService implements NewsServicePort {
     }
 
     public void update(int id, NewsDto update, CategoryDto categoryDto) {
-        newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+        newsPersistencePort.findByArticleId(id).orElseThrow(() -> new NoSuchElementException("Сущность не найдена по id"));
         newsPersistencePort.update(id, update, categoryDto);
     }
 
     public void delete(int articleId) {
         Optional<NewsDto> entity = newsPersistencePort.findByArticleId(articleId);
         entity.ifPresentOrElse(x -> newsPersistencePort.deleteByArticleId(articleId), () -> {
-            throw new NotFoundException("Удаляемая сушность не найдено по id");
+            throw new NoSuchElementException("Удаляемая сушность не найдено по id");
         });
     }
 

@@ -7,28 +7,23 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import ru.clevertec.newsonline.entity.Author;
 import ru.clevertec.newsonline.entity.Category;
 import ru.clevertec.newsonline.entity.Comment;
 import ru.clevertec.newsonline.entity.News;
 import ru.clevertec.newsonline.entity.Picture;
-import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.mapper.JpaContextAuthor;
 import ru.clevertec.newsonline.mapper.JpaContextNews;
 import ru.clevertec.newsonline.mapper.JpaContextNewsCategory;
 import ru.clevertec.newsonline.mapper.JpaContextPictureNews;
 import ru.clevertec.newsonline.mapper.JpaContextUser;
 import ru.clevertec.newsonline.mapper.NewsMapper;
-import ru.clevertec.newsonline.newService.dto.AuthorDto;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
 import ru.clevertec.newsonline.newService.dto.PictureDto;
-import ru.clevertec.newsonline.newService.enums.Section;
 import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 import ru.clevertec.newsonline.repository.IFilterEntityRepository;
-import ru.clevertec.newsonline.repository.newrepository.AuthorRepository;
 import ru.clevertec.newsonline.repository.newrepository.CategoryRepository;
 import ru.clevertec.newsonline.repository.newrepository.NewsRepository;
 
@@ -60,7 +55,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         return newsRepository.findAll(pageable).map(newsMapper::newsToNewsDto);
     }
 
-    @Cacheable(value = "NEWS_CACHE", key = "#p0")
+    @Cacheable(value = "NEWS_CACHE", unless = "#result == null", key = "#p0")
     @Override
     public Optional<NewsDto> findByArticleId(int articleId) {
         return newsRepository.findByArticleId(articleId).map(newsMapper::newsToNewsDto);
@@ -92,7 +87,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
                     bySection.ifPresent(x::setCategory);
                     }
                 , () -> {
-                    throw new NotFoundException("Сущность не найдена по id");
+                    throw new NoSuchElementException("Сущность не найдена по id");
                 });
         return Optional.of(newsMapper.newsToNewsDto(byArticleId.orElseThrow()));
     }

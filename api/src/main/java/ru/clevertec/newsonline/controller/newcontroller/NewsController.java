@@ -3,10 +3,14 @@ package ru.clevertec.newsonline.controller.newcontroller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,14 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
-import ru.clevertec.newsonline.newService.service.interfaces.CategoryServicePort;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsServicePort;
-import ru.clevertec.newsonline.newService.service.interfaces.PictureServicePort;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,12 +35,13 @@ import java.util.Optional;
 public class NewsController {
 
     private final NewsServicePort newsServicePort;
-    private final PictureServicePort pictureServicePort;
-    private final CategoryServicePort categoryServicePort;
+    private final MessageSource messageSource;
 
     @ModelAttribute("news")
     public NewsDto getNews(@PathVariable("newsArticle") int newsArticle) {
-        return newsServicePort.findByArticleId(newsArticle).orElseThrow(() -> new NoSuchElementException("{catalogue.errors.news.not_found}"));
+        return newsServicePort.findByArticleId(newsArticle).orElseThrow(
+                () -> new NoSuchElementException("{catalogue.errors.news.not_found}")
+        );
     }
 
     @GetMapping()
@@ -82,5 +84,14 @@ public class NewsController {
     public ResponseEntity<Void> updateNews(@PathVariable("newsArticle") int newsArticle, @RequestBody CommentDto commentDto) {
             newsServicePort.addComment(newsArticle, commentDto);
             return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception,
+                                                                      Locale locale) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                        messageSource.getMessage(exception.getMessage(), new Object[0],
+                                exception.getMessage(), locale)));
     }
 }

@@ -19,7 +19,7 @@ public class SecurityBeans {
                         .requestMatchers(HttpMethod.POST, "catalogue-api/news")
                         .hasAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.PATCH, "catalogue-api/news/{articleId:\\d+}")
-                        .hasAnyAuthority("SCOPE_edit_catalogue", "SCOPE_view_catalogue")
+                        .hasAnyAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.PATCH, "catalogue-api/news/{articleId:\\d+}/add-comment")
                         .hasAnyAuthority("SCOPE_edit_catalogue", "SCOPE_view_catalogue")
                         .requestMatchers(HttpMethod.DELETE, "catalogue-api/news/{articleId:\\d+}")

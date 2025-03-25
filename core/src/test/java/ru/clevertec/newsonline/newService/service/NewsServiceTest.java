@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.CategoryDto;
 import ru.clevertec.newsonline.newService.dto.CommentDto;
 import ru.clevertec.newsonline.newService.dto.NewsDto;
@@ -18,6 +17,7 @@ import ru.clevertec.newsonline.newService.filter.NewsFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.NewsPersistencePort;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,12 +96,12 @@ class NewsServiceTest {
         //given
         NewsDto newsDto = CreateData.createNewsDto();
         CategoryDto categoryDto = CreateData.createCategoryDto();
-        doThrow(new NotFoundException("Сущность не найдена по id"))
+        doThrow(new NoSuchElementException("Сущность не найдена по id"))
                 .when(newsPersistencePort).findByArticleId(1234567);
         //when
 
         //then
-        assertThrows(NotFoundException.class, () -> {
+        assertThrows(NoSuchElementException.class, () -> {
             newsService.update(1234567, newsDto, categoryDto);
         });
 
@@ -112,12 +112,12 @@ class NewsServiceTest {
         //given
         NewsDto newsDto = CreateData.createNewsDto();
         CategoryDto categoryDto = CreateData.createCategoryDto();
-        doThrow(new NotFoundException("Сущность не найдена по id"))
+        doThrow(new NoSuchElementException("Сущность не найдена по id"))
                 .when(newsPersistencePort).findByArticleId(1234567);
         //when
 
         //then
-        assertThrows(NotFoundException.class, () -> {
+        assertThrows(NoSuchElementException.class, () -> {
             newsService.delete(1234567);
         });
     }

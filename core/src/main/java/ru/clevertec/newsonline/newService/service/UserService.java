@@ -1,22 +1,15 @@
 package ru.clevertec.newsonline.newService.service;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import ru.clevertec.newsonline.exception.NotFoundException;
 import ru.clevertec.newsonline.newService.dto.UserDto;
 import ru.clevertec.newsonline.newService.filter.UserFilter;
 import ru.clevertec.newsonline.newService.service.interfaces.UserPersistencePort;
 import ru.clevertec.newsonline.newService.service.interfaces.UserServicePort;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +23,7 @@ public class UserService implements UserServicePort {
     }
     public Optional<UserDto> findById(UUID id) {
         Optional<UserDto> entity = userPersistencePort.findById(id);
-        entity.orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+        entity.orElseThrow(() -> new NoSuchElementException("Сущность не найдена по id"));
         return entity;
     }
 
@@ -50,7 +43,7 @@ public class UserService implements UserServicePort {
 
     public void update(String username, UserDto update) {
         try {
-            userPersistencePort.findUserByUsername(username).orElseThrow(() -> new NotFoundException("Сущность не найдена по id"));
+            userPersistencePort.findUserByUsername(username).orElseThrow(() -> new NoSuchElementException("Сущность не найдена по id"));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +53,7 @@ public class UserService implements UserServicePort {
     public void delete(String username) {
         Optional<UserDto> entity = userPersistencePort.findUserByUsername(username);
         entity.ifPresentOrElse(x -> userPersistencePort.delete(x.userId()), () -> {
-            throw new NotFoundException("Удаляемая сушность не найдено по id");
+            throw new NoSuchElementException("Удаляемая сушность не найдено по id");
         });
     }
 
