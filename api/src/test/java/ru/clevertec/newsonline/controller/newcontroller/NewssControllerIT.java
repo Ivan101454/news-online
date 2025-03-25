@@ -200,4 +200,55 @@ class NewssControllerIT {
                                 "Артикул должен быть 6 цифр"
                         )));
     }
+
+    @Test
+    void createNews_NotAuthorized_ReturnForbidden() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.multipart("/catalogue-api/news")
+                .file(new MockMultipartFile(
+                        "newsDto",
+                        null,
+                        MediaType.APPLICATION_JSON_VALUE,
+                        """
+                                {
+                                    "headerNews": " ",
+                                    "dateOfNews": null,
+                                    "articleId": 3,
+                                    "isPublished": true,
+                                    "shortDescription": "",
+                                    "pictures": null,
+                                    "comments": null
+                                }
+                                """.getBytes()
+                ))
+                .file(new MockMultipartFile(
+                        "categoryDto",
+                        null,
+                        MediaType.APPLICATION_JSON_VALUE,
+                        """
+                                {
+                                    "categoryId": null,
+                                    "section": "PEOPLE",
+                                    "newsList": null
+                                }
+                                """.getBytes() // JSON-данные для categoryDto
+                ))
+                .file(new MockMultipartFile(
+                        "image",
+                        "test-image.jpg",
+                        MediaType.IMAGE_JPEG_VALUE,
+                        "test image content".getBytes()
+                ))
+                .locale(Locale.of("ru", "RU"))
+                .with(jwt().jwt(builder -> builder.claim("scope", "view_catalogue")));
+
+        //when
+        mockMvc.perform(requestBuilder)
+
+                //then
+                .andDo(print())
+                .andExpectAll(
+                        status().isForbidden()
+                        );
+    }
 }
