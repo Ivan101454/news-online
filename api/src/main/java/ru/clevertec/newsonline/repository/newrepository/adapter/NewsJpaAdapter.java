@@ -104,7 +104,10 @@ public class NewsJpaAdapter implements NewsPersistencePort {
     public Optional<NewsDto> addCommentToNewsList(int articleId, CommentDto commentDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);
         Comment comment = newsMapper.commentDtoToComment(commentDto, jpaCtx, jpaCtxU);
-        byArticleId.ifPresent(news -> news.addComment(comment));
+        byArticleId.ifPresentOrElse(news -> news.addComment(comment)
+                , () -> {
+                    throw new NoSuchElementException("Новость для комментария не найдена по id");
+                });
         return byArticleId.map(newsMapper::newsToNewsDto);
     }
 

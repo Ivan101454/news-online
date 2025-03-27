@@ -53,7 +53,7 @@ public class NewsController {
     public ResponseEntity<Void> updateNews(@RequestPart("newsDto") @Valid NewsDto update,
                                            @RequestPart("categoryDto") @Valid CategoryDto categoryDto,
                                            @RequestPart(value = "image", required = false) MultipartFile image,
-                                            BindingResult bindingResult, Locale locale) throws BindException {
+                                           BindingResult bindingResult, Locale locale) throws BindException {
         if (bindingResult.hasErrors()) {
             if (bindingResult instanceof BindException exception) {
                 throw exception;
@@ -81,9 +81,17 @@ public class NewsController {
     }
 
     @PatchMapping("add-comment")
-    public ResponseEntity<Void> updateNews(@PathVariable("newsArticle") int newsArticle, @RequestBody CommentDto commentDto) {
+    public ResponseEntity<Void> updateNewsComment(@PathVariable("newsArticle") int newsArticle, @RequestBody @Valid CommentDto commentDto, BindingResult bindingResult) throws BindException {
+        if (bindingResult.hasErrors()) {
+            if (bindingResult instanceof BindException exception) {
+                throw exception;
+            } else {
+                throw new BindException(bindingResult);
+            }
+        } else {
             newsServicePort.addComment(newsArticle, commentDto);
             return ResponseEntity.noContent().build();
+        }
     }
 
     @ExceptionHandler(NoSuchElementException.class)

@@ -375,10 +375,77 @@ class NewsControllerIT {
     }
 
     @Test
-    void deleteNews_NewsNotExist_ReturnForbidden() throws Exception {
+    void deleteNews_NewsNotExist_ReturnNotFound() throws Exception {
         //given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/catalogue-api/news/1111111")
                 .with(jwt().jwt(builder -> builder.claim("scope", "edit_catalogue")));
+
+        //when
+        mockMvc.perform(requestBuilder)
+
+        //then
+                .andDo(print())
+                .andExpectAll(
+                        status().isNotFound()
+                );
+    }
+
+    @Test
+    void updateNewsComment_NewsIsExist_ReturnNoContent() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.patch("/catalogue-api/news/8918718/add-comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "textComment": "Новый комментарий"
+                        }""")
+                .with(jwt().jwt(builder -> builder.claim("scope", "view_catalogue")));
+
+        //when
+        mockMvc.perform(requestBuilder)
+
+        //then
+                .andDo(print())
+                .andExpectAll(
+                        status().isNoContent()
+                );
+    }
+
+    @Test
+    void updateNewsComment_CommentIsInvalid_ReturnNoContent() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.patch("/catalogue-api/news/8918718/add-comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "textComment": ""
+                        }""")
+                .with(jwt().jwt(builder -> builder.claim("scope", "view_catalogue")));
+
+        //when
+        mockMvc.perform(requestBuilder)
+
+        //then
+                .andDo(print())
+                .andExpectAll(
+                        status().isBadRequest(),
+                        content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON),
+                        jsonPath("$.properties.errors").exists(),
+                        jsonPath("$.properties.errors").value(Matchers.containsInAnyOrder(
+                                "Нет содержимого комментария"
+                        )));
+    }
+
+    @Test
+    void updateNewsComment_NewsNotExist_ReturnNotFound() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.patch("/catalogue-api/news/1111111/add-comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "textComment": "Новый комментарий"
+                        }""")
+                .with(jwt().jwt(builder -> builder.claim("scope", "view_catalogue")));
 
         //when
         mockMvc.perform(requestBuilder)
