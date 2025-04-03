@@ -111,6 +111,7 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         return byArticleId.map(newsMapper::newsToNewsDto);
     }
 
+    @CachePut(value = "NEWS_CACHE", key = "#p0")
     @Override
     public Optional<NewsDto> addPictureToNewsList(int articleId, PictureDto pictureDto) {
         Optional<News> byArticleId = newsRepository.findByArticleId(articleId);

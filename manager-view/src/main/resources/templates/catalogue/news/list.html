@@ -2,22 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Новостная лента &ndash; NEWONLINE</title>
+    <title>Новостная лента &ndash; NEWSONLINE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" data-th-href="@{/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" data-th-href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" data-th-href="@{/css/fontello.css}">
     <link rel="stylesheet" data-th-href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <h4 class="text-left text-secondary">News <span class="color-name">Online</span></h4>
+            </div>
+            <div class="col-6">
+                <form method="get" data-th-action="@{/manager-api/news/list}" class="search-bar">
+                    <label>по заголовку:<input type="text" name="headerNews" data-th-value="${headerNews}">
+                    </label>
+                    <label>по описанию:<input type="text" name="shortDescription" data-th-value="${shortDescription}">
+                    </label>
+                    <button type="submit">Поиск</button>
+                </form>
+            </div>
+            <div class="col-3 search-bar logout">
+                <form data-th-action="@{/logout}" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
 <a data-th-href="@{/manager-api/news/create}">&llarr; Создать новую новость</a>
 <h1>Список новостей</h1>
-<form method="get" data-th-action="@{/manager-api/news/list}">
-    <label>по заголовку:<input type="text" name="headerNews" data-th-value="${headerNews}">
-    </label><br>
-    <label>по описанию:<input type="text" name="shortDescription" data-th-value="${shortDescription}">
-    </label><br>
-    <button type="submit">Поиск</button>
-</form>
+
 <table>
     <thead>
     <tr>
