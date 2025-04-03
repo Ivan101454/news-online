@@ -28,6 +28,13 @@ header {
 .logout {
     justify-content: flex-end;
 }
+
+.naming {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
 /*header, footer {*/
 /*    background: url("../images/pattern.png"), linear-gradient(to right,  var(--color1) 0%, var(--color2) 100%);*/
 /*    background-size: contain;*/

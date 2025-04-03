@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row">
             <div class="col-3">
-                <h4 class="text-left text-secondary">News <span class="color-name">Online</span></h4>
+                <h4 class="text-left text-secondary">News<span class="color-name">Online</span></h4>
             </div>
             <div class="col-6">
                 <form method="get" data-th-action="@{/manager-api/news/list}" class="search-bar">
@@ -55,11 +55,22 @@
     </tr>
     </tbody>
 </table>
-<form method="get" data-th-action="@{/manager-api/news/list}">
-    <label>перейти<input type="text" name="pageNumber" data-th-value="${page}">
-    </label><br>
-    <button type="submit">Следующая страница</button>
-</form>
+<!--<form method="get" data-th-action="@{/manager-api/news/list}">-->
+<!--    <label>перейти<input type="text" name="pageNumber" data-th-value="${page}">-->
+<!--    </label><br>-->
+<!--    <button type="submit">Следующая страница</button>-->
+<!--</form>-->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" data-th-href="@{/manager-api/news/list(pageNumber=${page - 1})}" data-th-if="${page > 1}">Предыдущая страница</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" data-th-href="@{/manager-api/news/list(pageNumber=${page + 1})}">Следующая страница</a>
+        </li>
+    </ul>
+</nav>
+
 <script data-th-src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
