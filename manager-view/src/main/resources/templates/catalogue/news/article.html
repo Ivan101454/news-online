@@ -13,10 +13,10 @@
     <img data-th-src="@{/images/{image}(image=${pic.nameOfPicture()})}" width="500" data-th-alt="${pic.nameOfPicture()}"/>
 </div>
 <ul>
-    <li><strong>Article: </strong>: <span data-th-text="${news.articleId}"></span></li>
-    <li><strong>Header: </strong>: <span data-th-text="${news.headerNews}"></span></li>
-    <li><strong>Date: </strong>: <span data-th-text="${news.dateOfNews}"></span></li>
-    <li><strong>Description: </strong>: <span data-th-text="${news.shortDescription}"></span></li>
+    <li><strong>Article: </strong> <span data-th-text="${news.articleId}"></span></li>
+    <li><strong>Header: </strong> <span data-th-text="${news.headerNews}"></span></li>
+    <li><strong>Date: </strong> <span data-th-text="${news.dateOfNews}"></span></li>
+    <li><strong>Description: </strong> <span data-th-text="${news.shortDescription}"></span></li>
     <ul data-th-each="comment : ${news.comments()}">
         <li><strong>Comment:</strong> <span data-th-text="${comment.textComment()}"></span></li>
     </ul>

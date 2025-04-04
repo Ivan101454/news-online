@@ -60,7 +60,6 @@ public class RestClientNewsRestClient implements NewsRestClient {
     @Override
     public NewsDto createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
-            Logger log = LoggerFactory.getLogger(this.getClass());
             MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
             parts.add("newsDto", newsDto);
             parts.add("categoryDto", categoryDto);
@@ -70,7 +69,6 @@ public class RestClientNewsRestClient implements NewsRestClient {
                 fileHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
                 parts.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
             }
-            log.info("MAPA" + parts.get("newsDto") + "  " + parts.get("categoryDto") + "  " + parts.get("image").get(0));
 
             return restClient
                     .post()
@@ -158,6 +156,5 @@ public class RestClientNewsRestClient implements NewsRestClient {
             ProblemDetail problemDetail = exception.getResponseBodyAs(ProblemDetail.class);
             throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
         }
-
     }
 }

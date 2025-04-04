@@ -62,11 +62,7 @@ public class NewssController {
     @PostMapping("create")
     public String createNews(NewsDto newsDto, CategoryDto categoryDto,
                              @RequestParam("image") MultipartFile image, Model model) {
-        Logger log = LoggerFactory.getLogger(this.getClass());
         try {
-            log.info("Received NewsDto: {}", newsDto);
-            log.info("Received CategoryDto: {}", categoryDto);
-            log.info("Received Image: {}", image.getOriginalFilename());
             newsRestClient.createNews(newsDto, categoryDto, image);
             return "redirect:/manager-api/news/%d".formatted(newsDto.articleId());
         } catch (BadRequestException exception) {
