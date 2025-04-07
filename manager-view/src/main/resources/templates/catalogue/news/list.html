@@ -34,7 +34,27 @@
     </div>
 </header>
 <a data-th-href="@{/manager-api/news/create}">&llarr; Создать новую новость</a>
-<h1>Список новостей</h1>
+<div class="nav-bar">
+    <div class="nav-bar-title">
+        <p>Категории</p>
+    </div>
+    <ul class="nav" data-th-each="kind : ${kindList}">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" data-th-href="@{/manager-api/news/{kindChange}(kindChange=${kind.name})}"
+               data-th-text="${kind.name}"></a>
+    </ul>
+</div>
+<h3>Список новостей</h3>
+<div class="thumb-list-news">
+    <div data-th-each="news : ${list}" >
+        <a data-th-href="@{/manager-api/news/{articleId}(articleId=${news.articleId})}">
+            <div th:if="${news?.pictures?.size() > 0}" class="image-container">
+                <img data-th-src="@{/images/{image}(image=${news?.pictures[0]?.nameOfPicture()})}" width="300" height="200" alt="картинка новости">
+                <div class="name-news" data-th-text="${news.headerNews}"></div>
+            </div>
+        </a>
+    </div>
+</div>
 
 <table>
     <thead>
