@@ -61,6 +61,17 @@ public class NewsJpaAdapter implements NewsPersistencePort {
         return newsRepository.findByArticleId(articleId).map(newsMapper::newsToNewsDto);
     }
 
+//    @Cacheable(value = "NEWS_CACHE", unless = "#result == null", key = "#p0.section().toString()")
+    @Override
+    public List<NewsDto> findByCategory(CategoryDto categoryDto, Pageable pageable) {
+        Optional<Category> bySection = categoryRepository.findBySection(categoryDto.section());
+        if (bySection.isPresent()) {
+            return newsRepository.findByCategory(bySection.get(), pageable).stream().map(newsMapper::newsToNewsDto).toList();
+        } else {
+            throw new NoSuchElementException("Категория не найдена по id");
+        }
+    }
+
     @CachePut(value = "NEWS_CACHE", key = "#result.articleId()")
     @Override
     public NewsDto save(NewsDto newsDto) {

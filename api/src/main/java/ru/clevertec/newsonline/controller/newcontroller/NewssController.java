@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,14 @@ public class NewssController {
             @RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         return newsServicePort.findByPage(pageNumber, pageSize);
+    }
+
+    @GetMapping("by-section")
+    public List<NewsDto> findNewsBySection(
+            @ModelAttribute(name = "section") CategoryDto categoryDto,
+            @RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+        return newsServicePort.findEntityByCategory(categoryDto, pageNumber, pageSize);
     }
 
     @GetMapping("list-by-filter")

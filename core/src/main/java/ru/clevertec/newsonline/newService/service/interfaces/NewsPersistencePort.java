@@ -16,6 +16,8 @@ public interface NewsPersistencePort{
 
     Optional<NewsDto> findByArticleId(int id);
 
+    List<NewsDto> findByCategory(CategoryDto categoryDto, Pageable pageable);
+
     List<NewsDto> findAll();
 
     Page<NewsDto> findAll(Pageable pageable);

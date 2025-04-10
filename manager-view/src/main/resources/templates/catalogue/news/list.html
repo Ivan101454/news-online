@@ -42,7 +42,7 @@
         </div>
         <ul class="nav" data-th-each="kind : ${kindList}">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" data-th-href="@{/manager-api/news/{kindChange}(kindChange=${kind.name})}"
+                <a class="nav-link active" aria-current="page" data-th-href="@{/manager-api/news/list(section=${kind.name})}"
                    data-th-text="${kind.name}"></a>
         </ul>
     </div>

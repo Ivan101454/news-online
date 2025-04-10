@@ -26,6 +26,8 @@ public interface NewsServicePort {
 
     List<NewsDto> findEntityByFilter(NewsFilter filter, int pageNumber, int pageSize);
 
+    List<NewsDto> findEntityByCategory(CategoryDto categoryDto, int pageNumber, int pageSize);
+
     void addComment(int articleId, CommentDto commentDto);
 
     void addPicture(int articleId, MultipartFile image);

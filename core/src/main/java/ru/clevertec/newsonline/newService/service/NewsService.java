@@ -64,6 +64,12 @@ public class NewsService implements NewsServicePort {
         return newsPersistencePort.filterWord(filter, pageable);
     }
 
+    @Override
+    public List<NewsDto> findEntityByCategory(CategoryDto categoryDto, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return newsPersistencePort.findByCategory(categoryDto, pageable);
+    }
+
     public void addComment(int articleId, CommentDto commentDto) {
         newsPersistencePort.addCommentToNewsList(articleId, commentDto);
     }

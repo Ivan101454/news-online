@@ -49,6 +49,15 @@ public class RestClientNewsRestClient implements NewsRestClient {
     }
 
     @Override
+    public List<NewsDto> findNewsByCategory(String section, int pageNumber, int pageSize) {
+        return restClient
+                .get()
+                .uri("/catalogue-api/news/by-section?section={section}&pageNumber={pageNumber}&pageSize={pageSize}", section, pageNumber, pageSize)
+                .retrieve()
+                .body(NEWS_TYPE_REFERENCE);
+    }
+
+    @Override
     public List<NewsDto> findNewsByFilter(String headerNews, String shortDescription, int pageNumber, int pageSize) {
         return restClient
                 .get()
@@ -60,21 +69,21 @@ public class RestClientNewsRestClient implements NewsRestClient {
     @Override
     public NewsDto createNews(NewsDto newsDto, CategoryDto categoryDto, MultipartFile image) {
         try {
-            MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
-            parts.add("newsDto", newsDto);
-            parts.add("categoryDto", categoryDto);
+            MultiValueMap<String, Object> news = new LinkedMultiValueMap<>();
+            news.add("newsDto", newsDto);
+            news.add("categoryDto", categoryDto);
 
             if (image != null && !image.isEmpty()) {
                 HttpHeaders fileHeaders = new HttpHeaders();
                 fileHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-                parts.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
+                news.add("image", new HttpEntity<>(image.getResource(), fileHeaders));
             }
 
             return restClient
                     .post()
                     .uri("/catalogue-api/news")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(parts)
+                    .body(news)
                     .retrieve()
                     .body(NewsDto.class);
         } catch (HttpClientErrorException.BadRequest exception) {
@@ -157,4 +166,5 @@ public class RestClientNewsRestClient implements NewsRestClient {
             throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
         }
     }
+
 }

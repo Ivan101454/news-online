@@ -38,12 +38,16 @@ public class NewssController {
                               @RequestParam(name = "headerNews", required = false) String headerNews,
                               @RequestParam(name = "shortDescription", required = false) String shortDescription,
                               @RequestParam(name = "pageNumber", defaultValue = "1") @Min(1) int pageNumber,
-                              @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+                              @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                              @RequestParam(name = "section", required = false) String section) {
         List<NewsDto> newsList;
         if (headerNews != null && shortDescription != null) {
             newsList = newsRestClient.findNewsByFilter(headerNews, shortDescription, pageNumber, pageSize);
             model.addAttribute("headerNews", headerNews);
             model.addAttribute("shortDescription", shortDescription);
+        } else
+            if(section != null) {
+                newsList = newsRestClient.findNewsByCategory(section, pageNumber, pageSize);
         } else {
             newsList = newsRestClient.findNewsWithPagination(pageNumber, pageSize);
         }

@@ -19,4 +19,6 @@ public interface NewsRestClient {
     void deleteNews(int articleId);
     List<CommentDto> getComments(int articleId);
     void addComment(int articleId, CommentDto commentDto);
+
+    List<NewsDto> findNewsByCategory(String section, int pageNumber, int pageSize);
 }
