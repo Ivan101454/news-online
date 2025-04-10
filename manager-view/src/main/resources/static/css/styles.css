@@ -6,13 +6,17 @@ h2 {
 }
 
 :root {
-    --color1: #05b1b1;
-    --color2: #52339a;
-    --color3: #0d6efd;
+    --color-title: #0c65e8;
+    --white: white;
+    --color-name: #0d6efd;
 }
 
 header {
     padding: 10px 100px;
+}
+
+main {
+    background-color: var(--white);
 }
 
 .search-bar {
@@ -22,6 +26,7 @@ header {
 }
 
 .nav-bar {
+    background-color: var(--white);
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -31,9 +36,20 @@ header {
     display: flex;
     padding-left: 10px;
     padding-right: 10px;
+    color: var(--color-title);
+    align-items: center;
+    height: 40px;
+}
+
+.nav-bar-delimiter {
+    margin-left: 5px;
     border-right: 1px solid black;
-    color: #0c65e8;
-    align-content: center;
+    height: 30px;
+}
+
+.nav-bar-cat {
+    height: auto;
+    margin: 0;
 }
 
 .thumb-list-news {
@@ -50,11 +66,11 @@ header {
     position: absolute;
     bottom: 10px;
     left: 10%;
-    color: white;
+    color: var(--white);
 }
 
 .color-name {
-    color: var(--color3);
+    color: var(--color-name);
 }
 
 .logout {

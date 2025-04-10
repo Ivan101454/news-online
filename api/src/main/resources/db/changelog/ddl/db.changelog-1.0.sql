@@ -44,7 +44,6 @@ create table news_online.news
     short_description varchar(500),
     author_id         uuid,
     category_id       uuid,
-    picture_id        uuid,
     primary key (news_id)
 );
 --changeset ivan101454:6
