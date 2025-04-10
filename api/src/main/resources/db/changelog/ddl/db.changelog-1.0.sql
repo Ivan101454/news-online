@@ -6,7 +6,7 @@ DROP EXTENSION IF EXISTS "uuid-ossp";
 --changeset ivan101454:0.4
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 --changeset ivan101454:1
-create table news_online.author
+create table IF NOT EXISTS news_online.author
 (
     author_id            uuid      DEFAULT uuid_generate_v4(),
     date_of_registration TIMESTAMP DEFAULT current_timestamp,
@@ -17,14 +17,14 @@ create table news_online.author
     primary key (author_id)
 );
 --changeset ivan101454:2
-create table news_online.category
+create table IF NOT EXISTS news_online.category
 (
     category_id uuid DEFAULT uuid_generate_v4(),
     section     varchar(255),
     primary key (category_id)
 );
 --changeset ivan101454:3
-create table news_online.comment
+create table IF NOT EXISTS news_online.comment
 (
     comment_id      uuid         DEFAULT uuid_generate_v4(),
     date_of_comment timestamp(6) DEFAULT current_timestamp,
@@ -34,7 +34,7 @@ create table news_online.comment
     primary key (comment_id)
 );
 --changeset ivan101454:4
-create table news_online.news
+create table IF NOT EXISTS news_online.news
 (
     news_id           uuid         DEFAULT uuid_generate_v4(),
     article_id        int          UNIQUE,
@@ -47,7 +47,7 @@ create table news_online.news
     primary key (news_id)
 );
 --changeset ivan101454:6
-create table news_online.picture
+create table IF NOT EXISTS news_online.picture
 (
     picture_id      uuid DEFAULT uuid_generate_v4(),
     link_on_picture varchar(255),
@@ -56,7 +56,7 @@ create table news_online.picture
     primary key (picture_id)
 );
 --changeset ivan101454:7
-create table news_online.user
+create table IF NOT EXISTS news_online.user
 (
     user_id  uuid DEFAULT uuid_generate_v4(),
     login    varchar(255),

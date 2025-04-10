@@ -9,6 +9,9 @@ h2 {
     --color-title: #0c65e8;
     --white: white;
     --color-name: #0d6efd;
+    --color-name-black: black;
+    --back-color: #297173;
+    --link-red: #DE3E24;
 }
 
 header {
@@ -16,13 +19,17 @@ header {
 }
 
 main {
-    background-color: var(--white);
+    background-color: var(--back-color);
 }
 
 .search-bar {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+}
+
+.link-create-news {
+    color: var(--link-red);
 }
 
 .nav-bar {
@@ -54,7 +61,13 @@ main {
 
 .thumb-list-news {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
+}
+
+.thumb-block-news {
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .image-container {
@@ -67,6 +80,8 @@ main {
     bottom: 10px;
     left: 10%;
     color: var(--white);
+    font-size: small;
+    text-decoration-line: underline;
 }
 
 .color-name {
@@ -81,6 +96,11 @@ main {
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
+}
+
+.background-pagination {
+    background-color: var(--color-name);
+    color: var(--color-name-black);
 }
 
 /*header, footer {*/
