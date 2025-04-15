@@ -1,8 +1,61 @@
 version: '4.39'
 services:
+
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    networks:
+      - docknet
+    ports:
+      - "8888:8888"
+    depends_on:
+      - redis
+      - postgresql
+      - keycloak
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api
+    networks:
+      - docknet
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/demo"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: "http://news_keycloak:8082/realms/news"
+      SPRING_CONFIG_IMPORT: "http://config-server:8888"
+      SPRING_DATA_REDIS_HOST: "redis"
+    depends_on:
+      - config-server
+      - redis
+      - postgresql
+      - keycloak
+
+  manager-view:
+    build:
+      context: ./manager-view
+      dockerfile: Dockerfile
+    container_name: manager-view
+    networks:
+      - docknet
+    ports:
+      - "8080:8080"
+    environment:
+      NEWS_SERVICES_CATALOGUE_URI: "http://api:8081"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/demo"
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI: "http://news_keycloak:8082/realms/news"
+    depends_on:
+      - api
+
   redis:
     image: redis:8.0-M03
     container_name: redis
+    networks:
+      - docknet
     ports:
       - "6379:6379"
     volumes:
@@ -11,10 +64,12 @@ services:
   postgresql:
     image: postgres:13.3
     container_name: postgres
+    networks:
+      - docknet
     environment:
       POSTGRES_DB: demo
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
@@ -23,16 +78,23 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak
     container_name: news_keycloak
+    networks:
+      - docknet
     ports:
       - "8082:8080"
-    command: -v start-dev
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev --import-realm
+#    environment:
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
     volumes:
       - ./config/keycloak/import:/opt/keycloak/data/import
+      - keycloak_data:/opt/keycloak/data
 
 volumes:
   redis_data:
   postgres_data:
   keycloak_data:
+
+networks:
+  docknet:
+    driver: bridge

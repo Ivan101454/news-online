@@ -7,7 +7,7 @@ spring:
   application:
     name: api
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
