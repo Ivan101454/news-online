@@ -22,6 +22,10 @@ main {
     background-color: var(--back-color);
 }
 
+.main-link {
+    text-decoration: none;
+}
+
 .search-bar {
     display: flex;
     align-items: flex-end;
