@@ -2,10 +2,13 @@ server:
   port: 8888
 
 spring:
+  web:
+    cors:
+      allowed-origins: "*"
   security:
     user:
       name: catalogue_service_user
-      password: 'password'
+      password: password
       roles:
         - SERVICE
   application:

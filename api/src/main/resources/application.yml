@@ -1,43 +1,31 @@
 server:
   port: 8081
 spring:
+  docker:
+    compose:
+      enabled: false
   messages:
     basename: messages
     encoding: UTF-8
   application:
     name: api
   config:
-    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
   cloud:
     config:
       username: catalogue_service_user
-      password: 'password'
+      password: password
+      roles:
+        - SERVICE
       fail-fast: true
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/news
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/demo
-#    username: postgres
-#    password: postgres
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: none
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        format_sql: true
-#        show_sql: true
-#        highlight_sql: true
-#  liquibase:
-#    enabled: true
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI:http://localhost:8082/realms/news}
 cache:
   #  algorithm: LRU
   max-size: 10
