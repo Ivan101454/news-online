@@ -30,6 +30,7 @@ spring:
             user-name-attribute: preferred_username
         registration:
           keycloak:
+#            redirect-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_REDIRECT_URI:http://localhost:8082/login/oauth2/code/keycloak}
             client-id: api
             client-secret: HSDuGRBd7EAziOm13ItRTlNfRNzDsbcv
             scope:

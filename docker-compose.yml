@@ -7,15 +7,27 @@ networks:
 
 services:
 
+  localhost:
+    image: alpine:latest
+    command: sleep infinity
+    ports:
+      - "8080:8080"
+      - "8082:8082"
+      - "8081:8081"
+      - "8888:8888"
+      - "6379:6379"
+      - "5432:5432"
+
   config-server:
     build:
       context: ./config-server
       dockerfile: Dockerfile
     container_name: config-server
-    networks:
-      - docknet
-    ports:
-      - "8888:8888"
+#    networks:
+#      - docknet
+#    ports:
+#      - "8888:8888"
+    network_mode: "service:localhost"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 10s
@@ -27,19 +39,20 @@ services:
       context: ./api
       dockerfile: Dockerfile
     container_name: api
-#    deploy:
-#      mode: replicated
-#      restart_policy:
-#        condition: on-failure
-    networks:
-      - docknet
-    ports:
-      - "8081:8081"
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+#    networks:
+#      - docknet
+#    ports:
+#      - "8081:8081"
+    network_mode: "service:localhost"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/demo
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/news
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/demo
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8082/realms/news
+      SPRING_CONFIG_IMPORT: optional:configserver:http://localhost:8888
+      SPRING_DATA_REDIS_HOST: localhost
     depends_on:
       - config-server
       - redis
@@ -55,14 +68,16 @@ services:
       mode: replicated
       restart_policy:
         condition: on-failure
-    networks:
-      - docknet
-    ports:
-      - "8080:8080"
+#    networks:
+#      - docknet
+    network_mode: "service:localhost"
+#    ports:
+#      - "8080:8080"
     environment:
-      NEWS_SERVICES_CATALOGUE_URI: http://api:8081
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/demo
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/news
+      NEWS_SERVICES_CATALOGUE_URI: http://localhost:8081
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/demo
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://localhost:8082/realms/news
+#      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak
     depends_on:
       - api
       - keycloak
@@ -71,10 +86,11 @@ services:
   redis:
     image: redis:8.0-M03
     container_name: redis
-    networks:
-      - docknet
-    ports:
-      - "6379:6379"
+#    networks:
+#      - docknet
+#    ports:
+#      - "6379:6379"
+    network_mode: "service:localhost"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
@@ -86,14 +102,15 @@ services:
   postgres:
     image: postgres:13.3
     container_name: postgres
-    networks:
-      - docknet
+#    networks:
+#      - docknet
+    network_mode: "service:localhost"
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -105,23 +122,23 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak
     container_name: keycloak
-    networks:
-      - docknet
-    ports:
-      - "8082:8080"
+#    networks:
+#      - docknet
+    network_mode: "service:localhost"
+#    ports:
+#      - "8082:8082"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/realms/news/.well-known/openid-configuration" ]
+      test: [ "CMD", "curl", "-f", "8080/news/.well-known/openid-configuration" ]
       interval: 10s
       timeout: 5s
       retries: 5
-    command: start-dev --import-realm
+    command: start-dev --import-realm --http-port=8082
     volumes:
       - ./config/keycloak/import:/opt/keycloak/data/import
       - keycloak_data:/opt/keycloak/data
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-
 volumes:
   redis_data:
   postgres_data:
